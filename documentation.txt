@@ -33,25 +33,53 @@ Limitations
   Why no video?
     Due to storage, scalability, and complexity concerns, videos are replaced with building and floor pictures. Building-to-building directions are provided by the Map with Path output.
 
+Tech Stack 
+  JS 
+  HTML 
+  CSS
 
 Algorithms
   Breadth-first search
     For finding the shortest path
+  Drawing Path
+    Get vertices of the from and to buildings
+    Color in from building in red
+    Color in to building in blue
+    Draw yellow lines along path, except for
+    - the edge of the from building and its neighbor
+    - the edge of the to building and its neighbor
 
 Data Structures
-  Hash Map for searching for rooms 
-  Tree for finding the corresponding building and floors
-  Graph/Adj list for finding path from building to building
+  - Rooms Hash Map for searching for rooms 
+  - Tree for finding the corresponding building and floors
+  - Graph/Adj list for finding path from building to building
+  - Building Vertices Hash Map for coloring building
+    Key::node
+    Value::Set of x,y coordinates (vertices of the building)
+
+
+Tree Node Structure
+  Name::string
+  worded_direction::string
+  parent::t_node
+  children::t_node[]
+
+Graph Node Structure
+  Name::string
+  Neighbors::g_node[]
+  x_coor::int 
+  y_coor::int
+
 
 Data Flow Components
   Inputs
     User provides "from" room and "to" room.
 
   Data Collector
-    Converts room inputs into strings.
+    Converts room inputs into lowercase strings.
 
   Room node Finder
-    Uses hashmap to find corresponding rm_t_nodes (room tree nodes) from the input strings.
+    Uses Rooms Hash Map to find corresponding rm_t_nodes (room tree nodes) from the input strings.
 
   Building/Floor Node Finder
     Uses tree structure to find corresponding bld_t_nodes (building tree nodes) and flr_t_nodes (floor tree nodes) from the rm_t_nodes.
@@ -70,4 +98,8 @@ Data Flow Components
       PathFinder
         Takes to_bld_t_node and from_bld_t_node, finds corresponding g_nodes, and calculates the path from from_bld_g_node to to_bld_g_node.
       PathDrawer
-        Takes the calculated path, loads the UTech map image, creates a canvas, draws the path onto the map, and sends it to the user.
+        Loads UTech map image and creates canvas.
+        Gets vertices of from and to buildings from Building Vertices Hash Map.
+        Colors from building red and to building blue using their vertices.
+        Draws yellow lines along path (including non-building nodes), excluding edges between from building and its neighbor, and to building and its neighbor.
+        Sends map with drawn path to user.
