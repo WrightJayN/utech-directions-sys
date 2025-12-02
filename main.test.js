@@ -226,3 +226,159 @@ describe('PathDrawer', () => {
     // Then: yellow line is NOT drawn between Corner1 and Building3 (edge excluded)
   });
 });
+
+
+// Test: End-to-end data flow
+describe('Integration Tests', () => {
+  test('should process complete flow from input to output', () => {
+    // Given: from room = "a101", to room = "b205"
+    // When: entire system processes request
+    // Then: returns all outputs (building pic, floor pic, floor highlight, map with path)
+  });
+
+  test('should handle same building, different floor', () => {
+    // Given: from room = "a101" (Building1, FloorA), to room = "a205" (Building1, FloorB)
+    // When: system processes request
+    // Then: path should be empty or same building, building is colored blue, floor highlight shows FloorB
+  });
+
+  test('should handle same building, same floor', () => {
+    // Given: from room = "a101", to room = "a102" (same building and floor)
+    // When: system processes request
+    // Then: path should be empty, correct floor highlighted
+  });
+
+  test('should use default main gate when from room not provided', () => {
+    // Given: from room = null, to room = "b205"
+    // When: system processes request
+    // Then: uses "main gate" as starting point
+  });
+});
+
+
+describe('Error Handling', () => {
+  test('should handle invalid room format', () => {
+    // Given: room = "invalid_format"
+    // When: system processes input
+    // Then: returns appropriate error message
+  });
+
+  test('should handle non-existent room', () => {
+    // Given: room = "z999" (doesn't exist)
+    // When: system processes input
+    // Then: returns "Room not found" error
+  });
+
+  test('should handle missing map image file', () => {
+    // Given: map image file not found
+    // When: PathDrawer tries to load map
+    // Then: returns error or default image
+  });
+
+  test('should handle disconnected buildings in graph', () => {
+    // Given: from_bld_g_node and to_bld_g_node are not connected
+    // When: PathFinder runs BFS
+    // Then: returns appropriate "no path found" message
+  });
+});
+
+describe('Edge Cases', () => {
+  test('should handle very long room names', () => {
+    // Given: room = "very_long_room_name_12345" (length > 50 characters)
+    // When: system processes input
+    // Then: handles gracefully
+  });
+
+  test('should handle special characters in room names', () => {
+    // Given: room = "A-101" or "A_101" (special characters)
+    // When: system processes input
+    // Then: handles special characters correctly
+  });
+
+  test('should handle multiple requests in sequence', () => {
+    // Given: multiple direction requests
+    // When: system processes sequentially
+    // Then: each request is handled independently
+  });
+});
+
+// Test: Accessibility
+describe('Accessibility', () => {
+  test('should be accessible to screen readers', () => {
+    // Given: system is used by screen reader users
+    // When: system processes input
+    // Then: returns accessible output (aria-labels, alt text, etc.)
+  });
+});
+
+// Test: User Experience
+describe('User Experience', () => {
+  test('should provide clear feedback on errors', () => {
+    // Given: system returns error
+    // When: user sees error message
+    // Then: error message is clear and helpful
+  });
+});
+
+// Test: Usability
+describe('Usability', () => {
+  test('should be easy to use', () => {
+    // Given: user is new to the system
+    // When: user uses the system
+    // Then: user finds the system easy to use
+  });
+});
+
+// Test: Maintainability
+describe('Maintainability', () => {
+  test('should be easy to maintain', () => {
+    // Given: system needs to be updated
+    // When: developer makes changes
+    // Then: system remains easy to maintain
+  });
+});
+
+// Test: Security and Privacy
+describe('Security and Privacy', () => {
+  test('should protect against XSS attacks', () => {
+    // Given: user input = "<script>alert('XSS')</script>"
+    // When: system processes input
+    // Then: returns sanitized output (no script tags)
+  });
+});
+
+// Test: Performance and Scalability
+describe('Performance and Scalability', () => {
+  test('should handle large number of rooms efficiently', () => {
+    // Given: 1000 rooms in system
+    // When: system processes request
+    // Then: returns all outputs in reasonable time (under 1 second)
+  });
+});
+
+// Test: Documentation
+describe('Documentation', () => {
+  test('should be complete and up-to-date', () => {
+    // Given: system documentation
+    // When: developer reviews documentation
+    // Then: documentation is complete and up-to-date
+  });
+});
+
+// Test: Testing
+describe('Testing', () => {
+  test('should have comprehensive test coverage', () => {
+    // Given: system tests
+    // When: developer reviews tests
+    // Then: tests are comprehensive and cover all code paths
+  });
+});
+
+// Test: Code Quality
+describe('Code Quality', () => {
+  test('should be maintainable and readable', () => {
+    // Given: system code
+    // When: developer reviews code
+    // Then: code is maintainable and readable
+  });
+});
