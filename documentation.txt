@@ -1,17 +1,16 @@
-Problem: 
+Problem
   Students, especially incoming students, struggle to locate their classrooms. A survey indicated that students would benefit from a system providing directions to their classes.
 
-Solution Requirements:
-  The solution must:
-  1. Allow students to enter a classroom number
-  2. Provide directions to that classroom
+Solution Requirements
+  Allow students to enter a classroom number
+  Provide directions to that classroom
 
-Possible Solutions:
-  1. Interactive map of U-Tech allowing students to navigate and explore buildings
-  2. Web app providing video directions and pictures to buildings, floors, and rooms
-  3. Web app providing text directions and pictures to buildings, floors, and rooms
+Possible Solutions
+  - Interactive map of U-Tech allowing students to navigate and explore buildings
+  - Web app providing video directions and pictures to buildings, floors, and rooms
+  - Web app providing text directions and pictures to buildings, floors, and rooms
 
-Chosen solution:
+Chosen solution
   The interactive map approach was rejected because it would require students to search the entire map instead of simply entering a classroom number.
   
   Solution
@@ -44,7 +43,7 @@ Data Structures
   Tree for finding the corresponding building and floors
   Graph/Adj list for finding path from building to building
 
-Data Flow Components:
+Data Flow Components
   Inputs
     User provides "from" room and "to" room.
 
