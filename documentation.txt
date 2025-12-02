@@ -1,0 +1,74 @@
+Problem: 
+  Students, especially incoming students, struggle to locate their classrooms. A survey indicated that students would benefit from a system providing directions to their classes.
+
+Solution Requirements:
+  The solution must:
+  1. Allow students to enter a classroom number
+  2. Provide directions to that classroom
+
+Possible Solutions:
+  1. Interactive map of U-Tech allowing students to navigate and explore buildings
+  2. Web app providing video directions and pictures to buildings, floors, and rooms
+  3. Web app providing text directions and pictures to buildings, floors, and rooms
+
+Chosen solution:
+  The interactive map approach was rejected because it would require students to search the entire map instead of simply entering a classroom number.
+  
+  Solution
+    A web app that provides directions to the corresponding building and floor of the room the user wants to go to.
+    
+    Inputs
+    1. From room (default::main gate)
+    2. To room
+  
+    Outputs
+      Building picture
+      Floor picture
+      Floor Highlight
+      Map with Path
+
+Limitations
+  Why no specific directions to room?
+    Due to project complexity, directions are only provided to buildings and floors, not individual rooms.
+  
+  Why no video?
+    Due to storage, scalability, and complexity concerns, videos are replaced with building and floor pictures. Building-to-building directions are provided by the Map with Path output.
+
+
+Algorithms
+  Breadth-first search
+    For finding the shortest path
+
+Data Structures
+  Hash Map for searching for rooms 
+  Tree for finding the corresponding building and floors
+  Graph/Adj list for finding path from building to building
+
+Data Flow Components:
+  Inputs
+    User provides "from" room and "to" room.
+
+  Data Collector
+    Converts room inputs into strings.
+
+  Room node Finder
+    Uses hashmap to find corresponding rm_t_nodes (room tree nodes) from the input strings.
+
+  Building/Floor Node Finder
+    Uses tree structure to find corresponding bld_t_nodes (building tree nodes) and flr_t_nodes (floor tree nodes) from the rm_t_nodes.
+  
+  Outputs
+    Building pictures
+      Takes to_bld_t_node and outputs the destination building picture.
+
+    Floor pictures
+      Takes to_flr_t_node and outputs the destination floor picture.
+
+    Floor Highlight
+      Takes to_flr_t_node and outputs a canvas showing all floors with the destination floor highlighted.
+
+    Map with Path
+      PathFinder
+        Takes to_bld_t_node and from_bld_t_node, finds corresponding g_nodes, and calculates the path from from_bld_g_node to to_bld_g_node.
+      PathDrawer
+        Takes the calculated path, loads the UTech map image, creates a canvas, draws the path onto the map, and sends it to the user.
