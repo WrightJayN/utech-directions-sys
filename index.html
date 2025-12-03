@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTech Directions System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>UTech Directions System</h1>
+        </header>
+        
+        <main>
+            <form id="directionsForm">
+                <div class="input-group">
+                    <label for="fromRoom">From Room:</label>
+                    <input 
+                        type="text" 
+                        id="fromRoom" 
+                        name="fromRoom" 
+                        placeholder="Leave empty for main gate"
+                        autocomplete="off"
+                    >
+                    <small class="hint">Default: main gate</small>
+                </div>
+                
+                <div class="input-group">
+                    <label for="toRoom">To Room: <span class="required">*</span></label>
+                    <input 
+                        type="text" 
+                        id="toRoom" 
+                        name="toRoom" 
+                        placeholder="Enter room number (e.g., 1A65)"
+                        required
+                        autocomplete="off"
+                    >
+                </div>
+                
+                <button type="submit" id="submitBtn">Get Directions</button>
+            </form>
+            
+            <div id="output" class="output-container" style="display: none;">
+                <h2>Processed Inputs:</h2>
+                <div class="output-content">
+                    <p><strong>From Room:</strong> <span id="outputFrom"></span></p>
+                    <p><strong>To Room:</strong> <span id="outputTo"></span></p>
+                </div>
+            </div>
+            
+            <div id="error" class="error-container" style="display: none;">
+                <p id="errorMessage"></p>
+            </div>
+        </main>
+    </div>
+    
+    <script src="dataCollector.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+
