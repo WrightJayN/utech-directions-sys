@@ -1,35 +1,66 @@
+const DataCollector = require('./dataCollector');
+
 // Test: Data Collector converts room inputs to lowercase strings
 describe('Data Collector', () => {
-    test('should convert "from" room input to lowercase string', () => {
-      // Given: from room = "A101"
-      // When: data collector processes input
-      // Then: returns string "a101"
-    });
-  
-    test('should convert "to" room input to lowercase string', () => {
-      // Given: to room = "B205"
-      // When: data collector processes input
-      // Then: returns string "b205"
-    });
-  
-    test('should handle default "main gate" input', () => {
-      // Given: from room = null or undefined
-      // When: data collector processes input
-      // Then: returns string "main gate" (lowercase)
-    });
-  
-    test('should handle numeric room inputs', () => {
-      // Given: room = 101
-      // When: data collector processes input
-      // Then: returns string "101" (lowercase)
-    });
-  
-    test('should handle empty string input', () => {
-      // Given: room = ""
-      // When: data collector processes input
-      // Then: throws error or returns default (lowercase)  
-    });
+  test('should convert "from" room input to lowercase string', () => {
+    // Given: from room = "A101"
+    const fromRoom = "A101";
+
+    // When: data collector processes input as from room
+    const result = DataCollector.convertToLowercaseString(fromRoom, true);
+
+    // Then: returns string "a101"
+    expect(result).toBe("a101");
   });
+
+  test('should convert "to" room input to lowercase string', () => {
+    // Given: to room = "B205"
+    const toRoom = "B205";
+
+    // When: data collector processes input as to room
+    const result = DataCollector.convertToLowercaseString(toRoom, false);
+
+    // Then: returns string "b205"
+    expect(result).toBe("b205");
+  });
+
+  test('should handle default "main gate" input', () => {
+    // Given: from room = null or undefined
+
+    // When: data collector processes null and undefined as from room
+    const resultNull = DataCollector.convertToLowercaseString(null, true);
+    const resultUndefined = DataCollector.convertToLowercaseString(undefined, true);
+
+    // Then: returns string "main gate" (lowercase)
+    expect(resultNull).toBe("main gate");
+    expect(resultUndefined).toBe("main gate");
+  });
+
+  test('should handle numeric room inputs', () => {
+    // Given: room = 101
+    const room = 101;
+
+    // When: data collector processes numeric input
+    const result = DataCollector.convertToLowercaseString(room, false);
+
+    // Then: returns string "101" (lowercase)
+    expect(result).toBe("101");
+  });
+
+  test('should handle empty string input', () => {
+    // Given: room = ""
+    const emptyRoom = "";
+
+    // When & Then:
+    // For from room, empty string should default to "main gate"
+    const fromResult = DataCollector.convertToLowercaseString(emptyRoom, true);
+    expect(fromResult).toBe("main gate");
+
+    // For to room, empty string should throw an error
+    expect(() => DataCollector.convertToLowercaseString(emptyRoom, false))
+      .toThrow("To room cannot be empty");
+  });
+});
 
 
 // Test: Room Node Finder uses Rooms Hash Map to find corresponding rm_t_nodes of the input strings
