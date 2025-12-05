@@ -68,13 +68,13 @@ const RoomNodeFinder = require('./roomNodeFinder');
 
 describe('Room Node Finder', () => {
   // Mock main gate node for parent references
-  const mockRootNode = { name: 'root', worded_direction: 'go to root', parent: null };
+  const mockRootNode = { name: 'root', worded_direction: 'go to root', parent: null, children: [mockBuildingA] };
   // Mock building nodes for parent references
-  const mockBuildingA = { name: 'buildingA', worded_direction: 'go to buildingA', parent: mockRootNode };
+  const mockBuildingA = { name: 'buildingA', worded_direction: 'go to buildingA', parent: mockRootNode, children: [mockFloorA, mockFloorB, mockFloorC] };
   // Mock floor nodes for parent references
-  const mockFloorA = { name: 'floorA', worded_direction: 'go to floorA', parent: mockBuildingA};
-  const mockFloorB = { name: 'floorB', worded_direction: 'go to floorB', parent: mockBuildingA};
-  const mockFloorC = { name: 'floorC', worded_direction: 'go to floorC', parent: mockBuildingA};
+  const mockFloorA = { name: 'floorA', worded_direction: 'go to floorA', parent: mockBuildingA, children: [mockRoomA101] };
+  const mockFloorB = { name: 'floorB', worded_direction: 'go to floorB', parent: mockBuildingA, children: [mockRoomB101] };
+  const mockFloorC = { name: 'floorC', worded_direction: 'go to floorC', parent: mockBuildingA, children: [mockRoomC101] };
 
   // Mock Rooms Hash Map for testing
   const mockRoomsHashMap = new Map([
@@ -147,35 +147,176 @@ describe('Room Node Finder', () => {
   
 
   // Test: Building/Floor Node Finder uses tree to find bld_t_nodes and flr_t_nodes
+const BuildingFloorNodeFinder = require('./buildingFloorNodeFinder');
+
 describe('Building/Floor Node Finder', () => {
+  // Mock tree structure matching documentation hierarchy: Root -> Building -> Floor -> Room
+  const mockRootNode = { name: 'root', worded_direction: 'go to root', parent: null, children: [mockBuildingA, mockBuildingB] };
+  
+  const mockBuildingA = { 
+    name: 'buildingA', 
+    worded_direction: 'go to buildingA', 
+    parent: mockRootNode, 
+    children: [mockFloorA_BuildingA, mockFloorB_BuildingA] 
+  };
+  const mockBuildingB = { 
+    name: 'buildingB', 
+    worded_direction: 'go to buildingB', 
+    parent: mockRootNode, 
+    children: [mockFloorA_BuildingB] 
+  };
+  
+  const mockFloorA_BuildingA = { 
+    name: 'floorA', 
+    worded_direction: 'go to floorA', 
+    parent: mockBuildingA, 
+    children: [mockRoomA101] 
+  };
+  const mockFloorB_BuildingA = { 
+    name: 'floorB', 
+    worded_direction: 'go to floorB', 
+    parent: mockBuildingA, 
+    children: [mockRoomB101] 
+  };
+  const mockFloorA_BuildingB = { 
+    name: 'floorA', 
+    worded_direction: 'go to floorA', 
+    parent: mockBuildingB, 
+    children: [mockRoomA102] 
+  };
+  
+  const mockRoomA101 = { 
+    name: 'rm_t_node_a101', 
+    worded_direction: 'go to a101', 
+    parent: mockFloorA_BuildingA, 
+    children: [] 
+  };
+  const mockRoomA102 = { 
+    name: 'rm_t_node_a102', 
+    worded_direction: 'go to a102', 
+    parent: mockFloorB_BuildingA, 
+    children: [] 
+  };
+  const mockRoomB101 = { 
+    name: 'rm_t_node_b101', 
+    worded_direction: 'go to b101', 
+    parent: mockFloorA_BuildingB, 
+    children: [] 
+  };
+
   test('should find bld_t_node from rm_t_node', () => {
-    // Given: rm_t_node for room "a101" in Building 1
+    // Given: rm_t_node for room "a101" in Building A
+    const rm_t_node = mockRoomA101;
+    const expectedBuilding = mockBuildingA;
+
     // When: building/floor node finder traverses tree
-    // Then: returns bld_t_node for Building 1
+    const result = BuildingFloorNodeFinder.findBuildingNode(rm_t_node);
+
+    // Then: returns bld_t_node for Building A
+    expect(result).toBeDefined();
+    expect(result).toEqual(expectedBuilding);
+    expect(result.name).toBe('buildingA');
   });
 
   test('should find flr_t_node from rm_t_node', () => {
     // Given: rm_t_node for room "a101" on Floor A
+    const rm_t_node = mockRoomA101;
+    const expectedFloor = mockFloorA_BuildingA;
+
     // When: building/floor node finder traverses tree
+    const result = BuildingFloorNodeFinder.findFloorNode(rm_t_node);
+
     // Then: returns flr_t_node for Floor A
+    expect(result).toBeDefined();
+    expect(result).toEqual(expectedFloor);
+    expect(result.name).toBe('floorA');
   });
 
   test('should find both bld_t_node and flr_t_node for from room', () => {
     // Given: from_rm_t_node
+    const from_rm_t_node = mockRoomA101;
+    const expectedBuilding = mockBuildingA;
+    const expectedFloor = mockFloorA_BuildingA;
+
     // When: building/floor node finder processes node
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(from_rm_t_node);
+
     // Then: returns {from_bld_t_node, from_flr_t_node}
+    expect(result).toBeDefined();
+    expect(result.bld_t_node).toBeDefined();
+    expect(result.flr_t_node).toBeDefined();
+    expect(result.bld_t_node).toEqual(expectedBuilding);
+    expect(result.flr_t_node).toEqual(expectedFloor);
+    expect(result.bld_t_node.name).toBe('buildingA');
+    expect(result.flr_t_node.name).toBe('floorA');
   });
 
   test('should find both bld_t_node and flr_t_node for to room', () => {
     // Given: to_rm_t_node
+    const to_rm_t_node = mockRoomB101;
+    const expectedBuilding = mockBuildingB;
+    const expectedFloor = mockFloorA_BuildingB;
+
     // When: building/floor node finder processes node
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(to_rm_t_node);
+
     // Then: returns {to_bld_t_node, to_flr_t_node}
+    expect(result).toBeDefined();
+    expect(result.bld_t_node).toBeDefined();
+    expect(result.flr_t_node).toBeDefined();
+    expect(result.bld_t_node).toEqual(expectedBuilding);
+    expect(result.flr_t_node).toEqual(expectedFloor);
+    expect(result.bld_t_node.name).toBe('buildingB');
+    expect(result.flr_t_node.name).toBe('floorA');
   });
   
   test('should handle invalid rm_t_node', () => {
     // Given: invalid or null rm_t_node
+    const nullNode = null;
+    const undefinedNode = undefined;
+    const invalidNode = { name: 'invalid', parent: null }; // node without proper parent chain
+
     // When: building/floor node finder processes node
     // Then: throws error or returns null
+    expect(() => BuildingFloorNodeFinder.findBuildingNode(nullNode)).toThrow();
+    expect(() => BuildingFloorNodeFinder.findBuildingNode(undefinedNode)).toThrow();
+    expect(() => BuildingFloorNodeFinder.findFloorNode(nullNode)).toThrow();
+    expect(() => BuildingFloorNodeFinder.findFloorNode(undefinedNode)).toThrow();
+    
+    // Invalid node (no parent chain to building) should return null or throw
+    const InvalidBldresult = BuildingFloorNodeFinder.findBuildingNode(invalidNode);
+    expect(InvalidBldResult).toBeNull();
+    //Invalid node (no parent chain to building) should return null or throw
+    const InvalidFlrResult = BuildingFloorNodeFinder.findFloorNode(invalidNode);
+    expect(InvalidFlrResult).toBeNull();
+  });
+  test('should find both bld_t_node and flr_t_node for from and to rooms', () => {
+    // Given: from_rm_t_node and to_rm_t_node
+    const from_rm_t_node = mockRoomA101;
+    const to_rm_t_node = mockRoomB101;
+    const expectedFromBuilding = mockBuildingA;
+    const expectedFromFloor = mockFloorA_BuildingA;
+    const expectedToBuilding = mockBuildingB;
+    const expectedToFloor = mockFloorA_BuildingB;
+
+    // When: building/floor node finder processes node
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(from_rm_t_node, to_rm_t_node);
+    // Then: returns {from_bld_t_node, from_flr_t_node, to_bld_t_node, to_flr_t_node}
+    expect(result).toBeDefined();
+    //From node
+    expect(result.from_bld_t_node).toBeDefined();
+    expect(result.from_flr_t_node).toBeDefined();
+    expect(result.from_bld_t_node).toEqual(expectedFromBuilding);
+    expect(result.from_flr_t_node).toEqual(expectedFromFloor);
+    expect(result.from_bld_t_node.name).toBe('buildingA');
+    expect(result.from_flr_t_node.name).toBe('floorA');
+    //To node
+    expect(result.to_bld_t_node).toBeDefined();
+    expect(result.to_flr_t_node).toBeDefined();
+    expect(result.to_bld_t_node).toEqual(expectedToBuilding);
+    expect(result.to_flr_t_node).toEqual(expectedToFloor);
+    expect(result.to_bld_t_node.name).toBe('buildingB');
+    expect(result.to_flr_t_node.name).toBe('floorA');
   });
 });
 
