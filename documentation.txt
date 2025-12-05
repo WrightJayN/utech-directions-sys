@@ -64,6 +64,51 @@ Tree Node Structure
   parent::t_node
   children::t_node[]
 
+Tree Hierarchy Example
+  Root
+    BuildingA0
+      FloorA
+        RoomA101
+        RoomA102
+        RoomA103
+      FloorB
+        RoomB101
+        RoomB102
+        RoomB103
+      FloorC
+        RoomC101
+        RoomC102
+        RoomC103
+    BuildingB
+      FloorA
+        RoomA101
+        RoomA102
+        RoomA103
+      FloorB
+        RoomB101
+        RoomB102
+        RoomB103
+      FloorC
+        RoomC101
+        RoomC102
+        RoomC103
+    BuildingC
+      FloorA
+        RoomA101
+        RoomA102
+        RoomA103
+      FloorB
+        RoomB101
+        RoomB102
+        RoomB103
+      FloorC
+        RoomC101
+        RoomC102
+        RoomC103
+    Main Gate
+    WalkIn Gate
+    Back Gate
+
 Graph Node Structure
   Name::string
   Neighbors::g_node[]

@@ -67,11 +67,20 @@ describe('Data Collector', () => {
 const RoomNodeFinder = require('./roomNodeFinder');
 
 describe('Room Node Finder', () => {
+  // Mock main gate node for parent references
+  const mockRootNode = { name: 'root', worded_direction: 'go to root', parent: null };
+  // Mock building nodes for parent references
+  const mockBuildingA = { name: 'buildingA', worded_direction: 'go to buildingA', parent: mockRootNode };
+  // Mock floor nodes for parent references
+  const mockFloorA = { name: 'floorA', worded_direction: 'go to floorA', parent: mockBuildingA};
+  const mockFloorB = { name: 'floorB', worded_direction: 'go to floorB', parent: mockBuildingA};
+  const mockFloorC = { name: 'floorC', worded_direction: 'go to floorC', parent: mockBuildingA};
+
   // Mock Rooms Hash Map for testing
   const mockRoomsHashMap = new Map([
-    ['a101', { name: 'rm_t_node_a101', string: 'go to a101', parent: floorA}],
-    ['b205', { name: 'rm_t_node_b205', string: 'go to b205', parent: floorB}],
-    ['c301', { name: 'rm_t_node_c301', string: 'go to c301', parent: floorC}]
+    ['a101', { name: 'rm_t_node_a101', worded_direction: 'go to a101', parent: mockFloorA }],
+    ['b205', { name: 'rm_t_node_b205', worded_direction: 'go to b205', parent: mockFloorB }],
+    ['c301', { name: 'rm_t_node_c301', worded_direction: 'go to c301', parent: mockFloorC }]
   ]);
 
   test('should find rm_t_node for valid room string', () => {
@@ -112,7 +121,7 @@ describe('Room Node Finder', () => {
     // Then: returns correct rm_t_node (case handling)
     expect(result).toBeDefined();
     expect(result).toEqual(expectedNode);
-    expect(result.name).toBe('a101');
+    expect(result.name).toBe('rm_t_node_a101');
   });
 
   test('should find rm_t_node for both from and to rooms', () => {
