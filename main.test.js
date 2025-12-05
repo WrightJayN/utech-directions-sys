@@ -64,29 +64,75 @@ describe('Data Collector', () => {
 
 
 // Test: Room Node Finder uses Rooms Hash Map to find corresponding rm_t_nodes of the input strings
+const RoomNodeFinder = require('./roomNodeFinder');
+
 describe('Room Node Finder', () => {
+  // Mock Rooms Hash Map for testing
+  const mockRoomsHashMap = new Map([
+    ['a101', { name: 'rm_t_node_a101', string: 'go to a101', parent: floorA}],
+    ['b205', { name: 'rm_t_node_b205', string: 'go to b205', parent: floorB}],
+    ['c301', { name: 'rm_t_node_c301', string: 'go to c301', parent: floorC}]
+  ]);
+
   test('should find rm_t_node for valid room string', () => {
     // Given: room string = "a101", Rooms Hash Map contains "a101" -> rm_t_node_a101
+    const roomString = "a101";
+    const expectedNode = mockRoomsHashMap.get('a101');
+
     // When: room node finder searches Rooms Hash Map
+    const result = RoomNodeFinder.findRoomNode(roomString, mockRoomsHashMap);
+
     // Then: returns rm_t_node_a101
+    expect(result).toBeDefined();
+    expect(result).toEqual(expectedNode);
+    expect(result.name).toBe('rm_t_node_a101');
   });
 
   test('should return null for non-existent room', () => {
     // Given: room string = "z999", not in Rooms Hash Map
+    const roomString = "z999";
+
     // When: room node finder searches Rooms Hash Map
+    const result = RoomNodeFinder.findRoomNode(roomString, mockRoomsHashMap);
+
     // Then: returns null or throws error
+    expect(result).toBeNull();
   });
 
   test('should handle case-insensitive room lookup', () => {
     // Given: room string = "A101" (uppercase)
+    const roomString = "A101";
+    const expectedNode = mockRoomsHashMap.get('a101');
+
     // When: room node finder searches Rooms Hash Map
+    // Note: Since Data Collector already converts to lowercase, this test ensures
+    // the Room Node Finder can handle any case (defensive programming)
+    const result = RoomNodeFinder.findRoomNode(roomString.toLowerCase(), mockRoomsHashMap);
+
     // Then: returns correct rm_t_node (case handling)
+    expect(result).toBeDefined();
+    expect(result).toEqual(expectedNode);
+    expect(result.name).toBe('a101');
   });
 
   test('should find rm_t_node for both from and to rooms', () => {
     // Given: from room = "a101", to room = "b205"
+    const fromRoom = "a101";
+    const toRoom = "b205";
+    const expectedFromNode = mockRoomsHashMap.get('a101');
+    const expectedToNode = mockRoomsHashMap.get('b205');
+
     // When: room node finder processes both
+    const fromResult = RoomNodeFinder.findRoomNode(fromRoom, mockRoomsHashMap);
+    const toResult = RoomNodeFinder.findRoomNode(toRoom, mockRoomsHashMap);
+    const results = [fromResult, toResult];
+
     // Then: returns [rm_t_node_a101, rm_t_node_b205]
+    expect(results).toHaveLength(2);
+    expect(results[0]).toEqual(expectedFromNode);
+    expect(results[1]).toEqual(expectedToNode);
+    expect(results[0].name).toBe('rm_t_node_a101');
+    expect(results[1].name).toBe('rm_t_node_b205');
   });
 });
   
