@@ -67,20 +67,12 @@ describe('Data Collector', () => {
 const RoomNodeFinder = require('./roomNodeFinder');
 
 describe('Room Node Finder', () => {
-  // Mock main gate node for parent references
-  const mockRootNode = { name: 'root', worded_direction: 'go to root', parent: null, children: [mockBuildingA] };
-  // Mock building nodes for parent references
-  const mockBuildingA = { name: 'buildingA', worded_direction: 'go to buildingA', parent: mockRootNode, children: [mockFloorA, mockFloorB, mockFloorC] };
-  // Mock floor nodes for parent references
-  const mockFloorA = { name: 'floorA', worded_direction: 'go to floorA', parent: mockBuildingA, children: [mockRoomA101] };
-  const mockFloorB = { name: 'floorB', worded_direction: 'go to floorB', parent: mockBuildingA, children: [mockRoomB101] };
-  const mockFloorC = { name: 'floorC', worded_direction: 'go to floorC', parent: mockBuildingA, children: [mockRoomC101] };
 
   // Mock Rooms Hash Map for testing
   const mockRoomsHashMap = new Map([
-    ['a101', { name: 'rm_t_node_a101', worded_direction: 'go to a101', parent: mockFloorA }],
-    ['b205', { name: 'rm_t_node_b205', worded_direction: 'go to b205', parent: mockFloorB }],
-    ['c301', { name: 'rm_t_node_c301', worded_direction: 'go to c301', parent: mockFloorC }]
+    ['a101', { name: 'rm_t_node_a101', worded_direction: 'go to a101'}],
+    ['b205', { name: 'rm_t_node_b205', worded_direction: 'go to b205'}],
+    ['c301', { name: 'rm_t_node_c301', worded_direction: 'go to c301'}]
   ]);
 
   test('should find rm_t_node for valid room string', () => {
@@ -150,54 +142,70 @@ describe('Room Node Finder', () => {
 const BuildingFloorNodeFinder = require('./buildingFloorNodeFinder');
 
 describe('Building/Floor Node Finder', () => {
-  // Mock tree structure matching documentation hierarchy: Root -> Building -> Floor -> Room
-  const mockRootNode = { name: 'root', worded_direction: 'go to root', parent: null, children: [mockBuildingA, mockBuildingB] };
   
-  const mockBuildingA = { 
+  let mockRootNode;
+  let mockBuildingA;
+  let mockBuildingB;
+  let mockFloorA_BuildingA;
+  let mockFloorA_BuildingB;
+  let mockFloorB_BuildingA;
+  let mockRoomA101;
+  let mockRoomA102;
+  let mockRoomB101;
+
+
+  // Mock tree structure matching documentation hierarchy: Root -> Building -> Floor -> Room
+  mockRootNode = { 
+    name: 'root',
+    worded_direction: 'go to root', 
+    parent: null, 
+    children: [mockBuildingA, mockBuildingB] };
+  
+  mockBuildingA = { 
     name: 'buildingA', 
     worded_direction: 'go to buildingA', 
     parent: mockRootNode, 
     children: [mockFloorA_BuildingA, mockFloorB_BuildingA] 
   };
-  const mockBuildingB = { 
+  mockBuildingB = { 
     name: 'buildingB', 
     worded_direction: 'go to buildingB', 
     parent: mockRootNode, 
     children: [mockFloorA_BuildingB] 
   };
   
-  const mockFloorA_BuildingA = { 
+  mockFloorA_BuildingA = { 
     name: 'floorA', 
     worded_direction: 'go to floorA', 
     parent: mockBuildingA, 
     children: [mockRoomA101] 
   };
-  const mockFloorB_BuildingA = { 
+  mockFloorB_BuildingA = { 
     name: 'floorB', 
     worded_direction: 'go to floorB', 
     parent: mockBuildingA, 
     children: [mockRoomB101] 
   };
-  const mockFloorA_BuildingB = { 
+  mockFloorA_BuildingB = { 
     name: 'floorA', 
     worded_direction: 'go to floorA', 
     parent: mockBuildingB, 
     children: [mockRoomA102] 
   };
   
-  const mockRoomA101 = { 
+  mockRoomA101 = { 
     name: 'rm_t_node_a101', 
     worded_direction: 'go to a101', 
     parent: mockFloorA_BuildingA, 
     children: [] 
   };
-  const mockRoomA102 = { 
+  mockRoomA102 = { 
     name: 'rm_t_node_a102', 
     worded_direction: 'go to a102', 
     parent: mockFloorB_BuildingA, 
     children: [] 
   };
-  const mockRoomB101 = { 
+  mockRoomB101 = { 
     name: 'rm_t_node_b101', 
     worded_direction: 'go to b101', 
     parent: mockFloorA_BuildingB, 
@@ -284,7 +292,7 @@ describe('Building/Floor Node Finder', () => {
     expect(() => BuildingFloorNodeFinder.findFloorNode(undefinedNode)).toThrow();
     
     // Invalid node (no parent chain to building) should return null or throw
-    const InvalidBldresult = BuildingFloorNodeFinder.findBuildingNode(invalidNode);
+    const InvalidBldResult = BuildingFloorNodeFinder.findBuildingNode(invalidNode);
     expect(InvalidBldResult).toBeNull();
     //Invalid node (no parent chain to building) should return null or throw
     const InvalidFlrResult = BuildingFloorNodeFinder.findFloorNode(invalidNode);
