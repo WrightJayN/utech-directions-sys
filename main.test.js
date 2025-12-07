@@ -463,30 +463,280 @@ describe('PathDrawer', () => {
 });
 
 
+const DataCollector = require('./dataCollector');
+const RoomNodeFinder = require('./roomNodeFinder');
+const BuildingFloorNodeFinder = require('./buildingFloorNodeFinder');
+const TreeDatabase = require('./treeDatabase');
+
 // Test: End-to-end data flow
 describe('Integration Tests', () => {
+  let treeDB;
+  let roomsHashMap;
+
+  beforeEach(() => {
+    // Initialize tree database before each test
+    treeDB = new TreeDatabase();
+    roomsHashMap = treeDB.getRoomsHashMap();
+  });
+
   test('should process complete flow from input to output', () => {
-    // Given: from room = "a101", to room = "b205"
+    // Given: from room = "1A37", to room = "2B5"
+    const fromRoomInput = "1A37";
+    const toRoomInput = "2B5";
+
     // When: entire system processes request
-    // Then: returns all outputs (building pic, floor pic, floor highlight, map with path)
+    
+    // Step 1: Data Collector converts inputs to lowercase strings
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    expect(processed.fromRoom).toBe("1a37");
+    expect(processed.toRoom).toBe("2b5");
+
+    // Step 2: Room Node Finder finds rm_t_nodes
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+    expect(from_rm_t_node).toBeDefined();
+    expect(to_rm_t_node).toBeDefined();
+    expect(from_rm_t_node.name).toBe("1a37");
+    expect(to_rm_t_node.name).toBe("2b5");
+
+    // Step 3: Building/Floor Node Finder finds bld_t_nodes and flr_t_nodes
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
+      from_rm_t_node,
+      to_rm_t_node
+    );
+
+    // Then: returns all node references for outputs
+    expect(result.from_bld_t_node).toBeDefined();
+    expect(result.from_flr_t_node).toBeDefined();
+    expect(result.to_bld_t_node).toBeDefined();
+    expect(result.to_flr_t_node).toBeDefined();
+    
+    // Verify correct building and floor nodes
+    expect(result.from_bld_t_node.name).toBe("building1");
+    expect(result.from_flr_t_node.name).toBe("floor1ground");
+    expect(result.to_bld_t_node.name).toBe("building2");
+    expect(result.to_flr_t_node.name).toBe("floor2b");
+
+    // At this point, the system would use these nodes to generate:
+    // - Building picture: to_bld_t_node (Building 2)
+    // - Floor picture: to_flr_t_node (Floor 2B)
+    // - Floor highlight: to_flr_t_node (Floor 2B highlighted)
+    // - Map with path: from_bld_t_node (Building 1) to to_bld_t_node (Building 2)
   });
 
   test('should handle same building, different floor', () => {
-    // Given: from room = "a101" (Building1, FloorA), to room = "a205" (Building1, FloorB)
+    // Given: from room = "1A37" (Building1, Ground Floor), to room = "1A65" (Building1, 1st Floor A)
+    const fromRoomInput = "1A37";
+    const toRoomInput = "1A65";
+
     // When: system processes request
-    // Then: path should be empty or same building, building is colored blue, floor highlight shows FloorB
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
+      from_rm_t_node,
+      to_rm_t_node
+    );
+
+    // Then: both rooms are in same building
+    expect(result.from_bld_t_node).toBeDefined();
+    expect(result.to_bld_t_node).toBeDefined();
+    expect(result.from_bld_t_node.name).toBe("building1");
+    expect(result.to_bld_t_node.name).toBe("building1");
+    expect(result.from_bld_t_node).toBe(result.to_bld_t_node); // Same building reference
+
+    // But different floors
+    expect(result.from_flr_t_node.name).toBe("floor1ground");
+    expect(result.to_flr_t_node.name).toBe("floor1a");
+    expect(result.from_flr_t_node).not.toBe(result.to_flr_t_node);
+
+    // Path should be empty or same building (no building-to-building navigation needed)
+    // Building should be colored (likely blue as destination)
+    // Floor highlight should show Floor 1A (destination floor)
   });
 
   test('should handle same building, same floor', () => {
-    // Given: from room = "a101", to room = "a102" (same building and floor)
+    // Given: from room = "1A37", to room = "1A36" (same building and floor)
+    const fromRoomInput = "1A37";
+    const toRoomInput = "1A36";
+
     // When: system processes request
-    // Then: path should be empty, correct floor highlighted
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
+      from_rm_t_node,
+      to_rm_t_node
+    );
+
+    // Then: same building and same floor
+    expect(result.from_bld_t_node.name).toBe("building1");
+    expect(result.to_bld_t_node.name).toBe("building1");
+    expect(result.from_bld_t_node).toBe(result.to_bld_t_node); // Same building reference
+
+    expect(result.from_flr_t_node.name).toBe("floor1ground");
+    expect(result.to_flr_t_node.name).toBe("floor1ground");
+    expect(result.from_flr_t_node).toBe(result.to_flr_t_node); // Same floor reference
+
+    // Path should be empty (no building navigation needed)
+    // Correct floor (Ground Floor) should be highlighted
   });
 
   test('should use default main gate when from room not provided', () => {
-    // Given: from room = null, to room = "b205"
+    // Given: from room = null, to room = "2B5"
+    const fromRoomInput = null;
+    const toRoomInput = "2B5";
+
     // When: system processes request
-    // Then: uses "main gate" as starting point
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    // Then: from room defaults to "main gate"
+    expect(processed.fromRoom).toBe("main gate");
+    expect(processed.toRoom).toBe("2b5");
+
+    // Find room nodes
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    expect(from_rm_t_node).toBeDefined();
+    expect(from_rm_t_node.name).toBe("main gate");
+    expect(to_rm_t_node).toBeDefined();
+    expect(to_rm_t_node.name).toBe("2b5");
+
+    // Note: Main gate is a direct child of root (no building/floor structure)
+    // So findBuildingNode and findFloorNode should handle this special case
+    // Main gate should be used as starting point for pathfinding
+  });
+
+  test('should handle empty string from room defaulting to main gate', () => {
+    // Given: from room = "" (empty string), to room = "8A3"
+    const fromRoomInput = "";
+    const toRoomInput = "8A3";
+
+    // When: system processes request
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    // Then: from room defaults to "main gate"
+    expect(processed.fromRoom).toBe("main gate");
+    expect(processed.toRoom).toBe("8a3");
+
+    // Find room nodes
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    expect(from_rm_t_node).toBeDefined();
+    expect(from_rm_t_node.name).toBe("main gate");
+    expect(to_rm_t_node).toBeDefined();
+    expect(to_rm_t_node.name).toBe("8a3");
+  });
+
+  test('should process request from different buildings', () => {
+    // Given: from room = "1A37" (Building 1), to room = "8A3" (Building 8)
+    const fromRoomInput = "1A37";
+    const toRoomInput = "8A3";
+
+    // When: system processes request
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
+      from_rm_t_node,
+      to_rm_t_node
+    );
+
+    // Then: different buildings
+    expect(result.from_bld_t_node.name).toBe("building1");
+    expect(result.to_bld_t_node.name).toBe("building8");
+    expect(result.from_bld_t_node).not.toBe(result.to_bld_t_node);
+
+    // Different floors
+    expect(result.from_flr_t_node.name).toBe("floor1ground");
+    expect(result.to_flr_t_node.name).toBe("floor8a");
+
+    // Path should be calculated from Building 1 to Building 8
+    // Building 1 colored red (start), Building 8 colored blue (destination)
+    // Yellow path drawn between buildings
+  });
+
+  test('should handle case-insensitive room inputs', () => {
+    // Given: mixed case inputs
+    const fromRoomInput = "1a37"; // lowercase
+    const toRoomInput = "2B5";     // mixed case
+
+    // When: system processes request
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    // Then: both converted to lowercase
+    expect(processed.fromRoom).toBe("1a37");
+    expect(processed.toRoom).toBe("2b5");
+
+    // Room nodes should be found regardless of input case
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    expect(from_rm_t_node).toBeDefined();
+    expect(to_rm_t_node).toBeDefined();
+  });
+
+  test('should handle rooms with special naming (labs, lecture theatres)', () => {
+    // Given: room with special naming
+    const fromRoomInput = "LT 9";
+    const toRoomInput = "8A2 Lab";
+
+    // When: system processes request
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    expect(processed.fromRoom).toBe("lt 9");
+    expect(processed.toRoom).toBe("8a2 lab");
+
+    // Find room nodes
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    // Then: rooms should be found
+    expect(from_rm_t_node).toBeDefined();
+    expect(from_rm_t_node.name).toBe("lt 9");
+    expect(to_rm_t_node).toBeDefined();
+    expect(to_rm_t_node.name).toBe("8a2 lab");
+
+    // Both are in Building 8
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
+      from_rm_t_node,
+      to_rm_t_node
+    );
+
+    expect(result.from_bld_t_node.name).toBe("building8");
+    expect(result.to_bld_t_node.name).toBe("building8");
   });
 });
 
