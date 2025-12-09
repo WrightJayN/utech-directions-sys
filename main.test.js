@@ -739,7 +739,7 @@ describe('Integration Tests', () => {
     expect(result.to_bld_t_node.name).toBe("building8");
   });
 
-  test('should handle main gate as from node - building node is itself, floor node is floorGateGround', () => {
+  test('should handle main gate as from node - building node is itself, floor node is null', () => {
     // Given: from node is "main gate"
     const fromRoomInput = "main gate";
     const toRoomInput = "1A37";
@@ -763,16 +763,16 @@ describe('Integration Tests', () => {
     expect(result.from_bld_t_node).toBe(from_rm_t_node);
     expect(result.from_bld_t_node.name).toBe("main gate");
     
-    // The floor node will be "floorGateGround"
+    // The floor node will be null
     expect(result.from_flr_t_node).toBeDefined();
-    expect(result.from_flr_t_node.name).toBe("floorGateGround");
+    expect(result.from_flr_t_node).toBe(null);
 
     // To node should work normally
     expect(result.to_bld_t_node.name).toBe("building1");
     expect(result.to_flr_t_node.name).toBe("floor1ground");
   });
 
-  test('should handle walkin gate as to node - building node is itself, floor node is floorGateGround', () => {
+  test('should handle walkin gate as to node - building node is itself, floor node is null', () => {
     // Given: to node is "walkin gate"
     const fromRoomInput = "1A37";
     const toRoomInput = "walkin gate";
@@ -800,12 +800,12 @@ describe('Integration Tests', () => {
     expect(result.to_bld_t_node).toBe(to_rm_t_node);
     expect(result.to_bld_t_node.name).toBe("walkin gate");
     
-    // The floor node will be "floorGateGround"
+    // The floor node will be null
     expect(result.to_flr_t_node).toBeDefined();
-    expect(result.to_flr_t_node.name).toBe("floorGateGround");
+    expect(result.to_flr_t_node).toBe(null);
   });
 
-  test('should handle back gate as from node - building node is itself, floor node is floorGateGround', () => {
+  test('should handle back gate as from node - building node is itself, floor node is null', () => {
     // Given: from node is "back gate"
     const fromRoomInput = "back gate";
     const toRoomInput = "8A3";
@@ -831,7 +831,7 @@ describe('Integration Tests', () => {
     
     // The floor node will be "floorGateGround"
     expect(result.from_flr_t_node).toBeDefined();
-    expect(result.from_flr_t_node.name).toBe("floorGateGround");
+    expect(result.from_flr_t_node).toBe(null);
 
     // To node should work normally
     expect(result.to_bld_t_node.name).toBe("building8");
@@ -864,9 +864,9 @@ describe('Integration Tests', () => {
     expect(result.to_bld_t_node).toBe(to_rm_t_node);
     expect(result.to_bld_t_node.name).toBe("back gate");
     
-    // Both floor nodes will be "floorGateGround"
-    expect(result.from_flr_t_node.name).toBe("floorGateGround");
-    expect(result.to_flr_t_node.name).toBe("floorGateGround");
+    // Both floor nodes will be null
+    expect(result.from_flr_t_node).toBe(null);
+    expect(result.to_flr_t_node).toBe(null);
   });
 
   test('should detect when from and to rooms are the same and throw error', () => {
