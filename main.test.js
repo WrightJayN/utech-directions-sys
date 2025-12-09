@@ -738,6 +738,226 @@ describe('Integration Tests', () => {
     expect(result.from_bld_t_node.name).toBe("building8");
     expect(result.to_bld_t_node.name).toBe("building8");
   });
+
+  test('should handle main gate as from node - building node is itself, floor node is floorGateGround', () => {
+    // Given: from node is "main gate"
+    const fromRoomInput = "main gate";
+    const toRoomInput = "1A37";
+
+    // When: system processes request
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    // When: Building/Floor Node Finder is called
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
+      from_rm_t_node,
+      to_rm_t_node
+    );
+
+    // Then: The building node is the node itself
+    expect(result.from_bld_t_node).toBe(from_rm_t_node);
+    expect(result.from_bld_t_node.name).toBe("main gate");
+    
+    // The floor node will be "floorGateGround"
+    expect(result.from_flr_t_node).toBeDefined();
+    expect(result.from_flr_t_node.name).toBe("floorGateGround");
+
+    // To node should work normally
+    expect(result.to_bld_t_node.name).toBe("building1");
+    expect(result.to_flr_t_node.name).toBe("floor1ground");
+  });
+
+  test('should handle walkin gate as to node - building node is itself, floor node is floorGateGround', () => {
+    // Given: to node is "walkin gate"
+    const fromRoomInput = "1A37";
+    const toRoomInput = "walkin gate";
+
+    // When: system processes request
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    // When: Building/Floor Node Finder is called
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
+      from_rm_t_node,
+      to_rm_t_node
+    );
+
+    // Then: From node should work normally
+    expect(result.from_bld_t_node.name).toBe("building1");
+    expect(result.from_flr_t_node.name).toBe("floor1ground");
+
+    // The building node is the node itself
+    expect(result.to_bld_t_node).toBe(to_rm_t_node);
+    expect(result.to_bld_t_node.name).toBe("walkin gate");
+    
+    // The floor node will be "floorGateGround"
+    expect(result.to_flr_t_node).toBeDefined();
+    expect(result.to_flr_t_node.name).toBe("floorGateGround");
+  });
+
+  test('should handle back gate as from node - building node is itself, floor node is floorGateGround', () => {
+    // Given: from node is "back gate"
+    const fromRoomInput = "back gate";
+    const toRoomInput = "8A3";
+
+    // When: system processes request
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    // When: Building/Floor Node Finder is called
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
+      from_rm_t_node,
+      to_rm_t_node
+    );
+
+    // Then: The building node is the node itself
+    expect(result.from_bld_t_node).toBe(from_rm_t_node);
+    expect(result.from_bld_t_node.name).toBe("back gate");
+    
+    // The floor node will be "floorGateGround"
+    expect(result.from_flr_t_node).toBeDefined();
+    expect(result.from_flr_t_node.name).toBe("floorGateGround");
+
+    // To node should work normally
+    expect(result.to_bld_t_node.name).toBe("building8");
+    expect(result.to_flr_t_node.name).toBe("floor8a");
+  });
+
+  test('should handle both from and to nodes being gates', () => {
+    // Given: from node is "main gate", to node is "back gate"
+    const fromRoomInput = "main gate";
+    const toRoomInput = "back gate";
+
+    // When: system processes request
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    // When: Building/Floor Node Finder is called
+    const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
+      from_rm_t_node,
+      to_rm_t_node
+    );
+
+    // Then: Both building nodes are the nodes themselves
+    expect(result.from_bld_t_node).toBe(from_rm_t_node);
+    expect(result.from_bld_t_node.name).toBe("main gate");
+    expect(result.to_bld_t_node).toBe(to_rm_t_node);
+    expect(result.to_bld_t_node.name).toBe("back gate");
+    
+    // Both floor nodes will be "floorGateGround"
+    expect(result.from_flr_t_node.name).toBe("floorGateGround");
+    expect(result.to_flr_t_node.name).toBe("floorGateGround");
+  });
+
+  test('should detect when from and to rooms are the same and throw error', () => {
+    // Given: from and to node equaling each other
+    const fromRoomInput = "1A37";
+    const toRoomInput = "1A37";
+
+    // When: system processes request
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    expect(processed.fromRoom).toBe("1a37");
+    expect(processed.toRoom).toBe("1a37");
+
+    // When: finding the room nodes
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    // Then: Both nodes should be the same
+    expect(from_rm_t_node).toBe(to_rm_t_node);
+    expect(from_rm_t_node.name).toBe("1a37");
+
+    // System should detect this and break with error message
+    // This check should happen before calling BuildingFloorNodeFinder
+    expect(() => {
+      if (from_rm_t_node === to_rm_t_node) {
+        throw new Error("These are the same rooms; no directions needed");
+      }
+    }).toThrow("These are the same rooms; no directions needed");
+  });
+
+  test('should detect when both inputs are main gate', () => {
+    // Given: from and to both "main gate"
+    const fromRoomInput = null; // defaults to main gate
+    const toRoomInput = "main gate";
+
+    // When: system processes request
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    expect(processed.fromRoom).toBe("main gate");
+    expect(processed.toRoom).toBe("main gate");
+
+    // When: finding the room nodes
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    // Then: Both nodes should be the same
+    expect(from_rm_t_node).toBe(to_rm_t_node);
+
+    // System should detect this and break with error message
+    expect(() => {
+      if (from_rm_t_node === to_rm_t_node) {
+        throw new Error("These are the same rooms; no directions needed");
+      }
+    }).toThrow("These are the same rooms; no directions needed");
+  });
+
+  test('should detect same room with different case inputs', () => {
+    // Given: from "1A37", to "1a37" (different case, same room)
+    const fromRoomInput = "1A37";
+    const toRoomInput = "1a37";
+
+    // When: system processes request
+    const processed = DataCollector.processRoomInputs(fromRoomInput, toRoomInput);
+    
+    // Both converted to same lowercase
+    expect(processed.fromRoom).toBe("1a37");
+    expect(processed.toRoom).toBe("1a37");
+
+    // When: finding the room nodes
+    const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+      processed.fromRoom,
+      processed.toRoom,
+      roomsHashMap
+    );
+
+    // Then: Both nodes should be the same
+    expect(from_rm_t_node).toBe(to_rm_t_node);
+
+    // System should detect this and throw error
+    expect(() => {
+      if (from_rm_t_node === to_rm_t_node) {
+        throw new Error("These are the same rooms; no directions needed");
+      }
+    }).toThrow("These are the same rooms; no directions needed");
+  });
 });
 
 
