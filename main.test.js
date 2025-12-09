@@ -759,7 +759,7 @@ describe('Integration Tests', () => {
     
     // The floor node will be null
     expect(result.from_flr_t_node).toBeDefined();
-    expect(result.from_flr_t_node).toBe(null);
+    expect(result.from_flr_t_node.name).toBe("floorGateGround");
 
     // To node should work normally
     expect(result.to_bld_t_node.name).toBe("building1");
@@ -796,7 +796,7 @@ describe('Integration Tests', () => {
     
     // The floor node will be null
     expect(result.to_flr_t_node).toBeDefined();
-    expect(result.to_flr_t_node).toBe(null);
+    expect(result.to_flr_t_node.name).toBe("floorGateGround");
   });
 
   test('should handle back gate as from node - building node is itself, floor node is null', () => {
@@ -825,7 +825,7 @@ describe('Integration Tests', () => {
     
     // The floor node will be "floorGateGround"
     expect(result.from_flr_t_node).toBeDefined();
-    expect(result.from_flr_t_node).toBe(null);
+    expect(result.from_flr_t_node.name).toBe("floorGateGround");
 
     // To node should work normally
     expect(result.to_bld_t_node.name).toBe("building8");
@@ -859,8 +859,8 @@ describe('Integration Tests', () => {
     expect(result.to_bld_t_node.name).toBe("back gate");
     
     // Both floor nodes will be null
-    expect(result.from_flr_t_node).toBe(null);
-    expect(result.to_flr_t_node).toBe(null);
+    expect(result.from_flr_t_node.name).toBe("floorGateGround");
+    expect(result.to_flr_t_node.name).toBe("floorGateGround");
   });
 
   test('should detect when from and to rooms are the same and throw error', () => {
