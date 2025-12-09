@@ -1,4 +1,7 @@
 const DataCollector = require('./dataCollector');
+const RoomNodeFinder = require('./roomNodeFinder');
+const BuildingFloorNodeFinder = require('./buildingFloorNodeFinder');
+const TreeDatabase = require('./treeDatabase');
 
 // Test: Data Collector converts room inputs to lowercase strings
 describe('Data Collector', () => {
@@ -64,8 +67,6 @@ describe('Data Collector', () => {
 
 
 // Test: Room Node Finder uses Rooms Hash Map to find corresponding rm_t_nodes of the input strings
-const RoomNodeFinder = require('./roomNodeFinder');
-
 describe('Room Node Finder', () => {
 
   // Mock Rooms Hash Map for testing
@@ -139,8 +140,6 @@ describe('Room Node Finder', () => {
   
 
   // Test: Building/Floor Node Finder uses tree to find bld_t_nodes and flr_t_nodes
-const BuildingFloorNodeFinder = require('./buildingFloorNodeFinder');
-
 describe('Building/Floor Node Finder', () => {
   
   let mockRootNode;
@@ -462,11 +461,6 @@ describe('PathDrawer', () => {
   });
 });
 
-
-const DataCollector = require('./dataCollector');
-const RoomNodeFinder = require('./roomNodeFinder');
-const BuildingFloorNodeFinder = require('./buildingFloorNodeFinder');
-const TreeDatabase = require('./treeDatabase');
 
 // Test: End-to-end data flow
 describe('Integration Tests', () => {
