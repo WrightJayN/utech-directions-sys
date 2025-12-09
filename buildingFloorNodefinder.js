@@ -6,9 +6,50 @@
  * - Takes rm_t_node (room tree node) from Room Node Finder
  * - Traverses tree structure (Root -> Building -> Floor -> Room)
  * - Returns bld_t_node (building tree node) and flr_t_node (floor tree node)
+ * 
+ * Special handling for gates:
+ * - Gates (main gate, walkin gate, back gate) are direct children of root
+ * - For gates: building node is the gate itself, floor node is null
  */
 
 class BuildingFloorNodeFinder {
+    /**
+     * Singleton virtual floor node for all gates
+     * All gates share the same floor node instance
+     */
+    static gateFloorNode = null;
+
+    /**
+     * Checks if a node is a gate (main gate, walkin gate, or back gate)
+     * @param {Object} node - Tree node to check
+     * @returns {boolean} True if node is a gate
+     */
+    static isGateNode(node) {
+        if (!node || !node.name) return false;
+        const gateName = node.name.toLowerCase();
+        return gateName === 'main gate' || 
+               gateName === 'walkin gate' || 
+               gateName === 'back gate';
+    }
+
+    /**
+     * Gets or creates the singleton virtual floor node for gates
+     * All gates share the same floor node instance for consistency
+     * @returns {Object} The shared floor node object for gates
+     */
+    static getGateFloorNode() {
+        // Create the singleton instance only once
+        if (!this.gateFloorNode) {
+            this.gateFloorNode = {
+                name: 'floorGateGround',
+                worded_direction: '',
+                parent: null,
+                children: []
+            };
+        }
+        return this.gateFloorNode;
+    }
+
     /**
      * Finds bld_t_node (building tree node) from rm_t_node by traversing parent chain
      * @param {Object} rm_t_node - Room tree node with structure: {name, worded_direction, parent, children}
@@ -19,6 +60,11 @@ class BuildingFloorNodeFinder {
         // Validate input
         if (rm_t_node === null || rm_t_node === undefined) {
             throw new Error("rm_t_node cannot be null or undefined");
+        }
+
+        // Special handling for gates: the gate itself is the building node
+        if (this.isGateNode(rm_t_node)) {
+            return rm_t_node;
         }
 
         // Traverse up the tree to find the building node
@@ -53,6 +99,11 @@ class BuildingFloorNodeFinder {
         // Validate input
         if (rm_t_node === null || rm_t_node === undefined) {
             throw new Error("rm_t_node cannot be null or undefined");
+        }
+
+        // Special handling for gates: return shared "floorGateGround" node
+        if (this.isGateNode(rm_t_node)) {
+            return this.getGateFloorNode();
         }
 
         // Traverse up the tree to find the floor node
