@@ -39,8 +39,10 @@ Tech Stack
   CSS
 
 Algorithms
-  Breadth-first search
-    For finding the shortest path
+  Dijkstra's Algorithm
+    For finding the shortest path with weighted edges (pixel distance)
+    Uses priority queue to explore nodes with minimum distance first
+    Handles weighted graph where edge weights = pixel distance between nodes
   Drawing Path
     Get vertices of the from and to buildings
     Color in from building in red
