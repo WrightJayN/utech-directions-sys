@@ -411,18 +411,6 @@ describe('PathDrawer', () => {
     // When: PathDrawer draws yellow path
     // Then: yellow lines are drawn along entire path including road intersections and corners
   });
-
-  test('should exclude edge between from building and its neighbor from yellow path', () => {
-    // Given: path = [Building1, Intersection1, Building2, Building3], from_bld_g_node = Building1
-    // When: PathDrawer draws yellow path
-    // Then: yellow line is NOT drawn between Building1 and Intersection1 (edge excluded)
-  });
-
-  test('should exclude edge between to building and its neighbor from yellow path', () => {
-    // Given: path = [Building1, Building2, Corner1, Building3], to_bld_g_node = Building3
-    // When: PathDrawer draws yellow path
-    // Then: yellow line is NOT drawn between Corner1 and Building3 (edge excluded)
-  });
 });
 
 

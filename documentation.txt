@@ -57,7 +57,8 @@ Data Structures
   - Building Vertices Hash Map for coloring building
     Key::node
     Value::Set of x,y coordinates (vertices of the building)
-  - Graph/Adj list for finding path from building to building
+  - Graph for finding path from building to building
+  - Tree To Graph Hash Map used to find corresponding graph nodes for tree
 
 
 Tree Node Structure
@@ -148,7 +149,7 @@ Data Flow Components
         Takes to_bld_t_node and from_bld_t_node, finds corresponding g_nodes, and calculates the path from from_bld_g_node to to_bld_g_node.
       PathDrawer
         Loads UTech map image and creates canvas.
+        Draws yellow lines along Path.
         Gets vertices of from and to buildings from Building Vertices Hash Map.
         Colors from building red and to building blue using their vertices.
-        Draws yellow lines along path (including non-building nodes), excluding edges between from building and its neighbor, and to building and its neighbor.
         Sends map with drawn path to user.
