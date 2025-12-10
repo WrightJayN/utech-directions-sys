@@ -47,9 +47,7 @@ Algorithms
     Get vertices of the from and to buildings
     Color in from building in red
     Color in to building in blue
-    Draw yellow lines along path, except for
-    - the edge of the from building and its neighbor
-    - the edge of the to building and its neighbor
+    Draw yellow lines along path
 
 Data Structures
   - Rooms Hash Map for searching for rooms 
