@@ -45,9 +45,9 @@ Algorithms
     Handles weighted graph where edge weights = pixel distance between nodes
   Drawing Path
     Get vertices of the from and to buildings
+    Draw yellow lines along path
     Color in from building in red
     Color in to building in blue
-    Draw yellow lines along path
 
 Data Structures
   - Rooms Hash Map for searching for rooms 
