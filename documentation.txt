@@ -52,10 +52,10 @@ Algorithms
 Data Structures
   - Rooms Hash Map for searching for rooms 
   - Tree for finding the corresponding building and floors
-  - Graph/Adj list for finding path from building to building
   - Building Vertices Hash Map for coloring building
     Key::node
     Value::Set of x,y coordinates (vertices of the building)
+  - Graph/Adj list for finding path from building to building
 
 
 Tree Node Structure
@@ -111,6 +111,7 @@ Tree Hierarchy Example
 
 Graph Node Structure
   Name::string
+  Type::walkway or building
   Neighbors::g_node[]
   x_coor::int 
   y_coor::int
