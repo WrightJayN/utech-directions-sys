@@ -374,42 +374,6 @@ describe('Floor Highlight Output', () => {
   });
 });
 
-
-// Test: PathFinder uses BFS to find shortest path between buildings
-describe('PathFinder', () => {
-  test('should find path from one building to another', () => {
-    // Given: from_bld_g_node = Building1, to_bld_g_node = Building2
-    // When: PathFinder runs BFS
-    // Then: returns path [Building1, Building2]
-  });
-
-  test('should find shortest path through intermediate buildings', () => {
-    // Given: from_bld_g_node = Building1, to_bld_g_node = Building3
-    //        Graph: Building1 -> Building2 -> Building3
-    // When: PathFinder runs BFS
-    // Then: returns path [Building1, Building2, Building3]
-  });
-
-  test('should return empty path when from and to are same building', () => {
-    // Given: from_bld_g_node = Building1, to_bld_g_node = Building1
-    // When: PathFinder runs BFS
-    // Then: returns [] or single node path
-  });
-
-  test('should return null when no path exists', () => {
-    // Given: from_bld_g_node = Building1, to_bld_g_node = Building4 (disconnected)
-    // When: PathFinder runs BFS
-    // Then: returns null or empty array
-  });
-
-  test('should convert bld_t_nodes to g_nodes before pathfinding', () => {
-    // Given: from_bld_t_node, to_bld_t_node
-    // When: PathFinder converts to g_nodes
-    // Then: correctly maps t_nodes to g_nodes
-  });
-});
-
-
 // Test: PathDrawer Output
 describe('PathDrawer', () => {
   test('should load UTech map image', () => {
