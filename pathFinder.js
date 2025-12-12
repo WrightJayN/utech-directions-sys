@@ -5,48 +5,6 @@
  * 
  * Algorithm: Dijkstra's shortest path with MinHeap/Priority Queue
  * Edge weights: Euclidean distance between node coordinates
- * 
- * COMPLEXITY COMPARISON:
- * 
- * Basic Implementation (Original):
- * - Time Complexity: O(V²) where V = number of nodes
- * - How it works: For EVERY unvisited node, scan through ALL nodes to find the one with minimum distance
- * - Space Complexity: O(V)
- * - Analogy: Like checking every student's test score one by one to find the highest, 
- *   then doing it again for the second highest, etc.
- * 
- * Optimized Implementation (With MinHeap):
- * - Time Complexity: O((V + E) log V) where V = nodes, E = edges
- * - How it works: Use a smart data structure (MinHeap) that automatically keeps track of 
- *   which node has the smallest distance, so we don't have to search every time
- * - Space Complexity: O(V)
- * - Analogy: Like having test scores in a sorted leaderboard - you always know who's first
- *   without checking everyone
- * 
- * WHY OPTIMIZED IS FASTER:
- * 
- * Basic Implementation Steps:
- * 1. Look at ALL 200+ nodes to find the one with smallest distance (slow!)
- * 2. Update its neighbors
- * 3. Repeat step 1 for next smallest (slow again!)
- * 4. Do this 200+ times = VERY SLOW
- * 
- * Optimized Implementation Steps:
- * 1. MinHeap instantly tells us which node has smallest distance (fast!)
- * 2. Update its neighbors and add them to heap
- * 3. Heap automatically reorganizes to keep smallest on top (still fast!)
- * 4. Do this 200+ times = MUCH FASTER
- * 
- * REAL WORLD EXAMPLE:
- * With 200 nodes and 600 edges (typical for UTech campus):
- * - Basic: 200 × 200 = 40,000 operations
- * - Optimized: (200 + 600) × log(200) ≈ 6,128 operations
- * - Result: ~6.5x faster!
- * 
- * For larger graphs (1000 nodes, 3000 edges):
- * - Basic: 1,000,000 operations
- * - Optimized: 29,897 operations  
- * - Result: ~33x faster!
  */
 
 /**
@@ -170,9 +128,6 @@ class PathFinder {
     /**
      * Finds shortest path using OPTIMIZED Dijkstra's algorithm with MinHeap
      * 
-     * KEY OPTIMIZATION: Instead of scanning ALL nodes to find minimum distance,
-     * the MinHeap automatically keeps track of which node has the smallest distance.
-     * 
      * @param {Object} startNode - Starting graph node
      * @param {Object} endNode - Destination graph node
      * @param {Map} graph - Graph containing all nodes
@@ -210,7 +165,6 @@ class PathFinder {
         // Dijkstra's algorithm main loop with MinHeap optimization
         while (!minHeap.isEmpty()) {
             // OPTIMIZATION: MinHeap gives us minimum distance node in O(log V) time
-            // Basic implementation would take O(V) time to find minimum
             const { node: currentNode, priority: currentDistance } = minHeap.extractMin();
 
             // Skip if already visited (can happen with duplicate entries in heap)
@@ -221,12 +175,13 @@ class PathFinder {
             // Mark current node as visited
             visited.add(currentNode);
 
-            // If we reached the end node, we can stop
+            // If we reached the end node, we can stop early
             if (currentNode === endNode) {
                 break;
             }
 
-            // Skip if this node is unreachable
+            // CRITICAL FIX: Skip if this node is unreachable (prevents infinite loop)
+            // If the current node has infinite distance, no path exists to any remaining nodes
             if (currentDistance === Infinity) {
                 break;
             }
@@ -239,8 +194,20 @@ class PathFinder {
                         continue;
                     }
 
+                    // CRITICAL FIX: Verify neighbor exists in the graph
+                    // This prevents issues with disconnected or malformed graph structures
+                    if (!distances.has(neighbor)) {
+                        continue;
+                    }
+
                     // Calculate distance to neighbor through current node
                     const edgeWeight = this.calculateDistance(currentNode, neighbor);
+                    
+                    // Skip if edge weight is invalid
+                    if (edgeWeight === Infinity || isNaN(edgeWeight)) {
+                        continue;
+                    }
+
                     const distanceThroughCurrent = distances.get(currentNode) + edgeWeight;
 
                     // If this path is shorter, update it
@@ -254,6 +221,12 @@ class PathFinder {
                     }
                 }
             }
+        }
+
+        // Check if end node was reached
+        if (!visited.has(endNode)) {
+            // End node was never visited, meaning no path exists
+            return null;
         }
 
         // Reconstruct path from end to start
@@ -271,12 +244,12 @@ class PathFinder {
             current = previous.get(current);
         }
 
-        // Verify path starts with startNode
-        if (path.length > 0 && path[0] === startNode) {
+        // Verify path starts with startNode and ends with endNode
+        if (path.length > 0 && path[0] === startNode && path[path.length - 1] === endNode) {
             return path;
         }
 
-        return null; // Path not found
+        return null; // Path not found or invalid
     }
 
     /**
@@ -300,6 +273,10 @@ class PathFinder {
         // Convert tree node names to graph node keys
         const fromNodeName = this.convertTreeNodeToGraphKey(fromBldTNode);
         const toNodeName = this.convertTreeNodeToGraphKey(toBldTNode);
+
+        if (!fromNodeName || !toNodeName) {
+            return null;
+        }
 
         // Find corresponding graph nodes
         const fromGNode = buildingGraph.get(fromNodeName);
@@ -343,25 +320,3 @@ class PathFinder {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = PathFinder;
 }
-
-/**
- * SUMMARY - WHY THIS IS BETTER:
- * 
- * Imagine you're looking for the shortest person in a room of 200 people:
- * 
- * BASIC WAY (O(V²)):
- * 1. Look at all 200 people, find shortest (200 comparisons)
- * 2. That person leaves the room
- * 3. Look at remaining 199 people, find shortest (199 comparisons)
- * 4. Repeat until room is empty
- * Total: 200 + 199 + 198 + ... + 1 = 20,100 comparisons
- * 
- * OPTIMIZED WAY (O((V+E) log V)):
- * 1. Line everyone up by height once (200 log 200 = 1,530 comparisons)
- * 2. Shortest person is at the front (instant!)
- * 3. When someone's height changes, quickly reposition them (log 200 = 7.6 comparisons)
- * Total: Much fewer comparisons!
- * 
- * For UTech campus with 200+ buildings and walkways, this optimization
- * makes pathfinding nearly instant instead of taking several seconds.
- */
