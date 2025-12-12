@@ -41,8 +41,7 @@ Tech Stack
 Algorithms
   Dijkstra's Algorithm
     For finding the shortest path with weighted edges (pixel distance)
-    Uses priority queue to explore nodes with minimum distance first
-    Handles weighted graph where edge weights = pixel distance between nodes
+    Uses min heap to explore nodes with minimum distance first
   Drawing Path
     Get vertices of the from and to buildings
     Draw yellow lines along path
