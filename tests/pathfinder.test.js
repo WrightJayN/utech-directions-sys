@@ -3,8 +3,8 @@
  * Tests for Dijkstra's algorithm implementation with weighted edges (pixel distance)
  */
 
-const PathFinder = require('./pathFinder');
-const GraphDatabase = require('./graphDatabase');
+const PathFinder = require('../processing/pathFinder');
+const GraphDatabase = require('../processing/graphDatabase');
 
 describe('PathFinder - Dijkstra\'s Algorithm with Weighted Edges', () => {
   let graphDB;
@@ -133,10 +133,10 @@ describe('PathFinder - Dijkstra\'s Algorithm with Weighted Edges', () => {
 
   describe('Tree Node to Graph Node Conversion', () => {
     test('should convert bld_t_nodes to g_nodes before pathfinding', () => {
-      const TreeDatabase = require('./treeDatabase');
+      const TreeDatabase = require('../processing/treeDatabase');
       const treeDB = new TreeDatabase();
       const rooms = treeDB.getRoomsHashMap();
-      const Finder = require('./buildingFloorNodeFinder');
+      const Finder = require('../processing/buildingFloorNodeFinder');
       const room1 = rooms.get('1a37');
       const room2 = rooms.get('2b5');
       const t1 = Finder.findBuildingNode(room1);
@@ -146,12 +146,12 @@ describe('PathFinder - Dijkstra\'s Algorithm with Weighted Edges', () => {
     });
 
     test('should convert gate tree nodes to graph nodes', () => {
-      const TreeDatabase = require('./treeDatabase');
+      const TreeDatabase = require('../processing/treeDatabase');
       const treeDB = new TreeDatabase();
       const rooms = treeDB.getRoomsHashMap();
       const mainGate = rooms.get('main gate');
       const room1 = rooms.get('1a37');
-      const Finder = require('./buildingFloorNodeFinder');
+      const Finder = require('../processing/buildingFloorNodeFinder');
       const bNode = Finder.findBuildingNode(room1);
       const path = PathFinder.findPathFromTreeNodes(mainGate, bNode, graphDB);
       expect(path).toBeDefined();

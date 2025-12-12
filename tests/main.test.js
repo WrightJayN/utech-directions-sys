@@ -1,7 +1,7 @@
-const DataCollector = require('./dataCollector');
-const RoomNodeFinder = require('./roomNodeFinder');
-const BuildingFloorNodeFinder = require('./buildingFloorNodeFinder');
-const TreeDatabase = require('./treeDatabase');
+const DataCollector = require('../input/dataCollector');
+const RoomNodeFinder = require('../processing/roomNodeFinder');
+const BuildingFloorNodeFinder = require('../processing/buildingFloorNodeFinder');
+const TreeDatabase = require('../processing/treeDatabase');
 
 // Test: Data Collector converts room inputs to lowercase strings
 describe('Data Collector', () => {
