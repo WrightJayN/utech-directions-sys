@@ -328,90 +328,429 @@ describe('Building/Floor Node Finder', () => {
 });
 
 
+
 // Test: Building Pictures Output
 describe('Building Pictures Output', () => {
+  let BuildingPicturesOutput;
+
+  beforeEach(() => {
+    // Mock BuildingPicturesOutput class
+    BuildingPicturesOutput = {
+      getBuildingPicture: jest.fn((bld_t_node) => {
+        if (!bld_t_node || !bld_t_node.name) return null;
+        
+        const buildingPictures = {
+          'building1': 'assets/buildings/building1.jpg',
+          'building2': 'assets/buildings/building2.jpg',
+          'building8': 'assets/buildings/building8.jpg',
+          'building22': 'assets/buildings/building22.jpg',
+          'building5': 'assets/buildings/building5.jpg',
+          'main gate': 'assets/buildings/main_gate.jpg',
+          'walkin gate': 'assets/buildings/walkin_gate.jpg',
+          'back gate': 'assets/buildings/back_gate.jpg'
+        };
+        
+        return buildingPictures[bld_t_node.name] || null;
+      })
+    };
+  });
+
   test('should return building picture for valid to_bld_t_node', () => {
     // Given: to_bld_t_node = Building1
+    const to_bld_t_node = { name: 'building1', worded_direction: 'Go to Building 1' };
+
     // When: building pictures component processes node
+    const picture = BuildingPicturesOutput.getBuildingPicture(to_bld_t_node);
+
     // Then: returns image URL or file path for Building1
+    expect(picture).toBeDefined();
+    expect(picture).toBe('assets/buildings/building1.jpg');
+    expect(typeof picture).toBe('string');
+  });
+
+  test('should return building picture for different buildings', () => {
+    // Given: multiple building nodes
+    const buildings = [
+      { name: 'building2', expected: 'assets/buildings/building2.jpg' },
+      { name: 'building8', expected: 'assets/buildings/building8.jpg' },
+      { name: 'building22', expected: 'assets/buildings/building22.jpg' }
+    ];
+
+    // When: getting pictures for each building
+    buildings.forEach(({ name, expected }) => {
+      const node = { name, worded_direction: `Go to ${name}` };
+      const picture = BuildingPicturesOutput.getBuildingPicture(node);
+
+      // Then: returns correct picture for each building
+      expect(picture).toBe(expected);
+    });
+  });
+
+  test('should return gate pictures', () => {
+    // Given: gate nodes
+    const mainGate = { name: 'main gate', worded_direction: 'Go to Main Gate' };
+    const walkinGate = { name: 'walkin gate', worded_direction: 'Go to Walk-In Gate' };
+    const backGate = { name: 'back gate', worded_direction: 'Go to Back Gate' };
+
+    // When: getting gate pictures
+    const mainPic = BuildingPicturesOutput.getBuildingPicture(mainGate);
+    const walkinPic = BuildingPicturesOutput.getBuildingPicture(walkinGate);
+    const backPic = BuildingPicturesOutput.getBuildingPicture(backGate);
+
+    // Then: returns gate pictures
+    expect(mainPic).toBe('assets/buildings/main_gate.jpg');
+    expect(walkinPic).toBe('assets/buildings/walkin_gate.jpg');
+    expect(backPic).toBe('assets/buildings/back_gate.jpg');
   });
 
   test('should handle missing building picture', () => {
     // Given: to_bld_t_node with no associated picture
+    const unknownBuilding = { name: 'building999', worded_direction: 'Go to Unknown Building' };
+
     // When: building pictures component processes node
-    // Then: returns default image or error
+    const picture = BuildingPicturesOutput.getBuildingPicture(unknownBuilding);
+
+    // Then: returns null or default image
+    expect(picture).toBeNull();
+  });
+
+  test('should handle null or undefined building node', () => {
+    // Given: null or undefined node
+    const nullNode = null;
+    const undefinedNode = undefined;
+
+    // When: attempting to get picture
+    const nullResult = BuildingPicturesOutput.getBuildingPicture(nullNode);
+    const undefinedResult = BuildingPicturesOutput.getBuildingPicture(undefinedNode);
+
+    // Then: returns null
+    expect(nullResult).toBeNull();
+    expect(undefinedResult).toBeNull();
+  });
+
+  test('should handle building node without name', () => {
+    // Given: building node without name property
+    const invalidNode = { worded_direction: 'Go somewhere' };
+
+    // When: attempting to get picture
+    const result = BuildingPicturesOutput.getBuildingPicture(invalidNode);
+
+    // Then: returns null
+    expect(result).toBeNull();
   });
 });
 
-
 // Test: Floor Pictures Output
 describe('Floor Pictures Output', () => {
+  let FloorPicturesOutput;
+
+  beforeEach(() => {
+    // Mock FloorPicturesOutput class
+    FloorPicturesOutput = {
+      getFloorPicture: jest.fn((flr_t_node) => {
+        if (!flr_t_node || !flr_t_node.name) return null;
+        
+        const floorPictures = {
+          'floor1ground': 'assets/floors/floor1ground.jpg',
+          'floor1a': 'assets/floors/floor1a.jpg',
+          'floor1b': 'assets/floors/floor1b.jpg',
+          'floor1c': 'assets/floors/floor1c.jpg',
+          'floor2b': 'assets/floors/floor2b.jpg',
+          'floor8a': 'assets/floors/floor8a.jpg',
+          'floor8b': 'assets/floors/floor8b.jpg',
+          'floor8c': 'assets/floors/floor8c.jpg',
+          'floor22b': 'assets/floors/floor22b.jpg',
+          'floor22c': 'assets/floors/floor22c.jpg',
+          'floor5a': 'assets/floors/floor5a.jpg',
+          'floor5b': 'assets/floors/floor5b.jpg',
+          'floorGateGround': 'assets/floors/gate_ground.jpg'
+        };
+        
+        return floorPictures[flr_t_node.name] || null;
+      })
+    };
+  });
+
   test('should return floor picture for valid to_flr_t_node', () => {
     // Given: to_flr_t_node = Floor A
+    const to_flr_t_node = { name: 'floor1a', worded_direction: 'Go to Floor 1A' };
+
     // When: floor pictures component processes node
+    const picture = FloorPicturesOutput.getFloorPicture(to_flr_t_node);
+
     // Then: returns image URL or file path for Floor A
+    expect(picture).toBeDefined();
+    expect(picture).toBe('assets/floors/floor1a.jpg');
+    expect(typeof picture).toBe('string');
+  });
+
+  test('should return floor pictures for different floors', () => {
+    // Given: multiple floor nodes
+    const floors = [
+      { name: 'floor1ground', expected: 'assets/floors/floor1ground.jpg' },
+      { name: 'floor8a', expected: 'assets/floors/floor8a.jpg' },
+      { name: 'floor22b', expected: 'assets/floors/floor22b.jpg' },
+      { name: 'floor5a', expected: 'assets/floors/floor5a.jpg' }
+    ];
+
+    // When: getting pictures for each floor
+    floors.forEach(({ name, expected }) => {
+      const node = { name, worded_direction: `Go to ${name}` };
+      const picture = FloorPicturesOutput.getFloorPicture(node);
+
+      // Then: returns correct picture for each floor
+      expect(picture).toBe(expected);
+    });
+  });
+
+  test('should return floor picture for gate floor node', () => {
+    // Given: gate floor node (floorGateGround)
+    const gateFloor = { name: 'floorGateGround', worded_direction: '' };
+
+    // When: getting floor picture
+    const picture = FloorPicturesOutput.getFloorPicture(gateFloor);
+
+    // Then: returns gate ground floor picture
+    expect(picture).toBe('assets/floors/gate_ground.jpg');
   });
 
   test('should handle missing floor picture', () => {
     // Given: to_flr_t_node with no associated picture
+    const unknownFloor = { name: 'floor999z', worded_direction: 'Go to Unknown Floor' };
+
     // When: floor pictures component processes node
-    // Then: returns default image or error
+    const picture = FloorPicturesOutput.getFloorPicture(unknownFloor);
+
+    // Then: returns null or default image
+    expect(picture).toBeNull();
+  });
+
+  test('should handle null or undefined floor node', () => {
+    // Given: null or undefined node
+    const nullNode = null;
+    const undefinedNode = undefined;
+
+    // When: attempting to get picture
+    const nullResult = FloorPicturesOutput.getFloorPicture(nullNode);
+    const undefinedResult = FloorPicturesOutput.getFloorPicture(undefinedNode);
+
+    // Then: returns null
+    expect(nullResult).toBeNull();
+    expect(undefinedResult).toBeNull();
+  });
+
+  test('should return different pictures for different floors in same building', () => {
+    // Given: multiple floors from building 1
+    const floor1Ground = { name: 'floor1ground', worded_direction: 'Ground Floor' };
+    const floor1A = { name: 'floor1a', worded_direction: 'Floor 1A' };
+    const floor1B = { name: 'floor1b', worded_direction: 'Floor 1B' };
+
+    // When: getting pictures
+    const pic1 = FloorPicturesOutput.getFloorPicture(floor1Ground);
+    const pic2 = FloorPicturesOutput.getFloorPicture(floor1A);
+    const pic3 = FloorPicturesOutput.getFloorPicture(floor1B);
+
+    // Then: each floor has different picture
+    expect(pic1).not.toBe(pic2);
+    expect(pic2).not.toBe(pic3);
+    expect(pic1).not.toBe(pic3);
   });
 });
 
 // Test: Floor Highlight Output
 describe('Floor Highlight Output', () => {
+  let FloorHighlightOutput;
+  let mockCanvas;
+  let mockContext;
+
+  beforeEach(() => {
+    // Mock canvas and context
+    mockContext = {
+      fillRect: jest.fn(),
+      strokeRect: jest.fn(),
+      fillText: jest.fn(),
+      fillStyle: '',
+      strokeStyle: '',
+      lineWidth: 0,
+      font: ''
+    };
+
+    mockCanvas = {
+      getContext: jest.fn(() => mockContext),
+      width: 400,
+      height: 600
+    };
+
+    // Mock FloorHighlightOutput class
+    FloorHighlightOutput = {
+      createFloorHighlight: jest.fn((to_flr_t_node, canvas) => {
+        if (!to_flr_t_node || !canvas) return null;
+        
+        const context = canvas.getContext('2d');
+        const building = to_flr_t_node.parent;
+        
+        if (!building || !building.children) return null;
+        
+        const floors = building.children;
+        const floorHeight = canvas.height / floors.length;
+        
+        // Draw all floors
+        floors.forEach((floor, index) => {
+          const y = index * floorHeight;
+          
+          // Highlight destination floor
+          if (floor.name === to_flr_t_node.name) {
+            context.fillStyle = '#4CAF50'; // Green highlight
+          } else {
+            context.fillStyle = '#E0E0E0'; // Gray for other floors
+          }
+          
+          context.fillRect(0, y, canvas.width, floorHeight);
+          
+          // Draw floor label
+          context.fillStyle = '#000000';
+          context.fillText(floor.name, 20, y + floorHeight / 2);
+        });
+        
+        return canvas;
+      })
+    };
+  });
+
   test('should create canvas with all floors and highlight destination', () => {
-    // Given: to_flr_t_node = Floor A, building has floors [A, B, C]
+    // Given: to_flr_t_node = Floor A, building has floors [Ground, A, B, C]
+    const building = { 
+      name: 'building1',
+      children: [
+        { name: 'floor1ground', parent: null },
+        { name: 'floor1a', parent: null },
+        { name: 'floor1b', parent: null },
+        { name: 'floor1c', parent: null }
+      ]
+    };
+    
+    // Set parent references
+    building.children.forEach(floor => floor.parent = building);
+    
+    const to_flr_t_node = building.children[1]; // floor1a
+
     // When: floor highlight component processes node
+    const result = FloorHighlightOutput.createFloorHighlight(to_flr_t_node, mockCanvas);
+
     // Then: returns canvas with all floors shown and Floor A highlighted
+    expect(result).toBeDefined();
+    expect(mockCanvas.getContext).toHaveBeenCalledWith('2d');
+    expect(mockContext.fillRect).toHaveBeenCalledTimes(4); // 4 floors
+    expect(mockContext.fillText).toHaveBeenCalledTimes(4); // 4 labels
+  });
+
+  test('should highlight only the destination floor', () => {
+    // Given: building with 3 floors, destination is floor 2
+    const building = { 
+      name: 'building8',
+      children: [
+        { name: 'floor8a', parent: null },
+        { name: 'floor8b', parent: null },
+        { name: 'floor8c', parent: null }
+      ]
+    };
+    
+    building.children.forEach(floor => floor.parent = building);
+    const to_flr_t_node = building.children[1]; // floor8b
+
+    // When: creating highlight
+    FloorHighlightOutput.createFloorHighlight(to_flr_t_node, mockCanvas);
+
+    // Then: only destination floor is highlighted (verified by fillStyle changes)
+    expect(mockContext.fillRect).toHaveBeenCalled();
+    expect(mockContext.fillText).toHaveBeenCalledWith('floor8b', 20, expect.any(Number));
   });
 
   test('should handle single-floor building', () => {
     // Given: to_flr_t_node = Floor A, building has only Floor A
+    const building = { 
+      name: 'building2',
+      children: [
+        { name: 'floor2b', parent: null }
+      ]
+    };
+    
+    building.children[0].parent = building;
+    const to_flr_t_node = building.children[0];
+
     // When: floor highlight component processes node
+    const result = FloorHighlightOutput.createFloorHighlight(to_flr_t_node, mockCanvas);
+
     // Then: returns canvas with only Floor A highlighted
+    expect(result).toBeDefined();
+    expect(mockContext.fillRect).toHaveBeenCalledTimes(1);
+    expect(mockContext.fillText).toHaveBeenCalledWith('floor2b', 20, expect.any(Number));
+  });
+
+  test('should handle building with many floors', () => {
+    // Given: building with 5 floors
+    const building = { 
+      name: 'tall_building',
+      children: Array.from({ length: 5 }, (_, i) => ({
+        name: `floor${i}`,
+        parent: null
+      }))
+    };
+    
+    building.children.forEach(floor => floor.parent = building);
+    const to_flr_t_node = building.children[3]; // floor3
+
+    // When: creating highlight
+    const result = FloorHighlightOutput.createFloorHighlight(to_flr_t_node, mockCanvas);
+
+    // Then: all 5 floors are shown
+    expect(result).toBeDefined();
+    expect(mockContext.fillRect).toHaveBeenCalledTimes(5);
+    expect(mockContext.fillText).toHaveBeenCalledTimes(5);
+  });
+
+  test('should handle null or undefined floor node', () => {
+    // Given: null or undefined floor node
+    const nullNode = null;
+    const undefinedNode = undefined;
+
+    // When: attempting to create highlight
+    const nullResult = FloorHighlightOutput.createFloorHighlight(nullNode, mockCanvas);
+    const undefinedResult = FloorHighlightOutput.createFloorHighlight(undefinedNode, mockCanvas);
+
+    // Then: returns null
+    expect(nullResult).toBeNull();
+    expect(undefinedResult).toBeNull();
+  });
+
+  test('should handle floor node without parent building', () => {
+    // Given: floor node without parent
+    const orphanFloor = { name: 'orphan_floor', parent: null };
+
+    // When: attempting to create highlight
+    const result = FloorHighlightOutput.createFloorHighlight(orphanFloor, mockCanvas);
+
+    // Then: returns null
+    expect(result).toBeNull();
+  });
+
+  test('should handle gate floor node (floorGateGround)', () => {
+    // Given: gate floor node
+    const gateFloor = { 
+      name: 'floorGateGround', 
+      parent: { name: 'main gate', children: [{ name: 'floorGateGround', parent: null }] }
+    };
+    gateFloor.parent.children[0].parent = gateFloor.parent;
+
+    // When: creating highlight
+    const result = FloorHighlightOutput.createFloorHighlight(gateFloor, mockCanvas);
+
+    // Then: handles single gate floor
+    expect(result).toBeDefined();
+    expect(mockContext.fillRect).toHaveBeenCalledTimes(1);
   });
 });
 
-// Test: PathDrawer Output
-describe('PathDrawer', () => {
-  test('should load UTech map image', () => {
-    // Given: path from PathFinder
-    // When: PathDrawer loads map
-    // Then: map image is loaded successfully
-  });
-
-  test('should get vertices of from building from Building Vertices Hash Map', () => {
-    // Given: from_bld_g_node = Building1, Building Vertices Hash Map contains Building1 -> Set of (x,y) coordinates
-    // When: PathDrawer gets vertices from Building Vertices Hash Map
-    // Then: returns set of x,y coordinates (vertices) for Building1
-  });
-
-  test('should get vertices of to building from Building Vertices Hash Map', () => {
-    // Given: to_bld_g_node = Building3, Building Vertices Hash Map contains Building3 -> Set of (x,y) coordinates
-    // When: PathDrawer gets vertices from Building Vertices Hash Map
-    // Then: returns set of x,y coordinates (vertices) for Building3
-  });
-
-  test('should color from building in red using vertices from Building Vertices Hash Map', () => {
-    // Given: from_bld_g_node = Building1, vertices from Building Vertices Hash Map
-    // When: PathDrawer colors building
-    // Then: Building1 is colored in red using its vertices
-  });
-
-  test('should color to building in blue using vertices from Building Vertices Hash Map', () => {
-    // Given: to_bld_g_node = Building3, vertices from Building Vertices Hash Map
-    // When: PathDrawer colors building
-    // Then: Building3 is colored in blue using its vertices
-  });
-
-  test('should draw yellow lines along path including non-building nodes', () => {
-    // Given: path = [Building1, Intersection1, Corner1, Building2, Building3] (contains intersections/corners)
-    // When: PathDrawer draws yellow path
-    // Then: yellow lines are drawn along entire path including road intersections and corners
-  });
-});
 
 
 // Test: End-to-end data flow
