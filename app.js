@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const canvas = document.getElementById('mapCanvas');
         
         // Load map image first
-        await PathDrawer.loadMapImage('assests/utech_map.png', canvas);
+        await PathDrawer.loadMapImage('assets/utech_map.png', canvas);
         
         // Get building vertices hash map
         const verticesHashMap = PathDrawer.getBuildingVerticesHashMap();

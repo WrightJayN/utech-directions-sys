@@ -23,7 +23,7 @@ class BuildingPicturesOutput {
         // Building pictures mapping
         const buildingPictures = {
             // Regular buildings
-            'building1': 'assets/buildings/building1.jpg',
+            'building1': 'assets/buildings/building1.jpeg',
             'building2': 'assets/buildings/building2.jpg',
             'building3': 'assets/buildings/building3.jpg',
             'building4': 'assets/buildings/building4.jpg',

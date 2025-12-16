@@ -18,7 +18,7 @@ class FloorPicturesOutput {
 
         // Mapping of floors to image paths
         const floorPictures = {
-            'floor1ground': 'assets/floors/floor1ground.jpg',
+            'floor1ground': 'assets/floors/floor1ground.jpeg',
             'floor1a': 'assets/floors/floor1a.jpg',
             'floor1b': 'assets/floors/floor1b.jpg',
             'floor1c': 'assets/floors/floor1c.jpg',
