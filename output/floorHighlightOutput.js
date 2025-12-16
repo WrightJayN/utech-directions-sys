@@ -31,6 +31,7 @@ class FloorHighlightOutput {
 
         // Get all floors in the building
         const floors = building.children;
+        floors.reverse();
         
         // Get canvas context
         const context = canvas.getContext('2d');
