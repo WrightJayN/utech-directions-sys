@@ -2,6 +2,9 @@
 This py script is used along with MS paint 
 to get the x and y coordinates of the building vertices
 that are needed to added to color the from and to building
+
+Directions:
+-Move mouse to vertices of the building and press f8
 '''
 import re
 from pynput import keyboard
