@@ -31,7 +31,6 @@ class FloorHighlightOutput {
 
         // Get all floors in the building
         const floors = building.children;
-        floors.reverse();
         
         // Get canvas context
         const context = canvas.getContext('2d');
@@ -48,7 +47,10 @@ class FloorHighlightOutput {
         context.textBaseline = 'middle';
         
         // Draw each floor
-        floors.forEach((floor, index) => {
+        for(let index = floors.length - 1; index >= 0; index--){
+
+            let floor = floors[floors.length - index -1];
+
             const y = index * floorHeight;
             
             // Determine if this is the destination floor
@@ -84,7 +86,7 @@ class FloorHighlightOutput {
                 context.textAlign = 'left';
                 context.font = '16px Arial';
             }
-        });
+        };
         
         return canvas;
     }
