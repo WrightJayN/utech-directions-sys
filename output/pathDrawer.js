@@ -533,6 +533,47 @@ class PathDrawer {
     }
 
     /**
+     * Draws the map key/legend on the canvas
+     * @param {CanvasRenderingContext2D} context - Canvas 2D context
+     * @param {number} canvasWidth - Width of the canvas
+     * @param {number} canvasHeight - Height of the canvas
+     */
+    static drawMapKey(context, canvasWidth, canvasHeight) {
+        const keyX = canvasWidth - 220; // Position from right edge
+        const keyY = canvasHeight - 120; // Position from bottom edge
+        const keyWidth = 200;
+        const keyHeight = 90;
+
+        // Draw white background for key
+        context.fillStyle = '#FFFFFF';
+        context.fillRect(keyX - 10, keyY - 10, keyWidth + 20, keyHeight + 20);
+
+        // Red square for source building
+        context.fillStyle = '#FF0000';
+        context.fillRect(keyX, keyY, 20, 20);
+        context.fillStyle = '#000000';
+        context.font = '12px Arial';
+        context.textBaseline = 'middle';
+        context.fillText("Source Building", keyX + 25, keyY + 10);
+
+        // Blue square for destination building
+        context.fillStyle = '#0000FF';
+        context.fillRect(keyX, keyY + 30, 20, 20);
+        context.fillStyle = '#000000';
+        context.fillText("Destination Building", keyX + 25, keyY + 40);
+
+        // Yellow line for path
+        context.strokeStyle = '#FFD700';
+        context.lineWidth = 5;
+        context.beginPath();
+        context.moveTo(keyX, keyY + 70);
+        context.lineTo(keyX + 50, keyY + 70);
+        context.stroke();
+        context.fillStyle = '#000000';
+        context.fillText("Path", keyX + 55, keyY + 70);
+    }
+
+    /**
      * Creates complete map with path and colored buildings
      * Main method that coordinates all drawing operations
      * 
@@ -564,6 +605,9 @@ class PathDrawer {
         if (toVertices) {
             this.colorBuilding(toVertices, '#0000FF', context); // Blue
         }
+
+        // Step 5: Draw the map key
+        this.drawMapKey(context, canvas.width, canvas.height);
 
         return canvas;
     }
