@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const treeDB = new TreeDatabase();
     const graphDB = new GraphDatabase();
     const roomsHashMap = treeDB.getRoomsHashMap();
-    const buildingGraph = graphDB.getBuildingGraph();
     
     // Create output sections dynamically
     createOutputSections();
