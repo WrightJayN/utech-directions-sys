@@ -265,8 +265,8 @@ class PathFinder {
         }
 
         // Get the building graph from GraphDatabase
-        const buildingGraph = graphDB.getBuildingGraph();
-        if (!buildingGraph) {
+        const  utechgraph = graphDB.getutechgraph();
+        if (!utechgraph) {
             return null;
         }
 
@@ -279,15 +279,15 @@ class PathFinder {
         }
 
         // Find corresponding graph nodes
-        const fromGNode = buildingGraph.get(fromNodeName);
-        const toGNode = buildingGraph.get(toNodeName);
+        const fromGNode = utechgraph.get(fromNodeName);
+        const toGNode = utechgraph.get(toNodeName);
 
         if (!fromGNode || !toGNode) {
             return null;
         }
 
         // Find path using graph nodes
-        return this.findPath(fromGNode, toGNode, buildingGraph);
+        return this.findPath(fromGNode, toGNode, utechgraph);
     }
 
     /**

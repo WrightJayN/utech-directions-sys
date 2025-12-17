@@ -40,7 +40,7 @@ class GraphNode {
 
 class GraphDatabase {
     constructor() {
-        this.buildingGraph = new Map();
+        this.utechgraph = new Map();
         this.buildGraph();
     }
 
@@ -263,258 +263,258 @@ class GraphDatabase {
 
         // Add Nodes to Hashmap for fast lookup
         // --- Custom Gate & Building keys ---
-        this.buildingGraph.set('main gate', south_g4);
-        this.buildingGraph.set('walkin gate', east_g5);
-        this.buildingGraph.set('back gate', east_g6);
+        this.utechgraph.set('main gate', south_g4);
+        this.utechgraph.set('walkin gate', east_g5);
+        this.utechgraph.set('back gate', east_g6);
 
-        this.buildingGraph.set('building3', east_b3);
-        this.buildingGraph.set('building1', east_b4);
-        this.buildingGraph.set('building2', east_b6);
-        this.buildingGraph.set('building8', central_b7);
-        this.buildingGraph.set('building18', north_b9);
-        this.buildingGraph.set('lt49', west_b11);
-        this.buildingGraph.set('building47', west_b12);
-        this.buildingGraph.set('building4', central_b13);
-        this.buildingGraph.set('building5', central_b14);
-        this.buildingGraph.set('building22', central_b15);
-        this.buildingGraph.set('building45', west_b16);
+        this.utechgraph.set('building3', east_b3);
+        this.utechgraph.set('building1', east_b4);
+        this.utechgraph.set('building2', east_b6);
+        this.utechgraph.set('building8', central_b7);
+        this.utechgraph.set('building18', north_b9);
+        this.utechgraph.set('lt49', west_b11);
+        this.utechgraph.set('building47', west_b12);
+        this.utechgraph.set('building4', central_b13);
+        this.utechgraph.set('building5', central_b14);
+        this.utechgraph.set('building22', central_b15);
+        this.utechgraph.set('building45', west_b16);
 
         // --- Walkway keys (friendly form: w###) ---
 
-        this.buildingGraph.set('w1', south_w1);
-        this.buildingGraph.set('w2', south_w2);
-        this.buildingGraph.set('w4', south_w4);
-        this.buildingGraph.set('w5', central_w5);
-        this.buildingGraph.set('w6', central_w6);
-        this.buildingGraph.set('w7', east_w7);
-        this.buildingGraph.set('w8', east_w8);
-        this.buildingGraph.set('w9', east_w9);
-        this.buildingGraph.set('w10', east_w10);
-        this.buildingGraph.set('w11', south_w11);
-        this.buildingGraph.set('w12', east_w12);
-        this.buildingGraph.set('w13', east_w13);
-        this.buildingGraph.set('w14', east_w14);
-        this.buildingGraph.set('w15', east_w15);
-        this.buildingGraph.set('w16', east_w16);
-        this.buildingGraph.set('w17', east_w17);
-        this.buildingGraph.set('w18', east_w18);
-        this.buildingGraph.set('w19', east_w19);
-        this.buildingGraph.set('w20', east_w20);
-        this.buildingGraph.set('w21', east_w21);
-        this.buildingGraph.set('w22', east_w22);
-        this.buildingGraph.set('w23', east_w23);
-        this.buildingGraph.set('w24', east_w24);
-        this.buildingGraph.set('w25', east_w25);
-        this.buildingGraph.set('w26', east_w26);
-        this.buildingGraph.set('w27', east_w27);
-        this.buildingGraph.set('w28', east_w28);
-        this.buildingGraph.set('w29', east_w29);
-        this.buildingGraph.set('w30', east_w30);
-        this.buildingGraph.set('w31', east_w31);
-        this.buildingGraph.set('w32', east_w32);
-        this.buildingGraph.set('w33', east_w33);
+        this.utechgraph.set('w1', south_w1);
+        this.utechgraph.set('w2', south_w2);
+        this.utechgraph.set('w4', south_w4);
+        this.utechgraph.set('w5', central_w5);
+        this.utechgraph.set('w6', central_w6);
+        this.utechgraph.set('w7', east_w7);
+        this.utechgraph.set('w8', east_w8);
+        this.utechgraph.set('w9', east_w9);
+        this.utechgraph.set('w10', east_w10);
+        this.utechgraph.set('w11', south_w11);
+        this.utechgraph.set('w12', east_w12);
+        this.utechgraph.set('w13', east_w13);
+        this.utechgraph.set('w14', east_w14);
+        this.utechgraph.set('w15', east_w15);
+        this.utechgraph.set('w16', east_w16);
+        this.utechgraph.set('w17', east_w17);
+        this.utechgraph.set('w18', east_w18);
+        this.utechgraph.set('w19', east_w19);
+        this.utechgraph.set('w20', east_w20);
+        this.utechgraph.set('w21', east_w21);
+        this.utechgraph.set('w22', east_w22);
+        this.utechgraph.set('w23', east_w23);
+        this.utechgraph.set('w24', east_w24);
+        this.utechgraph.set('w25', east_w25);
+        this.utechgraph.set('w26', east_w26);
+        this.utechgraph.set('w27', east_w27);
+        this.utechgraph.set('w28', east_w28);
+        this.utechgraph.set('w29', east_w29);
+        this.utechgraph.set('w30', east_w30);
+        this.utechgraph.set('w31', east_w31);
+        this.utechgraph.set('w32', east_w32);
+        this.utechgraph.set('w33', east_w33);
 
-        this.buildingGraph.set('w35', central_w35);
-        this.buildingGraph.set('w36', central_w36);
-        this.buildingGraph.set('w37', east_w37);
-        this.buildingGraph.set('w38', east_w38);
+        this.utechgraph.set('w35', central_w35);
+        this.utechgraph.set('w36', central_w36);
+        this.utechgraph.set('w37', east_w37);
+        this.utechgraph.set('w38', east_w38);
 
-        this.buildingGraph.set('w39', north_w39);
-        this.buildingGraph.set('w40', north_w40);
+        this.utechgraph.set('w39', north_w39);
+        this.utechgraph.set('w40', north_w40);
 
-        this.buildingGraph.set('w41', east_w41);
-        this.buildingGraph.set('w42', east_w42);
-        this.buildingGraph.set('w43', east_w43);
-        this.buildingGraph.set('w44', east_w44);
-        this.buildingGraph.set('w45', east_w45);
-        this.buildingGraph.set('w46', east_w46);
-        this.buildingGraph.set('w47', east_w47);
+        this.utechgraph.set('w41', east_w41);
+        this.utechgraph.set('w42', east_w42);
+        this.utechgraph.set('w43', east_w43);
+        this.utechgraph.set('w44', east_w44);
+        this.utechgraph.set('w45', east_w45);
+        this.utechgraph.set('w46', east_w46);
+        this.utechgraph.set('w47', east_w47);
 
-        this.buildingGraph.set('w48', north_w48);
-        this.buildingGraph.set('w49', north_w49);
+        this.utechgraph.set('w48', north_w48);
+        this.utechgraph.set('w49', north_w49);
 
-        this.buildingGraph.set('w50', central_w50);
-        this.buildingGraph.set('w51', north_w51);
-        this.buildingGraph.set('w52', west_w52);
-        this.buildingGraph.set('w53', north_w53);
-        this.buildingGraph.set('w54', north_w54);
-        this.buildingGraph.set('w55', north_w55);
-        this.buildingGraph.set('w56', north_w56);
-        this.buildingGraph.set('w57', north_w57);
+        this.utechgraph.set('w50', central_w50);
+        this.utechgraph.set('w51', north_w51);
+        this.utechgraph.set('w52', west_w52);
+        this.utechgraph.set('w53', north_w53);
+        this.utechgraph.set('w54', north_w54);
+        this.utechgraph.set('w55', north_w55);
+        this.utechgraph.set('w56', north_w56);
+        this.utechgraph.set('w57', north_w57);
 
-        this.buildingGraph.set('w58', west_w58);
-        this.buildingGraph.set('w59', west_w59);
-        this.buildingGraph.set('w60', west_w60);
-        this.buildingGraph.set('w61', west_w61);
-        this.buildingGraph.set('w62', west_w62);
-        this.buildingGraph.set('w63', west_w63);
-        this.buildingGraph.set('w64', west_w64);
-        this.buildingGraph.set('w65', west_w65);
-        this.buildingGraph.set('w66', west_w66);
+        this.utechgraph.set('w58', west_w58);
+        this.utechgraph.set('w59', west_w59);
+        this.utechgraph.set('w60', west_w60);
+        this.utechgraph.set('w61', west_w61);
+        this.utechgraph.set('w62', west_w62);
+        this.utechgraph.set('w63', west_w63);
+        this.utechgraph.set('w64', west_w64);
+        this.utechgraph.set('w65', west_w65);
+        this.utechgraph.set('w66', west_w66);
 
-        this.buildingGraph.set('w67', central_w67);
-        this.buildingGraph.set('w68', west_w68);
-        this.buildingGraph.set('w69', west_w69);
-        this.buildingGraph.set('w70', west_w70);
-        this.buildingGraph.set('w71', west_w71);
+        this.utechgraph.set('w67', central_w67);
+        this.utechgraph.set('w68', west_w68);
+        this.utechgraph.set('w69', west_w69);
+        this.utechgraph.set('w70', west_w70);
+        this.utechgraph.set('w71', west_w71);
 
-        this.buildingGraph.set('w72', central_w72);
-        this.buildingGraph.set('w73', central_w73);
-        this.buildingGraph.set('w74', central_w74);
-        this.buildingGraph.set('w75', central_w75);
-        this.buildingGraph.set('w76', central_w76);
-        this.buildingGraph.set('w77', central_w77);
-        this.buildingGraph.set('w78', central_w78);
-        this.buildingGraph.set('w79', central_w79);
-        this.buildingGraph.set('w80', central_w80);
-        this.buildingGraph.set('w81', central_w81);
-        this.buildingGraph.set('w82', central_w82);
-        this.buildingGraph.set('w83', central_w83);
-        this.buildingGraph.set('w84', central_w84);
-        this.buildingGraph.set('w85', central_w85);
-        this.buildingGraph.set('w86', central_w86);
+        this.utechgraph.set('w72', central_w72);
+        this.utechgraph.set('w73', central_w73);
+        this.utechgraph.set('w74', central_w74);
+        this.utechgraph.set('w75', central_w75);
+        this.utechgraph.set('w76', central_w76);
+        this.utechgraph.set('w77', central_w77);
+        this.utechgraph.set('w78', central_w78);
+        this.utechgraph.set('w79', central_w79);
+        this.utechgraph.set('w80', central_w80);
+        this.utechgraph.set('w81', central_w81);
+        this.utechgraph.set('w82', central_w82);
+        this.utechgraph.set('w83', central_w83);
+        this.utechgraph.set('w84', central_w84);
+        this.utechgraph.set('w85', central_w85);
+        this.utechgraph.set('w86', central_w86);
 
-        this.buildingGraph.set('w88', central_w88);
-        this.buildingGraph.set('w89', central_w89);
-        this.buildingGraph.set('w90', central_w90);
+        this.utechgraph.set('w88', central_w88);
+        this.utechgraph.set('w89', central_w89);
+        this.utechgraph.set('w90', central_w90);
 
-        this.buildingGraph.set('w91', west_w91);
-        this.buildingGraph.set('w92', west_w92);
+        this.utechgraph.set('w91', west_w91);
+        this.utechgraph.set('w92', west_w92);
 
-        this.buildingGraph.set('w93', central_w93);
-        this.buildingGraph.set('w94', central_w94);
+        this.utechgraph.set('w93', central_w93);
+        this.utechgraph.set('w94', central_w94);
 
-        this.buildingGraph.set('w96', central_w96);
-        this.buildingGraph.set('w97', central_w97);
-        this.buildingGraph.set('w98', central_w98);
-        this.buildingGraph.set('w99', central_w99);
+        this.utechgraph.set('w96', central_w96);
+        this.utechgraph.set('w97', central_w97);
+        this.utechgraph.set('w98', central_w98);
+        this.utechgraph.set('w99', central_w99);
 
-        this.buildingGraph.set('w100', west_w100);
-        this.buildingGraph.set('w101', west_w101);
-        this.buildingGraph.set('w102', west_w102);
-        this.buildingGraph.set('w103', west_w103);
+        this.utechgraph.set('w100', west_w100);
+        this.utechgraph.set('w101', west_w101);
+        this.utechgraph.set('w102', west_w102);
+        this.utechgraph.set('w103', west_w103);
 
-        this.buildingGraph.set('w104', south_w104);
-        this.buildingGraph.set('w105', west_w105);
-        this.buildingGraph.set('w106', west_w106);
-        this.buildingGraph.set('w107', west_w107);
-        this.buildingGraph.set('w108', west_w108);
-        this.buildingGraph.set('w109', west_w109);
-        this.buildingGraph.set('w110', west_w110);
-        this.buildingGraph.set('w111', west_w111);
-        this.buildingGraph.set('w112', west_w112);
-        this.buildingGraph.set('w113', west_w113);
+        this.utechgraph.set('w104', south_w104);
+        this.utechgraph.set('w105', west_w105);
+        this.utechgraph.set('w106', west_w106);
+        this.utechgraph.set('w107', west_w107);
+        this.utechgraph.set('w108', west_w108);
+        this.utechgraph.set('w109', west_w109);
+        this.utechgraph.set('w110', west_w110);
+        this.utechgraph.set('w111', west_w111);
+        this.utechgraph.set('w112', west_w112);
+        this.utechgraph.set('w113', west_w113);
 
-        this.buildingGraph.set('w114', west_w114);
-        this.buildingGraph.set('w115', west_w115);
+        this.utechgraph.set('w114', west_w114);
+        this.utechgraph.set('w115', west_w115);
 
-        this.buildingGraph.set('w116', central_w116);
-        this.buildingGraph.set('w117', central_w117);
-        this.buildingGraph.set('w118', central_w118);
-        this.buildingGraph.set('w119', central_w119);
-        this.buildingGraph.set('w120', central_w120);
+        this.utechgraph.set('w116', central_w116);
+        this.utechgraph.set('w117', central_w117);
+        this.utechgraph.set('w118', central_w118);
+        this.utechgraph.set('w119', central_w119);
+        this.utechgraph.set('w120', central_w120);
 
-        this.buildingGraph.set('w121', east_w121);
-        this.buildingGraph.set('w122', east_w122);
+        this.utechgraph.set('w121', east_w121);
+        this.utechgraph.set('w122', east_w122);
 
-        this.buildingGraph.set('w123', central_w123);
-        this.buildingGraph.set('w124', central_w124);
+        this.utechgraph.set('w123', central_w123);
+        this.utechgraph.set('w124', central_w124);
 
-        this.buildingGraph.set('w126', central_w126);
-        this.buildingGraph.set('w127', central_w127);
-        this.buildingGraph.set('w128', central_w128);
-        this.buildingGraph.set('w129', central_w129);
-        this.buildingGraph.set('w130', central_w130);
+        this.utechgraph.set('w126', central_w126);
+        this.utechgraph.set('w127', central_w127);
+        this.utechgraph.set('w128', central_w128);
+        this.utechgraph.set('w129', central_w129);
+        this.utechgraph.set('w130', central_w130);
 
-        this.buildingGraph.set('w131', east_w131);
-        this.buildingGraph.set('w132', east_w132);
-        this.buildingGraph.set('w133', east_w133);
+        this.utechgraph.set('w131', east_w131);
+        this.utechgraph.set('w132', east_w132);
+        this.utechgraph.set('w133', east_w133);
 
-        this.buildingGraph.set('w134', central_w134);
-        this.buildingGraph.set('w135', central_w135);
-        this.buildingGraph.set('w136', central_w136);
-        this.buildingGraph.set('w137', central_w137);
+        this.utechgraph.set('w134', central_w134);
+        this.utechgraph.set('w135', central_w135);
+        this.utechgraph.set('w136', central_w136);
+        this.utechgraph.set('w137', central_w137);
 
-        this.buildingGraph.set('w139', central_w139);
-        this.buildingGraph.set('w140', central_w140);
-        this.buildingGraph.set('w141', central_w141);
-        this.buildingGraph.set('w142', central_w142);
-        this.buildingGraph.set('w143', north_w143);
+        this.utechgraph.set('w139', central_w139);
+        this.utechgraph.set('w140', central_w140);
+        this.utechgraph.set('w141', central_w141);
+        this.utechgraph.set('w142', central_w142);
+        this.utechgraph.set('w143', north_w143);
 
-        this.buildingGraph.set('w144', east_w144);
-        this.buildingGraph.set('w145', east_w145);
-        this.buildingGraph.set('w146', east_w146);
-        this.buildingGraph.set('w147', east_w147);
+        this.utechgraph.set('w144', east_w144);
+        this.utechgraph.set('w145', east_w145);
+        this.utechgraph.set('w146', east_w146);
+        this.utechgraph.set('w147', east_w147);
 
-        this.buildingGraph.set('w148', west_w148);
+        this.utechgraph.set('w148', west_w148);
 
-        this.buildingGraph.set('w150', central_w150);
-        this.buildingGraph.set('w151', east_w151);
-        this.buildingGraph.set('w152', central_w152);
-        this.buildingGraph.set('w153', central_w153);
-        this.buildingGraph.set('w154', east_w154);
-        this.buildingGraph.set('w155', east_w155);
+        this.utechgraph.set('w150', central_w150);
+        this.utechgraph.set('w151', east_w151);
+        this.utechgraph.set('w152', central_w152);
+        this.utechgraph.set('w153', central_w153);
+        this.utechgraph.set('w154', east_w154);
+        this.utechgraph.set('w155', east_w155);
 
-        this.buildingGraph.set('w156', central_w156);
-        this.buildingGraph.set('w157', central_w157);
-        this.buildingGraph.set('w158', central_w158);
-        this.buildingGraph.set('w159', central_w159);
+        this.utechgraph.set('w156', central_w156);
+        this.utechgraph.set('w157', central_w157);
+        this.utechgraph.set('w158', central_w158);
+        this.utechgraph.set('w159', central_w159);
 
-        this.buildingGraph.set('w160', central_w160);
-        this.buildingGraph.set('w161', central_w161);
-        this.buildingGraph.set('w162', central_w162);
-        this.buildingGraph.set('w163', central_w163);
-        this.buildingGraph.set('w164', central_w164);
-        this.buildingGraph.set('w165', central_w165);
-        this.buildingGraph.set('w166', central_w166);
-        this.buildingGraph.set('w167', central_w167);
-        this.buildingGraph.set('w168', central_w168);
+        this.utechgraph.set('w160', central_w160);
+        this.utechgraph.set('w161', central_w161);
+        this.utechgraph.set('w162', central_w162);
+        this.utechgraph.set('w163', central_w163);
+        this.utechgraph.set('w164', central_w164);
+        this.utechgraph.set('w165', central_w165);
+        this.utechgraph.set('w166', central_w166);
+        this.utechgraph.set('w167', central_w167);
+        this.utechgraph.set('w168', central_w168);
 
-        this.buildingGraph.set('w169', south_w169);
+        this.utechgraph.set('w169', south_w169);
 
-        this.buildingGraph.set('w170', east_w170);
-        this.buildingGraph.set('w171', east_w171);
-        this.buildingGraph.set('w172', east_w172);
-        this.buildingGraph.set('w173', east_w173);
-        this.buildingGraph.set('w174', east_w174);
-        this.buildingGraph.set('w175', east_w175);
+        this.utechgraph.set('w170', east_w170);
+        this.utechgraph.set('w171', east_w171);
+        this.utechgraph.set('w172', east_w172);
+        this.utechgraph.set('w173', east_w173);
+        this.utechgraph.set('w174', east_w174);
+        this.utechgraph.set('w175', east_w175);
 
-        this.buildingGraph.set('w176', south_w176);
-        this.buildingGraph.set('w177', south_w177);
-        this.buildingGraph.set('w178', south_w178);
-        this.buildingGraph.set('w179', south_w179);
+        this.utechgraph.set('w176', south_w176);
+        this.utechgraph.set('w177', south_w177);
+        this.utechgraph.set('w178', south_w178);
+        this.utechgraph.set('w179', south_w179);
 
-        this.buildingGraph.set('w180', east_w180);
-        this.buildingGraph.set('w181', east_w181);
+        this.utechgraph.set('w180', east_w180);
+        this.utechgraph.set('w181', east_w181);
 
-        this.buildingGraph.set('w183', east_w183);
-        this.buildingGraph.set('w184', east_w184);
-        this.buildingGraph.set('w185', east_w185);
+        this.utechgraph.set('w183', east_w183);
+        this.utechgraph.set('w184', east_w184);
+        this.utechgraph.set('w185', east_w185);
 
-        this.buildingGraph.set('w186', central_w186);
-        this.buildingGraph.set('w187', central_w187);
-        this.buildingGraph.set('w188', central_w188);
+        this.utechgraph.set('w186', central_w186);
+        this.utechgraph.set('w187', central_w187);
+        this.utechgraph.set('w188', central_w188);
 
-        this.buildingGraph.set('w189', west_w189);
-        this.buildingGraph.set('w190', west_w190);
+        this.utechgraph.set('w189', west_w189);
+        this.utechgraph.set('w190', west_w190);
 
-        this.buildingGraph.set('w191', central_w191);
-        this.buildingGraph.set('w192', central_w192);
+        this.utechgraph.set('w191', central_w191);
+        this.utechgraph.set('w192', central_w192);
 
-        this.buildingGraph.set('w193', west_w193);
-        this.buildingGraph.set('w194', west_w194);
+        this.utechgraph.set('w193', west_w193);
+        this.utechgraph.set('w194', west_w194);
 
-        this.buildingGraph.set('w196', west_w196);
-        this.buildingGraph.set('w197', west_w197);
+        this.utechgraph.set('w196', west_w196);
+        this.utechgraph.set('w197', west_w197);
 
-        this.buildingGraph.set('w198', central_w198);
-        this.buildingGraph.set('w199', west_w199);
+        this.utechgraph.set('w198', central_w198);
+        this.utechgraph.set('w199', west_w199);
 
-        this.buildingGraph.set('w200', north_w200);
-        this.buildingGraph.set('w201', north_w201);
-        this.buildingGraph.set('w202', north_w202);
-        this.buildingGraph.set('w203', north_w203);
-        this.buildingGraph.set('w204', north_w204);
+        this.utechgraph.set('w200', north_w200);
+        this.utechgraph.set('w201', north_w201);
+        this.utechgraph.set('w202', north_w202);
+        this.utechgraph.set('w203', north_w203);
+        this.utechgraph.set('w204', north_w204);
 
         // Edges
         south_g4.addBidirectionalNeighbor(south_w1);
@@ -1585,24 +1585,24 @@ class GraphDatabase {
 
     }
 
-    getBuildingGraph() {
-        return this.buildingGraph;
+    getutechgraph() {
+        return this.utechgraph;
     }
 
     getNode(nodeName) {
-        return this.buildingGraph.get(nodeName);
+        return this.utechgraph.get(nodeName);
     }
     
     getAllNodes() {
-        return Array.from(this.buildingGraph.values());
+        return Array.from(this.utechgraph.values());
     }
     
     getAllBuildings() {
-        return Array.from(this.buildingGraph.values()).filter(node => node.type === 'building');
+        return Array.from(this.utechgraph.values()).filter(node => node.type === 'building');
     }
     
     getAllWalkways() {
-        return Array.from(this.buildingGraph.values()).filter(node => node.type === 'walkway');
+        return Array.from(this.utechgraph.values()).filter(node => node.type === 'walkway');
     }
 }
 
