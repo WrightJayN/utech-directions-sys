@@ -8,9 +8,6 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 20px;
 }
 
@@ -18,8 +15,9 @@ body {
     background: white;
     border-radius: 12px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    max-width: 600px;
+    max-width: 1200px;
     width: 100%;
+    margin: 0 auto;
     padding: 40px;
 }
 
@@ -96,32 +94,77 @@ header h1 {
 
 .output-container {
     margin-top: 30px;
+}
+
+.output-section {
+    margin-bottom: 30px;
     padding: 20px;
     background: #f8f9fa;
     border-radius: 8px;
     border-left: 4px solid #667eea;
 }
 
-.output-container h2 {
+.output-section h3 {
     color: #333;
     font-size: 1.3rem;
     margin-bottom: 15px;
 }
 
-.output-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.output-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.output-content p {
+.direction-step {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.direction-step p {
+    margin: 5px 0;
     color: #555;
-    font-size: 1rem;
 }
 
-.output-content strong {
+.direction-arrow {
+    text-align: center;
+    font-size: 2rem;
+    color: #667eea;
+    margin: 10px 0;
+}
+
+.direction-instructions {
+    background: #e8f4f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.direction-instructions h4 {
     color: #333;
-    margin-right: 8px;
+    margin-bottom: 10px;
+}
+
+.direction-instructions ol {
+    margin-left: 20px;
+    color: #555;
+}
+
+.direction-instructions li {
+    margin: 8px 0;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: white;
 }
 
 .error-container {
@@ -136,4 +179,3 @@ header h1 {
     color: #c0392b;
     font-weight: 500;
 }
-
