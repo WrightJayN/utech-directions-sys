@@ -1,0 +1,24 @@
+Using python make a simple, minimalistic menu user interface console application. That uses maintenance_guide.html as a guide and follows this User Story:
+- User uses arrow to navigate menu where they can see the buildings.
+- User presses ENTER to see floors of a highlighted building.
+- User navigates floors and selects one to see rooms.
+- User renames a room and renames another room's direction.
+- User navigates to add room and enters name and direction of room to add.
+- User navigates to 'go back'
+- User renames floor name and direction.
+- User goes to Add Floor and enters floor name and direction then enters a room name and direction and is asked if they wanted to add another room. If they say yes then they add another room and if they answer no, they move on to the next step. If they say no they are sent back to the menu
+- User is sent back to the floors menu and then goes to the 'Go Back' menu item.
+- User renames building name and direction.
+- User uses R to rename a building, floor, or room name.
+- User uses Shift+R to name a building, floor, or room direction.
+- User uses either backspace, escape, or 'Go Back' to go back from room to floor menu or floor to building menu.
+- User uses 'del' to delete a room, floor, or building and uses Shift to select consecutive room, floor, or building with arrows to delete. Or holds down Control and navigates with Arrows and use space to select what room, floor, building or building to delete.
+- User goes to 'add Building' and enters building name and direction then enters room name and direction then is asked if they want to add more room. If they say yes then they get to add more room. If they say no then they are asked if they want to add more floors. If they say yes then add more floors and rooms. If they say no then go back to the main menu.
+- User goes to 'Add gate', enters gate name and direction.
+- User goes to 'save' and then they get various files each with corresponding code to add to the JS file to update the project with data.
+- The files the user gets are: 
+treeDatabase.js
+graphDatabase.js
+buildingPicturesOutput.js
+floorPicturesOutput.js
+pathDrawer.js 
