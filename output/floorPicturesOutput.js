@@ -18,21 +18,7 @@ class FloorPicturesOutput {
 
         // Mapping of floors to image paths
         const floorPictures = {
-            'floor1ground': 'assets/floors/floor1ground.jpeg',
-            'floor1a': 'assets/floors/floor1a.jpg',
-            'floor1b': 'assets/floors/floor1b.jpg',
-            'floor1c': 'assets/floors/floor1c.jpg',
-            'floor2b': 'assets/floors/floor2b.jpg',
-            'floor8a': 'assets/floors/floor8a.jpg',
-            'floor8b': 'assets/floors/floor8b.jpg',
-            'floor8c': 'assets/floors/floor8c.jpg',
-            'floor22b': 'assets/floors/floor22b.jpg',
-            'floor22c': 'assets/floors/floor22c.jpg',
-            'floor5a': 'assets/floors/floor5a.jpg',
-            'floor5b': 'assets/floors/floor5b.jpg',
-
-            // Gate-floor special case
-            'floorGateGround': 'assets/floors/gate_ground.jpg'
+            
         };
 
         // Normalize and lookup
