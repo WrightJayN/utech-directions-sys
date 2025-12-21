@@ -1,14 +1,13 @@
 """
 UTech Campus Navigation System - Tree Editor
-A console-based menu application for managing buildings, floors, and rooms
-With undo support and clean navigation
+Features: Search (F), Multi-Select (Space), Multi-Delete (D), Undo (U)
 """
 
 import os
 import json
 import copy
 import re
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -90,7 +89,14 @@ class UTechTreeEditor:
         self.selected_index = 0
         self.running = True
         
-        # Undo system
+        # Multi-select
+        self.selected_indices: set[int] = set()
+        
+        # Search
+        self.search_mode = False
+        self.search_query = ""
+        
+        # Undo
         self.history = []
         self.history_index = -1
         self.max_history = 50
@@ -101,7 +107,7 @@ class UTechTreeEditor:
         self.HEADER = '\033[95m'
         self.OKBLUE = '\033[94m'
         self.OKGREEN = '\033[92m'
-        self.WARNING = '\033[93m'
+        self.OKYELLOW = '\033[93m'
         self.FAIL = '\033[91m'
         self.ENDC = '\033[0m'
         self.BOLD = '\033[1m'
@@ -123,9 +129,6 @@ class UTechTreeEditor:
     def print_error(self, text: str):
         print(f"{self.FAIL}✗ {text}{self.ENDC}")
     
-    def print_warning(self, text: str):
-        print(f"{self.WARNING}⚠ {text}{self.ENDC}")
-    
     def get_current_items(self) -> List[TreeNode]:
         if self.state == MenuState.BUILDINGS:
             return self.db.get_buildings() + self.db.get_gates()
@@ -133,56 +136,88 @@ class UTechTreeEditor:
             return self.current_node.children
         return []
     
+    def get_filtered_items(self) -> List[Tuple[int, TreeNode]]:
+        """Returns list of (original_index, node) — filtered by search if active"""
+        items = self.get_current_items()
+        if not self.search_mode or not self.search_query.strip():
+            return [(i, item) for i, item in enumerate(items)]
+        
+        query = self.search_query.lower().strip()
+        matches = []
+        for i, item in enumerate(items):
+            if (query in item.name.lower() or 
+                query in item.worded_direction.lower()):
+                matches.append((i, item))
+        return matches
+    
     def display_menu(self):
         self.clear_screen()
         
         undo_status = "available" if self.history_index > 0 else "none"
 
+        # Safe header text
         if self.state == MenuState.BUILDINGS:
             header_text = "🏢 UTech Campus Buildings & Gates"
         elif self.state == MenuState.FLOORS:
-            header_text = f"📁 Floors in {self.current_node.name if self.current_node else 'Unknown Building'}"
-        elif self.state == MenuState.ROOMS:
-            header_text = f"🚪 Rooms in {self.current_node.name if self.current_node else 'Unknown Floor'}"
+            name = self.current_node.name if self.current_node else "Unknown Building"
+            header_text = f"📁 Floors in {name}"
+        else:  # ROOMS
+            name = self.current_node.name if self.current_node else "Unknown Floor"
+            header_text = f"🚪 Rooms in {name}"
+        
         self.print_header(header_text)
 
-        self.print_info(
-            f"Navigate: ↑↓ | Select: ENTER | Add: A | Delete: D | Rename: R | "
-            f"Direction: Shift+R | Undo: U ({undo_status}) | Back: ESC"
-        )
+        # Controls info
+        controls = [
+            "↑↓ Navigate", "Space: Select", "Enter: Open/Add", "A: Add", 
+            "D: Delete selected", "R: Rename", "Shift+R: Direction", 
+            f"U: Undo ({undo_status})", "F: Search", "ESC: Back/Clear search"
+        ]
+        self.print_info(" | ".join(controls))
         
         print()
-        items = self.get_current_items()
+        filtered = self.get_filtered_items()
+        all_items = self.get_current_items()
         
-        for i, item in enumerate(items):
-            prefix = "→ " if i == self.selected_index else "  "
+        # Search status
+        if self.search_mode:
+            count = len(filtered)
+            print(f"{self.OKYELLOW}🔍 Search: '{self.search_query}' → {count} match{'es' if count != 1 else ''}{self.ENDC}\n")
+        
+        # Display filtered items
+        for disp_idx, (orig_idx, item) in enumerate(filtered):
+            prefix = "→ " if disp_idx == self.selected_index else "  "
+            mark = "[✓]" if orig_idx in self.selected_indices else "   "
             icon = {NodeType.GATE: "🚪", NodeType.BUILDING: "🏢", NodeType.FLOOR: "📁"}.get(item.node_type, "🚪")
-            color = self.OKGREEN if i == self.selected_index else ""
-            end_color = self.ENDC if i == self.selected_index else ""
-            print(f"{prefix}{color}{icon} {item.name}{end_color}")
-            if i == self.selected_index:
+            color = self.OKGREEN if disp_idx == self.selected_index else self.OKYELLOW
+            print(f"{mark}{prefix}{color}{icon} {item.name}{self.ENDC}")
+            if disp_idx == self.selected_index:
                 print(f"    Direction: {item.worded_direction}")
         
+        if self.search_mode and len(filtered) < len(all_items):
+            print(f"\n{self.OKBLUE}( {len(all_items) - len(filtered)} items hidden ){self.ENDC}")
+        
         print()
+        extra_start = len(filtered)
         if self.state == MenuState.BUILDINGS:
-            total = len(items)
-            options = ["[A] Add Building", "[G] Add Gate", "[I] Import from treeDatabase.js",
-                       "[S] Save & Export", "[Q] Quit"]
+            options = ["[A] Add Building", "[G] Add Gate", "[I] Import", "[S] Save & Export", "[Q] Quit"]
             for i, opt in enumerate(options):
-                prefix = "→ " if self.selected_index == total + i else "  "
+                prefix = "→ " if self.selected_index == extra_start + i else "  "
                 print(f"  {prefix}{self.OKBLUE}{opt}{self.ENDC}")
         else:
-            prefix = "→ " if self.selected_index == len(items) else "  "
-            print(f"  {prefix}{self.OKBLUE}[A] Add {self.state.value[:-1].title()}{self.ENDC}")
-            prefix_back = "→ " if self.selected_index == len(items) + 1 else "  "
+            prefix_add = "→ " if self.selected_index == extra_start else "  "
+            print(f"  {prefix_add}{self.OKBLUE}[A] Add {self.state.value[:-1].title()}{self.ENDC}")
+            prefix_back = "→ " if self.selected_index == extra_start + 1 else "  "
             print(f"  {prefix_back}{self.OKBLUE}[ESC] Go Back{self.ENDC}")
+        
+        if self.selected_indices:
+            print(f"\n{self.OKYELLOW}Selected: {len(self.selected_indices)} item(s){self.ENDC}")
         
         if self.last_action_desc:
             if self.last_action_desc == "undo":
-                action_text = f"{self.OKGREEN}↶ Undo successful{self.ENDC}"
+                print(f"\n{self.OKGREEN}↶ Undo successful{self.ENDC}")
             else:
-                action_text = f"{self.OKBLUE}Last action: {self.last_action_desc}{self.ENDC}"
-            print(f"\n{action_text}")
+                print(f"\n{self.OKBLUE}Last: {self.last_action_desc}{self.ENDC}")
 
     def handle_input(self):
         import sys, tty, termios
@@ -201,175 +236,198 @@ class UTechTreeEditor:
             termios.tcsetattr(fd, termios.TCSADRAIN, old)
     
     def navigate_up(self):
-        items = self.get_current_items()
+        total = len(self.get_filtered_items())
         extra = 5 if self.state == MenuState.BUILDINGS else 2
         if self.selected_index > 0:
             self.selected_index -= 1
 
     def navigate_down(self):
-        items = self.get_current_items()
+        total = len(self.get_filtered_items())
         extra = 5 if self.state == MenuState.BUILDINGS else 2
-        max_idx = len(items) + extra - 1
-        if self.selected_index < max_idx:
+        if self.selected_index < total + extra - 1:
             self.selected_index += 1
 
     def handle_enter(self):
+        filtered = self.get_filtered_items()
         items = self.get_current_items()
-        if self.selected_index < len(items):
-            selected = items[self.selected_index]
-            if self.state == MenuState.BUILDINGS and selected.node_type == NodeType.BUILDING:
-                self.current_node = selected
+        if self.selected_index < len(filtered):
+            orig_idx = filtered[self.selected_index][0]
+            node = items[orig_idx]
+            if self.state == MenuState.BUILDINGS and node.node_type == NodeType.BUILDING:
+                self.current_node = node
                 self.state = MenuState.FLOORS
-                self.selected_index = 0
             elif self.state == MenuState.FLOORS:
-                self.current_node = selected
+                self.current_node = node
                 self.state = MenuState.ROOMS
-                self.selected_index = 0
+            self.reset_view()
         else:
-            offset = self.selected_index - len(items)
+            offset = self.selected_index - len(filtered)
             if self.state == MenuState.BUILDINGS:
-                if offset == 0: self.add_building()
-                elif offset == 1: self.add_gate()
-                elif offset == 2: self.perform_import()
-                elif offset == 3: self.save_and_export()
-                elif offset == 4: self.running = False
+                {"0": self.add_building, "1": self.add_gate, "2": self.perform_import,
+                 "3": self.save_and_export, "4": lambda: setattr(self, 'running', False)}[str(offset)]()
             else:
                 if offset == 0:
                     self.add_floor() if self.state == MenuState.FLOORS else self.add_room()
                 elif offset == 1:
                     self.go_back()
 
+    def reset_view(self):
+        self.selected_index = 0
+        self.selected_indices.clear()
+        self.search_mode = False
+        self.search_query = ""
+
     def go_back(self):
-        if self.state != MenuState.BUILDINGS:
-            if self.state == MenuState.ROOMS and self.current_node and self.current_node.parent:
-                self.current_node = self.current_node.parent
-                self.state = MenuState.FLOORS
-            elif self.state == MenuState.FLOORS:
-                # Even if current_node is None or has no parent, go back to buildings
-                self.current_node = None
-                self.state = MenuState.BUILDINGS
-            self.selected_index = 0
+        if self.state == MenuState.ROOMS and self.current_node:
+            self.current_node = self.current_node.parent
+            self.state = MenuState.FLOORS
+        elif self.state == MenuState.FLOORS:
+            self.current_node = None
+            self.state = MenuState.BUILDINGS
+        self.reset_view()
+
+    def toggle_selection(self):
+        filtered = self.get_filtered_items()
+        if self.selected_index < len(filtered):
+            orig_idx = filtered[self.selected_index][0]
+            if orig_idx in self.selected_indices:
+                self.selected_indices.remove(orig_idx)
+            else:
+                self.selected_indices.add(orig_idx)
+
+    def delete_selected(self):
+        if not self.selected_indices:
+            self.print_error("No items selected for deletion")
+            input("Press Enter to continue...")
+            return
+        
+        items = self.get_current_items()
+        to_delete = [items[i] for i in sorted(self.selected_indices)]
+        names = ", ".join(n.name for n in to_delete)
+        
+        confirm = input(f"{self.FAIL}Delete {len(to_delete)} items: {names}? (y/N): {self.ENDC}").strip().lower()
+        if confirm != 'y':
+            return
+        
+        self.save_state(f"delete {len(to_delete)} items")
+        for node in to_delete:
+            if node.parent:
+                node.parent.remove_child(node)
+            else:
+                self.db.root.remove_child(node)
+        self.selected_indices.clear()
+        self.last_action_desc = f"deleted {len(to_delete)} items"
+
+    def enter_search(self):
+        self.search_mode = True
+        self.selected_index = 0
+        print(f"{self.OKYELLOW}🔍 Enter search term (Enter=apply, ESC=cancel):{self.ENDC}")
+        query = input("> ").strip()
+        self.search_query = query
+        if not query:
+            self.search_mode = False
 
     def add_building(self):
-        name = input("Enter building name: ").strip()
-        direction = input("Enter worded direction: ").strip()
+        name = input("Building name: ").strip()
+        direction = input("Worded direction: ").strip()
         if name and direction:
-            node = TreeNode(name, direction, NodeType.BUILDING)
-            self.db.root.add_child(node)
+            self.db.root.add_child(TreeNode(name, direction, NodeType.BUILDING))
             self.save_state(f"add building '{name}'")
 
     def add_gate(self):
-        name = input("Enter gate name: ").strip()
-        direction = input("Enter worded direction: ").strip()
+        name = input("Gate name: ").strip()
+        direction = input("Worded direction: ").strip()
         if name and direction:
-            node = TreeNode(name, direction, NodeType.GATE)
-            self.db.root.add_child(node)
+            self.db.root.add_child(TreeNode(name, direction, NodeType.GATE))
             self.save_state(f"add gate '{name}'")
 
     def add_floor(self):
-        name = input("Enter floor name: ").strip()
-        direction = input("Enter worded direction: ").strip()
-        if name and direction and self.current_node:
-            node = TreeNode(name, direction, NodeType.FLOOR)
-            self.current_node.add_child(node)
+        if not self.current_node: return
+        name = input("Floor name: ").strip()
+        direction = input("Worded direction: ").strip()
+        if name and direction:
+            self.current_node.add_child(TreeNode(name, direction, NodeType.FLOOR))
             self.save_state(f"add floor '{name}'")
 
     def add_room(self):
-        name = input("Enter room name: ").strip()
-        direction = input("Enter worded direction: ").strip()
-        if name and direction and self.current_node:
-            node = TreeNode(name, direction, NodeType.ROOM)
-            self.current_node.add_child(node)
+        if not self.current_node: return
+        name = input("Room name: ").strip()
+        direction = input("Worded direction: ").strip()
+        if name and direction:
+            self.current_node.add_child(TreeNode(name, direction, NodeType.ROOM))
             self.save_state(f"add room '{name}'")
 
     def rename_item(self):
+        filtered = self.get_filtered_items()
         items = self.get_current_items()
-        if self.selected_index >= len(items):
-            return
-        item = items[self.selected_index]
-        old = item.name
+        if self.selected_index >= len(filtered): return
+        orig_idx = filtered[self.selected_index][0]
+        node = items[orig_idx]
+        old = node.name
         self.save_state(f"rename '{old}'")
-        new = input(f"Enter new name for '{old}': ").strip()
+        new = input(f"New name for '{old}': ").strip()
         if new:
-            item.name = new
+            node.name = new
             self.last_action_desc = f"renamed '{old}' → '{new}'"
 
     def rename_direction(self):
+        filtered = self.get_filtered_items()
         items = self.get_current_items()
-        if self.selected_index >= len(items):
-            return
-        item = items[self.selected_index]
-        self.save_state(f"edit direction of '{item.name}'")
-        new = input(f"Enter new direction for '{item.name}': ").strip()
+        if self.selected_index >= len(filtered): return
+        orig_idx = filtered[self.selected_index][0]
+        node = items[orig_idx]
+        self.save_state(f"edit direction '{node.name}'")
+        new = input(f"New direction for '{node.name}': ").strip()
         if new:
-            item.worded_direction = new
-            self.last_action_desc = f"updated direction of '{item.name}'"
-
-    def delete_item(self):
-        items = self.get_current_items()
-        if self.selected_index >= len(items):
-            return
-        item = items[self.selected_index]
-        name = item.name
-        if input(f"Delete '{name}'? (y/N): ").strip().lower() != 'y':
-            return
-        self.save_state(f"delete '{name}'")
-        if item.parent:
-            item.parent.remove_child(item)
-        else:
-            self.db.root.remove_child(item)
-        self.last_action_desc = f"deleted '{name}'"
+            node.worded_direction = new
+            self.last_action_desc = f"updated direction '{node.name}'"
 
     def save_state(self, desc: str):
-        state = copy.deepcopy(self.db.root.to_dict())
+        tree_copy = copy.deepcopy(self.db.root.to_dict())
         self.history = self.history[:self.history_index + 1]
-        self.history.append((state, desc))
+        self.history.append((tree_copy, desc))
         if len(self.history) > self.max_history:
             self.history.pop(0)
         self.history_index = len(self.history) - 1
-        if desc and desc != "undo":
+        if desc != "undo":
             self.last_action_desc = desc
 
     def undo(self):
         if self.history_index > 0:
             self.history_index -= 1
-            saved_tree, _ = self.history[self.history_index]
-            self.db.root = self.rebuild_tree(saved_tree)
+            tree_data, _ = self.history[self.history_index]
+            self.db.root = self.rebuild_tree(tree_data)
+            self.reset_view()
             self.last_action_desc = "undo"
 
     def rebuild_tree(self, data: Dict, parent: Optional[TreeNode] = None) -> TreeNode:
         node = TreeNode(data['name'], data['worded_direction'], NodeType(data['type']))
         node.parent = parent
         for child_data in data.get('children', []):
-            child = self.rebuild_tree(child_data, node)
-            node.add_child(child)
+            node.add_child(self.rebuild_tree(child_data, node))
         return node
 
     def generate_tree_database_js(self) -> str:
         lines = ["// Auto-generated by UTech Tree Editor\n\n"]
-        for building in self.db.get_buildings():
-            lines.append(f"// {building.name}\n")
-            lines.append(f"const {building.name} = new TreeNode('{building.name}', '{building.worded_direction}');\n")
-            lines.append(f"this.root.addChild({building.name});\n\n")
-            for floor in building.children:
-                lines.append(f"const {floor.name} = new TreeNode('{floor.name}', '{floor.worded_direction}');\n")
-                lines.append(f"{building.name}.addChild({floor.name});\n\n")
-                lines.append(f"const {floor.name}Rooms = [\n")
-                for room in floor.children:
-                    lines.append(f"    ['{room.name}', '{room.worded_direction}'],\n")
-                lines.append("];\n\n")
-                lines.append(f"{floor.name}Rooms.forEach(([roomName, direction]) => {{\n")
-                lines.append(f"    const roomNode = new TreeNode(roomName, direction);\n")
-                lines.append(f"    {floor.name}.addChild(roomNode);\n")
-                lines.append(f"    this.roomsHashMap.set(roomName.toLowerCase(), roomNode);\n")
-                lines.append("});\n\n")
-        
-        for gate in self.db.get_gates():
-            var = gate.name.replace(' ', '_')
-            lines.append(f"const {var} = new TreeNode('{gate.name}', '{gate.worded_direction}');\n")
-            lines.append(f"this.root.addChild({var});\n")
-            lines.append(f"this.roomsHashMap.set('{gate.name}', {var});\n\n")
-        
+        for b in self.db.get_buildings():
+            lines += [f"// {b.name}", f"const {b.name} = new TreeNode('{b.name}', '{b.worded_direction}');",
+                      f"this.root.addChild({b.name});\n"]
+            for f in b.children:
+                lines += [f"const {f.name} = new TreeNode('{f.name}', '{f.worded_direction}');",
+                          f"{b.name}.addChild({f.name});\n"]
+                lines += [f"const {f.name}Rooms = ["]
+                for r in f.children:
+                    lines.append(f"    ['{r.name}', '{r.worded_direction}'],")
+                lines += ["];\n", f"{f.name}Rooms.forEach(([roomName, direction]) => {{",
+                          "    const roomNode = new TreeNode(roomName, direction);",
+                          f"    {f.name}.addChild(roomNode);",
+                          "    this.roomsHashMap.set(roomName.toLowerCase(), roomNode);",
+                          "});\n"]
+        for g in self.db.get_gates():
+            var = g.name.replace(' ', '_')
+            lines += [f"const {var} = new TreeNode('{g.name}', '{g.worded_direction}');",
+                      f"this.root.addChild({var});",
+                      f"this.roomsHashMap.set('{g.name}', {var});\n"]
         return ''.join(lines)
 
     def import_from_js(self, content: str) -> bool:
@@ -377,19 +435,15 @@ class UTechTreeEditor:
             self.db.root = TreeNode('root', 'Starting point', NodeType.ROOT)
             node_map = {'root': self.db.root}
             last_floor = None
-
             comment_pat = re.compile(r'^\s*//\s*(.+)$')
             node_pat = re.compile(r"const\s+(\w+)\s*=\s*new\s+TreeNode\s*\(\s*'([^']+)'\s*,\s*'([^']+)'\s*\)")
             add_pat = re.compile(r"(this\.root|\w+)\.addChild\(\s*(\w+)\s*\)")
             room_pat = re.compile(r"\[\s*'([^']+)'\s*,\s*'([^']+)'\s*\]")
 
-            lines = content.splitlines()
             pending_comment = None
-
-            for line in lines:
+            for line in content.splitlines():
                 stripped = line.strip()
-                if not stripped:
-                    continue
+                if not stripped: continue
 
                 m = comment_pat.match(line)
                 if m:
@@ -399,29 +453,25 @@ class UTechTreeEditor:
                 m = node_pat.search(stripped)
                 if m:
                     var, name, direction = m.groups()
-                    node_type = NodeType.ROOM
+                    ntype = NodeType.ROOM
                     if pending_comment:
                         lc = pending_comment.lower()
-                        if 'floor' in lc: node_type = NodeType.FLOOR
-                        elif 'building' in lc: node_type = NodeType.BUILDING
-                        elif 'gate' in lc: node_type = NodeType.GATE
+                        if 'floor' in lc: ntype = NodeType.FLOOR
+                        elif 'building' in lc: ntype = NodeType.BUILDING
+                        elif 'gate' in lc: ntype = NodeType.GATE
                         pending_comment = None
-                    if node_type == NodeType.ROOM:
-                        if 'gate' in name.lower() or 'gate' in var.lower():
-                            node_type = NodeType.GATE
-                        elif 'building' in var.lower():
-                            node_type = NodeType.BUILDING
-                        elif 'floor' in var.lower():
-                            node_type = NodeType.FLOOR
-                    node = TreeNode(name, direction, node_type)
-                    node_map[var] = node
+                    if ntype == NodeType.ROOM:
+                        if 'gate' in name.lower() or 'gate' in var.lower(): ntype = NodeType.GATE
+                        elif 'building' in var.lower(): ntype = NodeType.BUILDING
+                        elif 'floor' in var.lower(): ntype = NodeType.FLOOR
+                    node_map[var] = TreeNode(name, direction, ntype)
                     continue
 
                 m = add_pat.search(stripped)
                 if m:
-                    parent_key, child_var = m.groups()
-                    parent = node_map.get('root' if parent_key == 'this.root' else parent_key)
-                    child = node_map.get(child_var)
+                    pkey, cvar = m.groups()
+                    parent = node_map.get('root' if pkey == 'this.root' else pkey)
+                    child = node_map.get(cvar)
                     if parent and child:
                         parent.add_child(child)
                         if child.node_type == NodeType.FLOOR:
@@ -432,13 +482,11 @@ class UTechTreeEditor:
                     last_floor = None
                     continue
 
-                for room_name, room_dir in room_pat.findall(line):
+                for rname, rdir in room_pat.findall(line):
                     if last_floor:
-                        room = TreeNode(room_name, room_dir, NodeType.ROOM)
-                        last_floor.add_child(room)
-
+                        last_floor.add_child(TreeNode(rname, rdir, NodeType.ROOM))
             return True
-        except Exception:
+        except:
             return False
 
     def perform_import(self):
@@ -447,91 +495,82 @@ class UTechTreeEditor:
             with open(path, 'r', encoding='utf-8') as f:
                 content = f.read()
             if self.import_from_js(content):
-                self.save_state("import from treeDatabase.js")
-                self.state = MenuState.BUILDINGS  # Force reset
+                self.save_state("import")
+                self.state = MenuState.BUILDINGS
                 self.current_node = None
-                self.selected_index = 0
-                self.last_action_desc = "imported tree structure"
-                return  # Auto refresh happens naturally in loop
+                self.reset_view()
+                self.last_action_desc = "imported structure"
             else:
-                self.print_error("Failed to parse treeDatabase.js")
+                self.print_error("Import failed — invalid format")
         except FileNotFoundError:
             self.print_error(f"File not found: {path}")
         except Exception as e:
-            self.print_error(f"Error reading file: {e}")
+            self.print_error(f"Error: {e}")
 
     def save_and_export(self):
         self.clear_screen()
         self.print_header("💾 Save & Export")
         out_dir = "utech_export"
         os.makedirs(out_dir, exist_ok=True)
-
-        with open(f"{out_dir}/treeDatabase.js", 'w') as f:
+        
+        with open(f"{out_dir}/treeDatabase.js", "w") as f:
             f.write(self.generate_tree_database_js())
-        self.print_success("Generated treeDatabase.js")
-
-        with open(f"{out_dir}/structure.json", 'w') as f:
+        self.print_success("treeDatabase.js generated")
+        
+        with open(f"{out_dir}/structure.json", "w") as f:
             json.dump(self.db.to_dict(), f, indent=2)
-        self.print_success("Generated structure.json")
-
-        self.generate_template_files(out_dir)
-
-        print(f"\n{self.OKGREEN}All files exported to '{out_dir}/'{self.ENDC}")
+        self.print_success("structure.json generated")
+        
+        # Templates (minimal)
+        open(f"{out_dir}/graphDatabase_template.js", "w").write("// Add graph nodes here\n")
+        open(f"{out_dir}/buildingPictures_template.js", "w").write("// Add building pictures\n")
+        open(f"{out_dir}/floorPictures_template.js", "w").write("// Add floor pictures\n")
+        open(f"{out_dir}/pathDrawer_template.js", "w").write("// Add path vertices\n")
+        
+        print(f"\n{self.OKGREEN}All files saved to '{out_dir}/'{self.ENDC}")
         input("\nPress Enter to continue...")
-
-    def generate_template_files(self, out_dir: str):
-        # graphDatabase template
-        with open(f"{out_dir}/graphDatabase_template.js", 'w') as f:
-            f.write("// TODO: Add graph nodes with coordinates\n")
-            for b in self.db.get_buildings():
-                f.write(f"// const {b.name}_node = new GraphNode('{b.name}', 'building', x, y);\n")
-
-        # buildingPictures template
-        with open(f"{out_dir}/buildingPictures_template.js", 'w') as f:
-            f.write("// Add to buildingPicturesOutput.js\nconst buildingPictures = {\n")
-            for b in self.db.get_buildings():
-                f.write(f"    '{b.name}': 'assets/buildings/{b.name}.jpg',\n")
-            for g in self.db.get_gates():
-                f.write(f"    '{g.name}': 'assets/buildings/{g.name.replace(' ', '_')}.jpg',\n")
-            f.write("};\n")
-
-        # floorPictures template
-        with open(f"{out_dir}/floorPictures_template.js", 'w') as f:
-            f.write("// Add to floorPicturesOutput.js\nconst floorPictures = {\n")
-            for b in self.db.get_buildings():
-                for fl in b.children:
-                    f.write(f"    '{fl.name}': 'assets/floors/{fl.name}.jpg',\n")
-            f.write("};\n")
-
-        # pathDrawer template
-        with open(f"{out_dir}/pathDrawer_template.js", 'w') as f:
-            f.write("// Add to pathDrawer.js buildingVerticesHashMap\n")
-            for b in self.db.get_buildings():
-                f.write(f"['{b.name}', [\n    // TODO: Add vertices {{x: , y: }}\n]],\n")
 
     def run(self):
         while self.running:
             self.display_menu()
             try:
                 key = self.handle_input()
-                if key == 'up': self.navigate_up()
-                elif key == 'down': self.navigate_down()
-                elif key in ('\r', '\n'): self.handle_enter()
+                if key == 'up':
+                    self.navigate_up()
+                elif key == 'down':
+                    self.navigate_down()
+                elif key in ('\r', '\n'):
+                    self.handle_enter()
                 elif key in ('escape', '\x7f'):
-                    if self.state != MenuState.BUILDINGS:
+                    if self.search_mode:
+                        self.search_mode = False
+                        self.search_query = ""
+                    elif self.state != MenuState.BUILDINGS:
                         self.go_back()
+                elif key == ' ':
+                    self.toggle_selection()
+                elif key == 'd':
+                    self.delete_selected()
+                elif key == 'f':
+                    self.enter_search()
                 elif key == 'a':
                     if self.state == MenuState.BUILDINGS: self.add_building()
                     elif self.state == MenuState.FLOORS: self.add_floor()
                     else: self.add_room()
-                elif key == 'g' and self.state == MenuState.BUILDINGS: self.add_gate()
-                elif key == 'i' and self.state == MenuState.BUILDINGS: self.perform_import()
-                elif key == 's' and self.state == MenuState.BUILDINGS: self.save_and_export()
-                elif key == 'q' and self.state == MenuState.BUILDINGS: self.running = False
-                elif key == 'r': self.rename_item()
-                elif key == 'R': self.rename_direction()
-                elif key == 'd': self.delete_item()
-                elif key == 'u': self.undo()
+                elif key == 'g' and self.state == MenuState.BUILDINGS:
+                    self.add_gate()
+                elif key == 'i' and self.state == MenuState.BUILDINGS:
+                    self.perform_import()
+                elif key == 's' and self.state == MenuState.BUILDINGS:
+                    self.save_and_export()
+                elif key == 'q' and self.state == MenuState.BUILDINGS:
+                    self.running = False
+                elif key == 'r':
+                    self.rename_item()
+                elif key == 'R':
+                    self.rename_direction()
+                elif key == 'u':
+                    self.undo()
             except KeyboardInterrupt:
                 self.running = False
             except Exception as e:
