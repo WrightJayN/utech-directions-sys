@@ -144,7 +144,7 @@ class UTechTreeEditor:
             self.print_info("Navigate: ↑↓ | Select: ENTER | Add: A | Delete: DEL | Rename: R/Shift+R | Save: S | Quit: Q")
         elif self.state == MenuState.FLOORS:
             self.print_header(f"📁 Floors in {self.current_node.name}")
-            self.print_info("Navigate: ↑↓ | Select: ENTER | Back: ESC | Add: A | Delete: DEL | Rename: R/Shift+R")
+            self.print_info("Navigate: ↑↓ | Select: ENTER | Back: ESC | Add: A | Delete: D | Rename: R/Shift+R")
         elif self.state == MenuState.ROOMS:
             self.print_header(f"🚪 Rooms in {self.current_node.name}")
             self.print_info("Navigate: ↑↓ | Back: ESC | Add: A | Delete: DEL | Rename: R/Shift+R")
@@ -727,7 +727,7 @@ class UTechTreeEditor:
                     self.save_and_export()
                 elif key.lower() == 'q' and self.state == MenuState.BUILDINGS:
                     self.running = False
-                elif key == '\x7f':  # Delete key
+                elif key.lower() == 'd':  # Delete key
                     self.delete_selected()
                 elif key == ' ':  # Space for multi-select
                     items = self.get_current_items()
