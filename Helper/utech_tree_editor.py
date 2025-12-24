@@ -490,45 +490,105 @@ class UTechTreeEditor:
             return False
 
     def perform_import(self):
-        path = "../storage/treeDatabase.js"
+        #import_path = "../storage/treeDatabase.js"
+        import_path = "utech_export/treeDatabase.js"
         try:
-            with open(path, 'r', encoding='utf-8') as f:
-                content = f.read()
-            if self.import_from_js(content):
-                self.save_state("import")
-                self.state = MenuState.BUILDINGS
-                self.current_node = None
-                self.reset_view()
-                self.last_action_desc = "imported structure"
+            with open(import_path, 'r', encoding='utf-8') as f:
+                js_content = f.read()
+            
+            if self.import_from_js(js_content):
+                self.print_success("Successfully imported tree structure from treeDatabase.js")
+                # Reset view to refresh display
+                self.selected_index = 0
+                self.selected_indices.clear()
             else:
-                self.print_error("Import failed — invalid format")
+                self.print_error("Failed to import tree structure")
         except FileNotFoundError:
-            self.print_error(f"File not found: {path}")
+            self.print_error(f"File not found: {import_path}")
+            self.print_info("Make sure you have exported/saved first, or place a valid treeDatabase.js in utech_export/")
         except Exception as e:
-            self.print_error(f"Error: {e}")
+            self.print_error(f"Error reading file: {str(e)}")
+        
+        #input("Press Enter to continue...")
 
     def save_and_export(self):
         self.clear_screen()
         self.print_header("💾 Save & Export")
-        out_dir = "utech_export"
-        os.makedirs(out_dir, exist_ok=True)
         
-        with open(f"{out_dir}/treeDatabase.js", "w") as f:
-            f.write(self.generate_tree_database_js())
-        self.print_success("treeDatabase.js generated")
+        output_dir = "utech_export"
+        os.makedirs(output_dir, exist_ok=True)
         
-        with open(f"{out_dir}/structure.json", "w") as f:
+        # Generate and save treeDatabase.js
+        tree_code = self.generate_tree_database_js()
+        with open(f"{output_dir}/treeDatabase.js", 'w') as f:
+            f.write(tree_code)
+        self.print_success(f"Generated {output_dir}/treeDatabase.js")
+        
+        # Save JSON structure
+        with open(f"{output_dir}/structure.json", 'w') as f:
             json.dump(self.db.to_dict(), f, indent=2)
-        self.print_success("structure.json generated")
+        self.print_success(f"Generated {output_dir}/structure.json")
         
-        # Templates (minimal)
-        open(f"{out_dir}/graphDatabase_template.js", "w").write("// Add graph nodes here\n")
-        open(f"{out_dir}/buildingPictures_template.js", "w").write("// Add building pictures\n")
-        open(f"{out_dir}/floorPictures_template.js", "w").write("// Add floor pictures\n")
-        open(f"{out_dir}/pathDrawer_template.js", "w").write("// Add path vertices\n")
+        # Generate template files
+        self.generate_template_files(output_dir)
         
-        print(f"\n{self.OKGREEN}All files saved to '{out_dir}/'{self.ENDC}")
+        print(f"\n{self.OKGREEN}All files exported to '{output_dir}/' directory{self.ENDC}")
+        print(f"\nGenerated files:")
+        print(f"  - treeDatabase.js (ready to use)")
+        print(f"  - structure.json (tree structure)")
+        print(f"  - graphDatabase_template.js (template)")
+        print(f"  - buildingPictures_template.js (template)")
+        print(f"  - floorPictures_template.js (template)")
+        print(f"  - pathDrawer_template.js (template)")
+        
         input("\nPress Enter to continue...")
+
+
+    def generate_template_files(self, output_dir: str):
+        """Generate template files for other components"""
+        
+        # graphDatabase.js template
+        graph_template = "// TODO: Add graph nodes with coordinates for each building\n"
+        graph_template += "// Example:\n"
+        for building in self.db.get_buildings():
+            graph_template += f"// const {building.name}_node = new GraphNode('{building.name}', 'building', x, y);\n"
+        
+        with open(f"{output_dir}/graphDatabase_template.js", 'w') as f:
+            f.write(graph_template)
+        
+        # buildingPictures template
+        pics_template = "// Add to buildingPicturesOutput.js\n"
+        pics_template += "const buildingPictures = {\n"
+        for building in self.db.get_buildings():
+            pics_template += f"    '{building.name}': 'assets/buildings/{building.name}.jpg',\n"
+        for gate in self.db.get_gates():
+            pics_template += f"    '{gate.name}': 'assets/buildings/{gate.name.replace(' ', '_')}.jpg',\n"
+        pics_template += "};\n"
+        
+        with open(f"{output_dir}/buildingPictures_template.js", 'w') as f:
+            f.write(pics_template)
+        
+        # floorPictures template
+        floor_pics = "// Add to floorPicturesOutput.js\n"
+        floor_pics += "const floorPictures = {\n"
+        for building in self.db.get_buildings():
+            for floor in building.children:
+                floor_pics += f"    '{floor.name}': 'assets/floors/{floor.name}.jpg',\n"
+        floor_pics += "};\n"
+        
+        with open(f"{output_dir}/floorPictures_template.js", 'w') as f:
+            f.write(floor_pics)
+        
+        # pathDrawer template
+        vertices_template = "// Add to pathDrawer.js buildingVerticesHashMap\n"
+        for building in self.db.get_buildings():
+            vertices_template += f"['{building.name}', [\n"
+            vertices_template += "    // TODO: Add vertices {x: , y: }\n"
+            vertices_template += "]],\n"
+        
+        with open(f"{output_dir}/pathDrawer_template.js", 'w') as f:
+            f.write(vertices_template)
+
 
     def run(self):
         while self.running:
@@ -567,7 +627,7 @@ class UTechTreeEditor:
                     self.running = False
                 elif key == 'r':
                     self.rename_item()
-                elif key == 'R':
+                elif key == 'e':
                     self.rename_direction()
                 elif key == 'u':
                     self.undo()
