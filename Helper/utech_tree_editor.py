@@ -550,8 +550,7 @@ class UTechTreeEditor:
             return False
 
     def perform_import(self):
-        #import_path = "../storage/treeDatabase.js"
-        import_path = "utech_export/treeDatabase.js"
+        import_path = "../storage/treeDatabase.js"
         try:
             with open(import_path, 'r', encoding='utf-8') as f:
                 js_content = f.read()
