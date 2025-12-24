@@ -487,7 +487,7 @@ class UTechTreeEditor:
         "if (typeof module !== 'undefined' && module.exports) {\n"+
         "\tmodule.exports = TreeDatabase;\n" +
         "}\n")
-        
+
         return ''.join(code)
 
     def import_from_js(self, content: str) -> bool:
@@ -575,7 +575,7 @@ class UTechTreeEditor:
         self.clear_screen()
         self.print_header("💾 Save & Export")
         
-        output_dir = "utech_export"
+        output_dir = "../storage"
         os.makedirs(output_dir, exist_ok=True)
         
         # Generate and save treeDatabase.js
@@ -584,10 +584,10 @@ class UTechTreeEditor:
             f.write(tree_code)
         self.print_success(f"Generated {output_dir}/treeDatabase.js")
         
-        # Save JSON structure
+        '''# Save JSON structure
         with open(f"{output_dir}/structure.json", 'w') as f:
             json.dump(self.db.to_dict(), f, indent=2)
-        self.print_success(f"Generated {output_dir}/structure.json")
+        self.print_success(f"Generated {output_dir}/structure.json")'''
         
         # Generate template files
         self.generate_template_files(output_dir)
