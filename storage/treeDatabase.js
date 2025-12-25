@@ -422,7 +422,6 @@ class TreeDatabase {
 		building4.addChild(basement);
 
 		const basementRooms = [
-			['lt4', 'Go to LT4'],
 		];
 
 		basementRooms.forEach(([roomName, direction]) => {
@@ -464,62 +463,6 @@ class TreeDatabase {
 		floor4cRooms.forEach(([roomName, direction]) => {
 			const roomNode = new TreeNode(roomName, direction);
 			floor4c.addChild(roomNode);
-			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
-		});
-
-		// ltbsdbld8
-		const ltbsdbld8 = new TreeNode('ltbsdbld8', 'Go to the Lecture Theatre beside Building 8');
-		this.root.addChild(ltbsdbld8);
-
-		const floorltbsdbld8a = new TreeNode('floorltbsdbld8a', 'Go to 1st Floor (Basement)');
-		ltbsdbld8.addChild(floorltbsdbld8a);
-
-		const floorltbsdbld8aRooms = [
-			['lt10a', 'Go to room LT10A'],
-		];
-
-		floorltbsdbld8aRooms.forEach(([roomName, direction]) => {
-			const roomNode = new TreeNode(roomName, direction);
-			floorltbsdbld8a.addChild(roomNode);
-			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
-		});
-
-		const floorltbsdbld8b = new TreeNode('floorltbsdbld8b', 'Go to 2nd Floor (Ground)');
-		ltbsdbld8.addChild(floorltbsdbld8b);
-
-		const floorltbsdbld8bRooms = [
-			['lt9', 'Go to room LT9'],
-		];
-
-		floorltbsdbld8bRooms.forEach(([roomName, direction]) => {
-			const roomNode = new TreeNode(roomName, direction);
-			floorltbsdbld8b.addChild(roomNode);
-			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
-		});
-
-		const floorltbsdbld8c = new TreeNode('floorltbsdbld8c', 'Go to 3rd Floor (Floor A)');
-		ltbsdbld8.addChild(floorltbsdbld8c);
-
-		const floorltbsdbld8cRooms = [
-			['lt10b', 'Go to room LT10B'],
-		];
-
-		floorltbsdbld8cRooms.forEach(([roomName, direction]) => {
-			const roomNode = new TreeNode(roomName, direction);
-			floorltbsdbld8c.addChild(roomNode);
-			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
-		});
-
-		const floorltbsdbld8d = new TreeNode('floorltbsdbld8d', 'Go to 3rd Floor (Floor B)');
-		ltbsdbld8.addChild(floorltbsdbld8d);
-
-		const floorltbsdbld8dRooms = [
-			['lt9b', 'Go to room LT9B'],
-		];
-
-		floorltbsdbld8dRooms.forEach(([roomName, direction]) => {
-			const roomNode = new TreeNode(roomName, direction);
-			floorltbsdbld8d.addChild(roomNode);
 			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
 		});
 

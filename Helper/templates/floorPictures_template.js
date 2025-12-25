@@ -23,8 +23,4 @@ const floorPictures = {
     'floor4a': 'assets/floors/floor4a.jpg',
     'floor4b': 'assets/floors/floor4b.jpg',
     'floor4c': 'assets/floors/floor4c.jpg',
-    'floorltbsdbld8a': 'assets/floors/floorltbsdbld8a.jpg',
-    'floorltbsdbld8b': 'assets/floors/floorltbsdbld8b.jpg',
-    'floorltbsdbld8c': 'assets/floors/floorltbsdbld8c.jpg',
-    'floorltbsdbld8d': 'assets/floors/floorltbsdbld8d.jpg',
 };

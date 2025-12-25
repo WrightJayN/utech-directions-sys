@@ -575,6 +575,7 @@ class UTechTreeEditor:
         self.print_header("💾 Save & Export")
         
         output_dir = "../storage"
+        template_output_dir = "./templates"
         os.makedirs(output_dir, exist_ok=True)
         
         # Generate and save treeDatabase.js
@@ -589,12 +590,12 @@ class UTechTreeEditor:
         self.print_success(f"Generated {output_dir}/structure.json")'''
         
         # Generate template files
-        self.generate_template_files(output_dir)
+        self.generate_template_files(template_output_dir)
         
         print(f"\n{self.OKGREEN}All files exported to '{output_dir}/' directory{self.ENDC}")
         print(f"\nGenerated files:")
         print(f"  - treeDatabase.js (ready to use)")
-        print(f"  - structure.json (tree structure)")
+        #print(f"  - structure.json (tree structure)")
         print(f"  - graphDatabase_template.js (template)")
         print(f"  - buildingPictures_template.js (template)")
         print(f"  - floorPictures_template.js (template)")
