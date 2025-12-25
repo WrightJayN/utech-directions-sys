@@ -402,10 +402,10 @@ class TreeDatabase {
 		building47.addChild(floor47c);
 
 		const floor47cRooms = [
-			['47a1', 'Go to room 47A1'],
-			['47a2', 'Go to room 47A2'],
-			['47a3', 'Go to room 47A3'],
-			['47a4', 'Go to room 47A4'],
+			['47c1', 'Go to room 47C1'],
+			['47c2', 'Go to room 47C2'],
+			['47c3', 'Go to room 47C3'],
+			['47c4', 'Go to room 47C4'],
 		];
 
 		floor47cRooms.forEach(([roomName, direction]) => {
