@@ -111,6 +111,9 @@ class UTechTreeEditor:
         self.FAIL = '\033[91m'
         self.ENDC = '\033[0m'
         self.BOLD = '\033[1m'
+
+        # move
+        self.move_mode = False
     
     def clear_screen(self):
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -762,6 +765,102 @@ if (typeof module !== 'undefined' && module.exports) {
         with open(f"{output_dir}/floorPicturesOutput.js", 'w') as f:
             f.write(floor_js)
 
+    def _is_consecutive(self, lst: List[int]) -> bool:
+        """
+        Helper function to check if a sorted list of indices is consecutive.
+        """
+        if not lst:
+            return False
+        return all(lst[i] == lst[i-1] + 1 for i in range(1, len(lst)))
+
+    def get_current_parent(self) -> Optional[TreeNode]:
+        """
+        Gets the current parent node based on the menu state.
+        - BUILDINGS: root
+        - FLOORS: current_node (building)
+        - ROOMS: current_node (floor)
+        """
+        if self.state == MenuState.BUILDINGS:
+            return self.db.root
+        elif self.state == MenuState.FLOORS:
+            return self.current_node  # building
+        elif self.state == MenuState.ROOMS:
+            return self.current_node  # floor
+        return None
+
+    def move_selected_up(self):
+        """
+        Moves the selected items up (to a lower index) as a block.
+        Only works if selections are consecutive and not at the top.
+        Simulates dragging the block up in the menu.
+        """
+        if not self.selected_indices:
+            self.print_error("No items selected to move")
+            return
+
+        selected = sorted(list(self.selected_indices))
+        if selected[0] == 0:
+            return  # Already at top
+
+        if not self._is_consecutive(selected):
+            self.print_error("Selection must be consecutive to move as a block")
+            return
+
+        parent = self.get_current_parent()
+        if not parent:
+            return
+
+        items = parent.children
+        start = selected[0]
+        end = selected[-1]
+        block = items[start:end + 1]
+        del items[start:end + 1]
+        insert_pos = start - 1
+        items[insert_pos:insert_pos] = block
+
+        # Update selected indices
+        new_start = insert_pos
+        self.selected_indices = set(range(new_start, new_start + len(selected)))
+
+        # Update navigation index to the new position of the first selected item
+        self.selected_index = new_start
+
+    def move_selected_down(self):
+        """
+        Moves the selected items down (to a higher index) as a block.
+        Only works if selections are consecutive and not at the bottom.
+        Simulates dragging the block down in the menu.
+        """
+        if not self.selected_indices:
+            self.print_error("No items selected to move")
+            return
+
+        selected = sorted(list(self.selected_indices))
+        parent = self.get_current_parent()
+        if not parent:
+            return
+
+        items = parent.children
+        if selected[-1] == len(items) - 1:
+            return  # Already at bottom
+
+        if not self._is_consecutive(selected):
+            self.print_error("Selection must be consecutive to move as a block")
+            return
+
+        start = selected[0]
+        end = selected[-1]
+        block = items[start:end + 1]
+        del items[start:end + 1]
+        insert_pos = start + 1  # After deletion, this positions the block after the original next item
+        items[insert_pos:insert_pos] = block
+
+        # Update selected indices
+        new_start = insert_pos
+        self.selected_indices = set(range(new_start, new_start + len(selected)))
+
+        # Update navigation index to the new position of the first selected item
+        self.selected_index = new_start
 
     def run(self):
         self.perform_import()
@@ -805,6 +904,10 @@ if (typeof module !== 'undefined' && module.exports) {
                     self.rename_direction()
                 elif key == 'u':
                     self.undo()
+                elif key.lower() == 'j':
+                    self.move_selected_down()
+                elif key.lower() == 'k':
+                    self.move_selected_up()
             except KeyboardInterrupt:
                 self.running = False
             except Exception as e:
