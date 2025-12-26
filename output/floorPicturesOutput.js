@@ -45,6 +45,8 @@ class FloorPicturesOutput {
             'floorltbsdbld8b': 'assets/floors/floorltbsdbld8b.jpg',
             'floorltbsdbld8c': 'assets/floors/floorltbsdbld8c.jpg',
             'floorltbsdbld8d': 'assets/floors/floorltbsdbld8d.jpg',
+            'floorltbsdbld47a': 'assets/floors/floorltbsdbld47a.jpg',
+            'floorltbsdbld47b': 'assets/floors/floorltbsdbld47b.jpg',
         };
 
         // Normalize and lookup
