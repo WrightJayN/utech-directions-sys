@@ -418,16 +418,16 @@ class TreeDatabase {
 		const building4 = new TreeNode('building4', 'Go to FOBE (Building 4)');
 		this.root.addChild(building4);
 
-		const basement = new TreeNode('basement', 'Go to Basement Floor');
-		building4.addChild(basement);
+		const floorbasement = new TreeNode('basement', 'Go to Basement Floor');
+		building4.addChild(floorbasement);
 
-		const basementRooms = [
-			['lt4', 'Go to room LT4'],
+		const floorbasementRooms = [
+			['lt4', 'Go to LT4'],
 		];
 
-		basementRooms.forEach(([roomName, direction]) => {
+		floorbasementRooms.forEach(([roomName, direction]) => {
 			const roomNode = new TreeNode(roomName, direction);
-			basement.addChild(roomNode);
+			floorbasement.addChild(roomNode);
 			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
 		});
 

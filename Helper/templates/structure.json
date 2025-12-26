@@ -945,7 +945,14 @@
           "name": "basement",
           "worded_direction": "Go to Basement Floor",
           "type": "room",
-          "children": []
+          "children": [
+            {
+              "name": "lt4",
+              "worded_direction": "Go to LT4",
+              "type": "room",
+              "children": []
+            }
+          ]
         },
         {
           "name": "floor4a",
