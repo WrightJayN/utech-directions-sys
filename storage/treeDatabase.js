@@ -203,7 +203,7 @@ class TreeDatabase {
 		building8.addChild(floor8a);
 
 		const floor8aRooms = [
-			['8a2 lab', 'Go to room 8A2 Lab'],
+			['8a2 computer lab', 'Go to room 8A2 Computer Lab'],
 			['8a3', 'Go to room 8A3'],
 			['8a1b', 'Go to room 8A1B'],
 			['8a1a', 'Go to room 8A1A'],
@@ -243,7 +243,7 @@ class TreeDatabase {
 			['8c7a', 'Go to room 8C7A'],
 			['8c6a', 'Go to room 8C6A'],
 			['8c3', 'Go to room 8C3'],
-			['8c2 lab', 'Go to room 8C2 Lab'],
+			['8c2 computer lab', 'Go to room 8C2 Computer Lab'],
 			['8c11', 'Go to room 8C11'],
 			['8c2', 'Go to room 8C2'],
 			['8c1', 'Go to room 8C1'],
@@ -266,8 +266,8 @@ class TreeDatabase {
 		const floor22bRooms = [
 			['22b1', 'Go to room 22B1'],
 			['22b2', 'Go to room 22B2'],
-			['22b3 lab', 'Go to room 22B3 Lab'],
-			['22b4 lab', 'Go to room 22B4 Lab'],
+			['22b3 computer lab', 'Go to room 22B3 Computer Lab'],
+			['22b4 computer lab', 'Go to room 22B4 Computer Lab'],
 		];
 
 		floor22bRooms.forEach(([roomName, direction]) => {
@@ -280,7 +280,7 @@ class TreeDatabase {
 		building22.addChild(floor22c);
 
 		const floor22cRooms = [
-			['22c2 lab', 'Go to room 22C2 Lab'],
+			['22c2 computer lab', 'Go to room 22C2 Computer Lab'],
 		];
 
 		floor22cRooms.forEach(([roomName, direction]) => {
@@ -383,8 +383,8 @@ class TreeDatabase {
 
 		const floor47bRooms = [
 			['47b1', 'Go to room 47B1'],
-			['47b2 lab', 'Go to room 47B2 Lab'],
-			['47b3 lab', 'Go to room 47B3 Lab'],
+			['47b2 computer lab', 'Go to room 47B2 Computer Lab'],
+			['47b3 computer lab', 'Go to room 47B3 Computer Lab'],
 			['47b4', 'Go to room 47B4'],
 			['47b5', 'Go to room 47B5'],
 			['47b6', 'Go to room 47B6'],
@@ -422,6 +422,7 @@ class TreeDatabase {
 		building4.addChild(basement);
 
 		const basementRooms = [
+			['lt4', 'Go to room LT4'],
 		];
 
 		basementRooms.forEach(([roomName, direction]) => {
@@ -430,10 +431,24 @@ class TreeDatabase {
 			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
 		});
 
-		const floor4a = new TreeNode('floor4a', 'Go the 1st Floor (Floor A)');
+		const floor4a = new TreeNode('floor4a', 'Go to 1st Floor (Floor A)');
 		building4.addChild(floor4a);
 
 		const floor4aRooms = [
+			['4a2', 'Go to room 4A2'],
+			['4a3', 'Go to room 4A3'],
+			['4a4', 'Go to room 4A4'],
+			['4a5', 'Go to room 4A5'],
+			['4a6 soil mechanics laboratory', 'Go to 4A6 Soil Mechanics Laboratory'],
+			['4a7', 'Go to room 4A7'],
+			['4a8', 'Go to room 4A8'],
+			['4a9 concrete lab', 'Go to 4A9 Concrete Lab'],
+			['4a10', 'Go to room 4A10'],
+			['4a11', 'Go to room 4A11'],
+			['4a12', 'Go to room 4A12'],
+			['4a16a', 'Go to room 4A16A'],
+			['4a16b', 'Go to room 4A16B'],
+			['4a17', 'Go to room 4A17'],
 		];
 
 		floor4aRooms.forEach(([roomName, direction]) => {
@@ -446,6 +461,16 @@ class TreeDatabase {
 		building4.addChild(floor4b);
 
 		const floor4bRooms = [
+			['4b6 computer lab', 'Go to 4B6 Computer Lab'],
+			['4b4 sblm office', 'Go to 4B4 SBLM Office'],
+			['4b3 reference room', 'Go to 4B3 Reference Room'],
+			['4b5 conference room', 'Go to 4B5 Conference Room'],
+			['4b2 csa administration', 'Go to 4B2 CSA Administration'],
+			['4b9', 'Go to room 4B9'],
+			['4b10', 'Go to room 4B10'],
+			['4b11 computer lab', 'Go to 4B11 Computer Lab'],
+			['4b12', 'Go to room 4B12'],
+			['4b16', 'Go to room 4B16'],
 		];
 
 		floor4bRooms.forEach(([roomName, direction]) => {
@@ -458,6 +483,16 @@ class TreeDatabase {
 		building4.addChild(floor4c);
 
 		const floor4cRooms = [
+			['4c17', 'Go to room 4C17'],
+			['4c14', 'Go to room 4C14'],
+			['4c14a', 'Go to room 4C14A'],
+			['4c13', 'Go to room 4C13'],
+			['4c12', 'Go to room 4C12'],
+			['4c9', 'Go to room 4C9'],
+			['4c8 computer lab', 'Go to 4C8 Computer Lab'],
+			['4c7 computer lab', 'Go to 4C7 Computer Lab'],
+			['4c6', 'Go to room 4C6'],
+			['4c5', 'Go to room 4C5'],
 		];
 
 		floor4cRooms.forEach(([roomName, direction]) => {
