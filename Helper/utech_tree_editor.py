@@ -464,17 +464,23 @@ class UTechTreeEditor:
             code.append(f"\t\tthis.root.addChild({building.name});\n\n")
             
             for floor in building.children:
-                code.append(f"\t\tconst {floor.name} = new TreeNode('{floor.name}', '{floor.worded_direction}');\n")
-                code.append(f"\t\t{building.name}.addChild({floor.name});\n\n")
+                # Determine safe variable name for the floor
+                floor_var = floor.name if floor.name.lower().startswith('floor') else f"floor{floor.name}"
                 
-                code.append(f"\t\tconst {floor.name}Rooms = [\n")
+                code.append(f"\t\tconst {floor_var} = new TreeNode('{floor.name}', '{floor.worded_direction}');\n")
+                code.append(f"\t\t{building.name}.addChild({floor_var});\n\n")
+                
+                # Use the same safe name for the rooms array
+                rooms_array_var = f"{floor_var}Rooms"
+                
+                code.append(f"\t\tconst {rooms_array_var} = [\n")
                 for room in floor.children:
                     code.append(f"\t\t\t['{room.name}', '{room.worded_direction}'],\n")
                 code.append("\t\t];\n\n")
                 
-                code.append(f"\t\t{floor.name}Rooms.forEach(([roomName, direction]) => {{\n")
+                code.append(f"\t\t{rooms_array_var}.forEach(([roomName, direction]) => {{\n")
                 code.append(f"\t\t\tconst roomNode = new TreeNode(roomName, direction);\n")
-                code.append(f"\t\t\t{floor.name}.addChild(roomNode);\n")
+                code.append(f"\t\t\t{floor_var}.addChild(roomNode);\n")
                 code.append(f"\t\t\tthis.roomsHashMap.set(roomName.toLowerCase(), roomNode);\n")
                 code.append("\t\t});\n\n")
 
