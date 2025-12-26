@@ -663,6 +663,7 @@ class UTechTreeEditor:
 
 
     def run(self):
+        self.perform_import()
         while self.running:
             self.display_menu()
             try:
