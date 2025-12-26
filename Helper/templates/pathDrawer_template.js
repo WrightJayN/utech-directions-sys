@@ -23,3 +23,6 @@
 ['ltbsdbld8', [
     // TODO: Add vertices {x: , y: }
 ]],
+['ltbsdbld47', [
+    // TODO: Add vertices {x: , y: }
+]],

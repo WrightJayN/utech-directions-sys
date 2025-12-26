@@ -969,7 +969,7 @@
     },
     {
       "name": "ltbsdbld8",
-      "worded_direction": "Go to the Lecture Theatre beside Building 8",
+      "worded_direction": "Go to Lecture Theatre beside FELS (building 8)",
       "type": "building",
       "children": [
         {
@@ -1043,6 +1043,38 @@
       "worded_direction": "Go to Main Gate",
       "type": "gate",
       "children": []
+    },
+    {
+      "name": "ltbsdbld47",
+      "worded_direction": "Go to Lecture Theatre beside Shared Facilities (building 47)",
+      "type": "building",
+      "children": [
+        {
+          "name": "floorltbsdbld47a",
+          "worded_direction": "Go to 1st floor (Floor A)",
+          "type": "floor",
+          "children": [
+            {
+              "name": "lt49",
+              "worded_direction": "Go to LT49",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "lt50",
+              "worded_direction": "Go to LT50",
+              "type": "room",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "floorltbsdbld47b",
+          "worded_direction": "Go to 2nd floor (Floor B)",
+          "type": "floor",
+          "children": []
+        }
+      ]
     }
   ]
 }

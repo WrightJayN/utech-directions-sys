@@ -467,7 +467,7 @@ class TreeDatabase {
 		});
 
 		// buildingltbsdbld8
-		const ltbsdbld8 = new TreeNode('ltbsdbld8', 'Go to the Lecture Theatre beside Building 8');
+		const ltbsdbld8 = new TreeNode('ltbsdbld8', 'Go to Lecture Theatre beside FELS (building 8)');
 		this.root.addChild(ltbsdbld8);
 
 		const floorltbsdbld8a = new TreeNode('floorltbsdbld8a', 'Go to 1st Floor (Basement)');
@@ -519,6 +519,36 @@ class TreeDatabase {
 		floorltbsdbld8dRooms.forEach(([roomName, direction]) => {
 			const roomNode = new TreeNode(roomName, direction);
 			floorltbsdbld8d.addChild(roomNode);
+			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
+		});
+
+		// buildingltbsdbld47
+		const ltbsdbld47 = new TreeNode('ltbsdbld47', 'Go to Lecture Theatre beside Shared Facilities (building 47)');
+		this.root.addChild(ltbsdbld47);
+
+		const floorltbsdbld47a = new TreeNode('floorltbsdbld47a', 'Go to 1st floor (Floor A)');
+		ltbsdbld47.addChild(floorltbsdbld47a);
+
+		const floorltbsdbld47aRooms = [
+			['lt49', 'Go to LT49'],
+			['lt50', 'Go to LT50'],
+		];
+
+		floorltbsdbld47aRooms.forEach(([roomName, direction]) => {
+			const roomNode = new TreeNode(roomName, direction);
+			floorltbsdbld47a.addChild(roomNode);
+			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
+		});
+
+		const floorltbsdbld47b = new TreeNode('floorltbsdbld47b', 'Go to 2nd floor (Floor B)');
+		ltbsdbld47.addChild(floorltbsdbld47b);
+
+		const floorltbsdbld47bRooms = [
+		];
+
+		floorltbsdbld47bRooms.forEach(([roomName, direction]) => {
+			const roomNode = new TreeNode(roomName, direction);
+			floorltbsdbld47b.addChild(roomNode);
 			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
 		});
 

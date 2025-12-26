@@ -8,3 +8,4 @@
 // const building47_node = new GraphNode('building47', 'building', x, y);
 // const building4_node = new GraphNode('building4', 'building', x, y);
 // const ltbsdbld8_node = new GraphNode('ltbsdbld8', 'building', x, y);
+// const ltbsdbld47_node = new GraphNode('ltbsdbld47', 'building', x, y);
