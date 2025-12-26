@@ -970,7 +970,7 @@
     {
       "name": "ltbsdbld8",
       "worded_direction": "Go to the Lecture Theatre beside Building 8",
-      "type": "room",
+      "type": "building",
       "children": [
         {
           "name": "floorltbsdbld8a",

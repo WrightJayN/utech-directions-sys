@@ -20,3 +20,6 @@
 ['building4', [
     // TODO: Add vertices {x: , y: }
 ]],
+['ltbsdbld8', [
+    // TODO: Add vertices {x: , y: }
+]],
