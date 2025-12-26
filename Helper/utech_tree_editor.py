@@ -653,10 +653,18 @@ class UTechTreeEditor:
         
         # pathDrawer template
         vertices_template = "// Add to pathDrawer.js buildingVerticesHashMap\n"
-        for building in self.db.get_buildings():
+        buildings = self.db.get_buildings()
+
+        for i, building in enumerate(buildings):
             vertices_template += f"['{building.name}', [\n"
             vertices_template += "    // TODO: Add vertices {x: , y: }\n"
-            vertices_template += "]],\n"
+            vertices_template += "]]"
+            
+            # Add comma only if it's NOT the last building
+            if i < len(buildings) - 1:
+                vertices_template += ","
+            
+            vertices_template += "\n"
         
         with open(f"{output_dir}/pathDrawer_template.js", 'w') as f:
             f.write(vertices_template)
