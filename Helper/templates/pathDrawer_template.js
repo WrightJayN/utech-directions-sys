@@ -5,22 +5,22 @@
 ['building2', [
     // TODO: Add vertices {x: , y: }
 ]],
-['building8', [
-    // TODO: Add vertices {x: , y: }
-]],
-['building22', [
+['building4', [
     // TODO: Add vertices {x: , y: }
 ]],
 ['building5', [
     // TODO: Add vertices {x: , y: }
 ]],
-['building47', [
-    // TODO: Add vertices {x: , y: }
-]],
-['building4', [
+['building8', [
     // TODO: Add vertices {x: , y: }
 ]],
 ['ltbsdbld8', [
+    // TODO: Add vertices {x: , y: }
+]],
+['building22', [
+    // TODO: Add vertices {x: , y: }
+]],
+['building47', [
     // TODO: Add vertices {x: , y: }
 ]],
 ['ltbsdbld47', [

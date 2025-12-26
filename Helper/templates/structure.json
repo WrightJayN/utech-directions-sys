@@ -416,6 +416,12 @@
       "type": "building",
       "children": [
         {
+          "name": "floor2a",
+          "worded_direction": "Go to 1st Floor (Floor A)",
+          "type": "floor",
+          "children": []
+        },
+        {
           "name": "floor2b",
           "worded_direction": "Go to 2nd Floor (Floor B)",
           "type": "floor",
@@ -459,480 +465,10 @@
           ]
         },
         {
-          "name": "floor2a",
-          "worded_direction": "Go to 1st Floor (Floor A)",
-          "type": "floor",
-          "children": []
-        },
-        {
           "name": "floor2c",
           "worded_direction": "Go to 3rd Floor (Floor C)",
           "type": "floor",
           "children": []
-        }
-      ]
-    },
-    {
-      "name": "building8",
-      "worded_direction": "Go to FELS (Building 8)",
-      "type": "building",
-      "children": [
-        {
-          "name": "floor8a",
-          "worded_direction": "Go to 1st Floor (Floor A)",
-          "type": "floor",
-          "children": [
-            {
-              "name": "8a2 computer lab",
-              "worded_direction": "Go to room 8A2 Computer Lab",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8a3",
-              "worded_direction": "Go to room 8A3",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8a1b",
-              "worded_direction": "Go to room 8A1B",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8a1a",
-              "worded_direction": "Go to room 8A1A",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8a4",
-              "worded_direction": "Go to room 8A4",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8a6",
-              "worded_direction": "Go to room 8A6",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "lt 9",
-              "worded_direction": "Go to Lecture Theatre 9",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "lt 10",
-              "worded_direction": "Go to Lecture Theatre 10",
-              "type": "room",
-              "children": []
-            }
-          ]
-        },
-        {
-          "name": "floor8b",
-          "worded_direction": "Go to 2nd Floor (Floor B)",
-          "type": "floor",
-          "children": [
-            {
-              "name": "8b1a",
-              "worded_direction": "Go to room 8B1A",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8b1b",
-              "worded_direction": "Go to room 8B1B",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8b5",
-              "worded_direction": "Go to room 8B5",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8b2",
-              "worded_direction": "Go to room 8B2",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "lt10b",
-              "worded_direction": "Go to Lecture Theatre 10B",
-              "type": "room",
-              "children": []
-            }
-          ]
-        },
-        {
-          "name": "floor8c",
-          "worded_direction": "Go to 3rd Floor (Floor C)",
-          "type": "floor",
-          "children": [
-            {
-              "name": "8c7a",
-              "worded_direction": "Go to room 8C7A",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8c6a",
-              "worded_direction": "Go to room 8C6A",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8c3",
-              "worded_direction": "Go to room 8C3",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8c2 computer lab",
-              "worded_direction": "Go to room 8C2 Computer Lab",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8c11",
-              "worded_direction": "Go to room 8C11",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8c2",
-              "worded_direction": "Go to room 8C2",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "8c1",
-              "worded_direction": "Go to room 8C1",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "lt9b",
-              "worded_direction": "Go to Lecture Theatre 9B",
-              "type": "room",
-              "children": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "building22",
-      "worded_direction": "Go to COBAM (Building 22)",
-      "type": "building",
-      "children": [
-        {
-          "name": "floor22b",
-          "worded_direction": "Go to 2nd Floor (Floor B)",
-          "type": "floor",
-          "children": [
-            {
-              "name": "22b1",
-              "worded_direction": "Go to room 22B1",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "22b2",
-              "worded_direction": "Go to room 22B2",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "22b3 computer lab",
-              "worded_direction": "Go to room 22B3 Computer Lab",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "22b4 computer lab",
-              "worded_direction": "Go to room 22B4 Computer Lab",
-              "type": "room",
-              "children": []
-            }
-          ]
-        },
-        {
-          "name": "floor22c",
-          "worded_direction": "Go to 3rd Floor (Floor C)",
-          "type": "floor",
-          "children": [
-            {
-              "name": "22c2 computer lab",
-              "worded_direction": "Go to room 22C2 Computer Lab",
-              "type": "room",
-              "children": []
-            }
-          ]
-        },
-        {
-          "name": "floor22a",
-          "worded_direction": "Go to 1st Floor (Floor A)",
-          "type": "floor",
-          "children": []
-        }
-      ]
-    },
-    {
-      "name": "building5",
-      "worded_direction": "Go to SOBA (Building 5)",
-      "type": "building",
-      "children": [
-        {
-          "name": "floor5a",
-          "worded_direction": "Go to 1st Floor (Floor A)",
-          "type": "floor",
-          "children": [
-            {
-              "name": "5a6",
-              "worded_direction": "Go to room 5A6",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "5a5",
-              "worded_direction": "Go to room 5A5",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "5a4",
-              "worded_direction": "Go to room 5A4",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "5a3",
-              "worded_direction": "Go to room 5A3",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "5a2",
-              "worded_direction": "Go to room 5A2",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "5a1",
-              "worded_direction": "Go to room 5A1",
-              "type": "room",
-              "children": []
-            }
-          ]
-        },
-        {
-          "name": "floor5b",
-          "worded_direction": "Go to 2nd Floor (Floor B)",
-          "type": "floor",
-          "children": [
-            {
-              "name": "5b1",
-              "worded_direction": "Go to room 5B1",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "5b2",
-              "worded_direction": "Go to room 5B2",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "5b3",
-              "worded_direction": "Go to room 5B3",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "5b4",
-              "worded_direction": "Go to room 5B4",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "5b5",
-              "worded_direction": "Go to room 5B5",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "5b6",
-              "worded_direction": "Go to room 5B6",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "5b8",
-              "worded_direction": "Go to room 5B8",
-              "type": "room",
-              "children": []
-            }
-          ]
-        },
-        {
-          "name": "floor5c",
-          "worded_direction": "Go to 3rd Floor (Floor C)",
-          "type": "floor",
-          "children": []
-        }
-      ]
-    },
-    {
-      "name": "building47",
-      "worded_direction": "Go to Shared Facilities (Building 47)",
-      "type": "building",
-      "children": [
-        {
-          "name": "floor47a",
-          "worded_direction": "Go to 1st Floor (Floor A)",
-          "type": "floor",
-          "children": [
-            {
-              "name": "47a1",
-              "worded_direction": "Go to room 47A1",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47a2",
-              "worded_direction": "Go to room 47A2",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47a3",
-              "worded_direction": "Go to room 47A3",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47a4",
-              "worded_direction": "Go to room 47A4",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47a5",
-              "worded_direction": "Go to room 47A5",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47a6",
-              "worded_direction": "Go to room 47A6",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47a7",
-              "worded_direction": "Go to room 47A7",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47a8",
-              "worded_direction": "Go to room 47A8",
-              "type": "room",
-              "children": []
-            }
-          ]
-        },
-        {
-          "name": "floor47b",
-          "worded_direction": "Go to 2nd Floor (Floor B)",
-          "type": "floor",
-          "children": [
-            {
-              "name": "47b1",
-              "worded_direction": "Go to room 47B1",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47b2 computer lab",
-              "worded_direction": "Go to room 47B2 Computer Lab",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47b3 computer lab",
-              "worded_direction": "Go to room 47B3 Computer Lab",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47b4",
-              "worded_direction": "Go to room 47B4",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47b5",
-              "worded_direction": "Go to room 47B5",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47b6",
-              "worded_direction": "Go to room 47B6",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47b7",
-              "worded_direction": "Go to room 47B7",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47b8",
-              "worded_direction": "Go to room 47B8",
-              "type": "room",
-              "children": []
-            }
-          ]
-        },
-        {
-          "name": "floor47c",
-          "worded_direction": "Go to 3rd Floor (Floor C)",
-          "type": "floor",
-          "children": [
-            {
-              "name": "47c1",
-              "worded_direction": "Go to room 47C1",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47c2",
-              "worded_direction": "Go to room 47C2",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47c3",
-              "worded_direction": "Go to room 47C3",
-              "type": "room",
-              "children": []
-            },
-            {
-              "name": "47c4",
-              "worded_direction": "Go to room 47C4",
-              "type": "room",
-              "children": []
-            }
-          ]
         }
       ]
     },
@@ -1182,6 +718,265 @@
       ]
     },
     {
+      "name": "building5",
+      "worded_direction": "Go to SOBA (Building 5)",
+      "type": "building",
+      "children": [
+        {
+          "name": "floor5a",
+          "worded_direction": "Go to 1st Floor (Floor A)",
+          "type": "floor",
+          "children": [
+            {
+              "name": "5a6",
+              "worded_direction": "Go to room 5A6",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "5a5",
+              "worded_direction": "Go to room 5A5",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "5a4",
+              "worded_direction": "Go to room 5A4",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "5a3",
+              "worded_direction": "Go to room 5A3",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "5a2",
+              "worded_direction": "Go to room 5A2",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "5a1",
+              "worded_direction": "Go to room 5A1",
+              "type": "room",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "floor5b",
+          "worded_direction": "Go to 2nd Floor (Floor B)",
+          "type": "floor",
+          "children": [
+            {
+              "name": "5b1",
+              "worded_direction": "Go to room 5B1",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "5b2",
+              "worded_direction": "Go to room 5B2",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "5b3",
+              "worded_direction": "Go to room 5B3",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "5b4",
+              "worded_direction": "Go to room 5B4",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "5b5",
+              "worded_direction": "Go to room 5B5",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "5b6",
+              "worded_direction": "Go to room 5B6",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "5b8",
+              "worded_direction": "Go to room 5B8",
+              "type": "room",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "floor5c",
+          "worded_direction": "Go to 3rd Floor (Floor C)",
+          "type": "floor",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "building8",
+      "worded_direction": "Go to FELS (Building 8)",
+      "type": "building",
+      "children": [
+        {
+          "name": "floor8a",
+          "worded_direction": "Go to 1st Floor (Floor A)",
+          "type": "floor",
+          "children": [
+            {
+              "name": "8a2 computer lab",
+              "worded_direction": "Go to room 8A2 Computer Lab",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8a3",
+              "worded_direction": "Go to room 8A3",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8a1b",
+              "worded_direction": "Go to room 8A1B",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8a1a",
+              "worded_direction": "Go to room 8A1A",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8a4",
+              "worded_direction": "Go to room 8A4",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8a6",
+              "worded_direction": "Go to room 8A6",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "lt 9",
+              "worded_direction": "Go to Lecture Theatre 9",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "lt 10",
+              "worded_direction": "Go to Lecture Theatre 10",
+              "type": "room",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "floor8b",
+          "worded_direction": "Go to 2nd Floor (Floor B)",
+          "type": "floor",
+          "children": [
+            {
+              "name": "8b1a",
+              "worded_direction": "Go to room 8B1A",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8b1b",
+              "worded_direction": "Go to room 8B1B",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8b5",
+              "worded_direction": "Go to room 8B5",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8b2",
+              "worded_direction": "Go to room 8B2",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "lt10b",
+              "worded_direction": "Go to Lecture Theatre 10B",
+              "type": "room",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "floor8c",
+          "worded_direction": "Go to 3rd Floor (Floor C)",
+          "type": "floor",
+          "children": [
+            {
+              "name": "8c7a",
+              "worded_direction": "Go to room 8C7A",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8c6a",
+              "worded_direction": "Go to room 8C6A",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8c3",
+              "worded_direction": "Go to room 8C3",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8c2 computer lab",
+              "worded_direction": "Go to room 8C2 Computer Lab",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8c11",
+              "worded_direction": "Go to room 8C11",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8c2",
+              "worded_direction": "Go to room 8C2",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "8c1",
+              "worded_direction": "Go to room 8C1",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "lt9b",
+              "worded_direction": "Go to Lecture Theatre 9B",
+              "type": "room",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "ltbsdbld8",
       "worded_direction": "Go to Lecture Theatre beside FELS (building 8)",
       "type": "building",
@@ -1233,6 +1028,211 @@
             {
               "name": "lt9b",
               "worded_direction": "Go to room LT9B",
+              "type": "room",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "building22",
+      "worded_direction": "Go to COBAM (Building 22)",
+      "type": "building",
+      "children": [
+        {
+          "name": "floor22a",
+          "worded_direction": "Go to 1st Floor (Floor A)",
+          "type": "floor",
+          "children": []
+        },
+        {
+          "name": "floor22b",
+          "worded_direction": "Go to 2nd Floor (Floor B)",
+          "type": "floor",
+          "children": [
+            {
+              "name": "22b1",
+              "worded_direction": "Go to room 22B1",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "22b2",
+              "worded_direction": "Go to room 22B2",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "22b3 computer lab",
+              "worded_direction": "Go to room 22B3 Computer Lab",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "22b4 computer lab",
+              "worded_direction": "Go to room 22B4 Computer Lab",
+              "type": "room",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "floor22c",
+          "worded_direction": "Go to 3rd Floor (Floor C)",
+          "type": "floor",
+          "children": [
+            {
+              "name": "22c2 computer lab",
+              "worded_direction": "Go to room 22C2 Computer Lab",
+              "type": "room",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "building47",
+      "worded_direction": "Go to Shared Facilities (Building 47)",
+      "type": "building",
+      "children": [
+        {
+          "name": "floor47a",
+          "worded_direction": "Go to 1st Floor (Floor A)",
+          "type": "floor",
+          "children": [
+            {
+              "name": "47a1",
+              "worded_direction": "Go to room 47A1",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47a2",
+              "worded_direction": "Go to room 47A2",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47a3",
+              "worded_direction": "Go to room 47A3",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47a4",
+              "worded_direction": "Go to room 47A4",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47a5",
+              "worded_direction": "Go to room 47A5",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47a6",
+              "worded_direction": "Go to room 47A6",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47a7",
+              "worded_direction": "Go to room 47A7",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47a8",
+              "worded_direction": "Go to room 47A8",
+              "type": "room",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "floor47b",
+          "worded_direction": "Go to 2nd Floor (Floor B)",
+          "type": "floor",
+          "children": [
+            {
+              "name": "47b1",
+              "worded_direction": "Go to room 47B1",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47b2 computer lab",
+              "worded_direction": "Go to room 47B2 Computer Lab",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47b3 computer lab",
+              "worded_direction": "Go to room 47B3 Computer Lab",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47b4",
+              "worded_direction": "Go to room 47B4",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47b5",
+              "worded_direction": "Go to room 47B5",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47b6",
+              "worded_direction": "Go to room 47B6",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47b7",
+              "worded_direction": "Go to room 47B7",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47b8",
+              "worded_direction": "Go to room 47B8",
+              "type": "room",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "floor47c",
+          "worded_direction": "Go to 3rd Floor (Floor C)",
+          "type": "floor",
+          "children": [
+            {
+              "name": "47c1",
+              "worded_direction": "Go to room 47C1",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47c2",
+              "worded_direction": "Go to room 47C2",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47c3",
+              "worded_direction": "Go to room 47C3",
+              "type": "room",
+              "children": []
+            },
+            {
+              "name": "47c4",
+              "worded_direction": "Go to room 47C4",
               "type": "room",
               "children": []
             }
