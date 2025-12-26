@@ -609,6 +609,7 @@ class UTechTreeEditor:
         
         # Generate template files
         self.generate_template_files(template_output_dir)
+        self.generate_picture_output(output_dir)
         
         print(f"\n{self.OKGREEN}All files exported to '{output_dir}/' directory{self.ENDC}")
         print(f"\nGenerated files:")
@@ -621,7 +622,6 @@ class UTechTreeEditor:
         
         input("\nPress Enter to continue...")
 
-
     def generate_template_files(self, output_dir: str):
         """Generate template files for other components"""
         
@@ -633,30 +633,7 @@ class UTechTreeEditor:
         
         with open(f"{output_dir}/graphDatabase_template.js", 'w') as f:
             f.write(graph_template)
-        
-        # buildingPictures template
-        pics_template = "// Add to buildingPicturesOutput.js\n"
-        pics_template += "const buildingPictures = {\n"
-        for building in self.db.get_buildings():
-            pics_template += f"    '{building.name}': 'assets/buildings/{building.name}.jpg',\n"
-        for gate in self.db.get_gates():
-            pics_template += f"    '{gate.name}': 'assets/buildings/{gate.name.replace(' ', '_')}.jpg',\n"
-        pics_template += "};\n"
-        
-        with open(f"{output_dir}/buildingPictures_template.js", 'w') as f:
-            f.write(pics_template)
-        
-        # floorPictures template
-        floor_pics = "// Add to floorPicturesOutput.js\n"
-        floor_pics += "const floorPictures = {\n"
-        for building in self.db.get_buildings():
-            for floor in building.children:
-                floor_pics += f"    '{floor.name}': 'assets/floors/{floor.name}.jpg',\n"
-        floor_pics += "};\n"
-        
-        with open(f"{output_dir}/floorPictures_template.js", 'w') as f:
-            f.write(floor_pics)
-        
+
         # pathDrawer template
         vertices_template = "// Add to pathDrawer.js buildingVerticesHashMap\n"
         buildings = self.db.get_buildings()
@@ -674,6 +651,116 @@ class UTechTreeEditor:
         
         with open(f"{output_dir}/pathDrawer_template.js", 'w') as f:
             f.write(vertices_template)
+        
+    def generate_picture_output(self, output_dir: str):
+        # buildingPictures template
+        building_js = """
+/**
+ * Building Pictures Output Component
+ * Takes to_bld_t_node and outputs the destination building picture.
+ * 
+ * According to documentation:
+ * - Takes to_bld_t_node (building tree node)
+ * - Returns image URL or file path for the building
+ * - Handles both regular buildings and gates
+ */
+
+class BuildingPicturesOutput {
+    /**
+     * Gets the building picture path for a given building tree node
+     * @param {Object} bld_t_node - Building tree node with structure: {name, worded_direction, parent, children}
+     * @returns {string|null} Image file path or null if not found
+     */
+    static getBuildingPicture(bld_t_node) {
+        // Validate input
+        if (!bld_t_node || !bld_t_node.name) {
+            return null;
+        }
+
+        // Building pictures mapping\n"""
+        building_js += "const buildingPictures = {\n"
+        for building in self.db.get_buildings():
+            building_js += f"    '{building.name}': 'assets/buildings/{building.name}.jpg',\n"
+        for gate in self.db.get_gates():
+            building_js += f"    '{gate.name}': 'assets/buildings/{gate.name.replace(' ', '_')}.jpg',\n"
+        building_js += "};\n"
+        building_js += """
+
+        
+        // Get the building name (normalize to lowercase for case-insensitive lookup)
+        const buildingName = bld_t_node.name.toLowerCase();
+
+        // Return the picture path or null if not found
+        return buildingPictures[buildingName] || null;
+    }
+
+    /**
+     * Gets building picture for destination building (to_bld_t_node)
+     * This is a convenience method that matches the documentation terminology
+     * @param {Object} to_bld_t_node - Destination building tree node
+     * @returns {string|null} Image file path or null if not found
+     */
+    static getDestinationBuildingPicture(to_bld_t_node) {
+        return this.getBuildingPicture(to_bld_t_node);
+    }
+}
+
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = BuildingPicturesOutput;
+}"""
+        
+        with open(f"{output_dir}/buildingPicturesOutput.js", 'w') as f:
+            f.write(building_js)
+        
+        # floorPictures template
+        
+        floor_js = """/**
+ * FloorPicturesOutput
+ * Takes a flr_t_node (floor tree node) and returns the image file path
+ * associated with that floor.
+ */
+
+class FloorPicturesOutput {
+    /**
+     * Gets the floor picture path for a given floor tree node
+     * @param {Object} flr_t_node - Floor tree node: {name, worded_direction, parent, children}
+     * @returns {string|null} Image path or null if not found
+     */
+    static getFloorPicture(flr_t_node) {
+        // Validate input
+        if (!flr_t_node || !flr_t_node.name) {
+            return null;
+        }
+
+        // Mapping of floors to image paths
+        const floorPictures = {\n"""
+        for building in self.db.get_buildings():
+            for floor in building.children:
+                floor_js += f"    '{floor.name}': 'assets/floors/{floor.name}.jpg',\n"
+        floor_js += "};\n"
+        floor_js += """// Normalize and lookup
+        const floorName = flr_t_node.name.toLowerCase();
+
+        // Floor names are case-sensitive in mapping, so match directly
+        return floorPictures[flr_t_node.name] || null;
+    }
+
+    /**
+     * Convenience wrapper matching system naming consistency
+     */
+    static getDestinationFloorPicture(to_flr_t_node) {
+        return this.getFloorPicture(to_flr_t_node);
+    }
+}
+
+// Export for Node environments
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = FloorPicturesOutput;
+}"""
+        
+        with open(f"{output_dir}/floorPicturesOutput.js", 'w') as f:
+            f.write(floor_js)
 
 
     def run(self):
