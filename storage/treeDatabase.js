@@ -466,7 +466,7 @@ class TreeDatabase {
 			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
 		});
 
-		// ltbsdbld8
+		// buildingltbsdbld8
 		const ltbsdbld8 = new TreeNode('ltbsdbld8', 'Go to the Lecture Theatre beside Building 8');
 		this.root.addChild(ltbsdbld8);
 

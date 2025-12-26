@@ -446,8 +446,20 @@ class UTechTreeEditor:
         "\t\t// Create Root Node\n"
         "\t\tthis.root = new TreeNode('root', 'Starting point');\n\n"
         )
+
+        # Helper to get safe variable name
+        def safe_var_name(name: str, node_type: NodeType) -> str:
+            if node_type == NodeType.GATE:
+                # Gates keep their name, just replace spaces with underscores
+                return name.replace(' ', '_')
+            if not name.lower().startswith('building'):
+                # Add 'building' prefix if it doesn't already start with 'building'
+                return f"building{name}"
+            return name
+
         for building in self.db.get_buildings():
-            code.append(f"\t\t// {building.name}\n")
+            var_name = safe_var_name(building.name, building.node_type)
+            code.append(f"\t\t// {var_name}\n")
             code.append(f"\t\tconst {building.name} = new TreeNode('{building.name}', '{building.worded_direction}');\n")
             code.append(f"\t\tthis.root.addChild({building.name});\n\n")
             
