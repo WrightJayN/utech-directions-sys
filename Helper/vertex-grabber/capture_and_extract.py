@@ -41,7 +41,7 @@ def take_screenshot_and_process():
     with open(OUTPUT_FILE, "a") as f:
         f.write(line)
 
-    print(f"✅ Saved: {line.strip()}")
+    print(f"{line.strip()}")
 
 
 def on_press(key):
