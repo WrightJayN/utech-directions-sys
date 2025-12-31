@@ -155,20 +155,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div id="floorPictureContent"></div>
                 </div>
             </div>
-            
-            <div id="floorHighlightSection" class="output-section">
-                <h3>🎯 Floor Location</h3>
-                <div id="floorHighlightContent">
-                    <canvas id="floorHighlightCanvas" width="400" height="600"></canvas>
-                </div>
-            </div>
-            
-            <div id="mapSection" class="output-section">
+
+            <!-- Map section with inset floor highlight -->
+            <div class="output-section" id="mapSection">
                 <h3>🗺️ Campus Map with Route</h3>
-                <div id="mapContent">
-                    <canvas id="mapCanvas"></canvas>
+                <div class="map-container">
+                    <div id="mapContent">
+                        <canvas id="mapCanvas"></canvas>
+                    </div>
+                    
+                    <!-- Inset Floor Highlight -->
+                    <div class="floor-inset">
+                        <h4>🎯 Floor Location</h4>
+                        <div id="floorHighlightContent">
+                            <canvas id="floorHighlightCanvas" width="400" height="600"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         `;
     }
     
