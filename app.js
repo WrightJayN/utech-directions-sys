@@ -144,14 +144,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div id="textDirectionsContent"></div>
             </div>
             
-            <div id="buildingPictureSection" class="output-section">
-                <h3>🏢 Destination Building</h3>
-                <div id="buildingPictureContent"></div>
-            </div>
-            
-            <div id="floorPictureSection" class="output-section">
-                <h3>🔢 Destination Floor</h3>
-                <div id="floorPictureContent"></div>
+            <div class="output-row">
+                <div id="buildingPictureSection" class="output-section.half">
+                    <h3>🏢 Destination Building</h3>
+                    <div id="buildingPictureContent"></div>
+                </div>
+                
+                <div id="floorPictureSection" class="output-section.half">
+                    <h3>🔢 Destination Floor</h3>
+                    <div id="floorPictureContent"></div>
+                </div>
             </div>
             
             <div id="floorHighlightSection" class="output-section">
@@ -238,16 +240,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const content = document.getElementById('textDirectionsContent');
         
         let html = `
-            <div class="direction-step">
-                <p><strong>From:</strong> ${from_rm_t_node.name}</p>
-                <p><strong>Building:</strong> ${from_bld_t_node.name}</p>
-                <p><strong>Floor:</strong> ${from_flr_t_node.name}</p>
-            </div>
-            <div class="direction-arrow">↓</div>
-            <div class="direction-step">
-                <p><strong>To:</strong> ${to_rm_t_node.name}</p>
-                <p><strong>Building:</strong> ${to_bld_t_node.name}</p>
-                <p><strong>Floor:</strong> ${to_flr_t_node.name}</p>
+            <div class="direction-row">
+                <div class="direction-step">
+                <p><strong>From:</strong> ${from_bld_t_node.name} · ${from_flr_t_node.name}</p>
+                </div>
+                <div class="direction-arrow">→</div>
+                <div class="direction-step">
+                <p><strong>To:</strong> ${to_bld_t_node.name} · ${to_flr_t_node.name}</p>
+                </div>
             </div>
         `;
         
