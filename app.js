@@ -164,12 +164,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         <canvas id="mapCanvas"></canvas>
                     </div>
                     
-                    <!-- Inset Floor Highlight -->
+                    <!-- Desktop Inset Floor Highlight -->
                     <div class="floor-inset">
                         <h4>🎯 Floor Location</h4>
                         <div id="floorHighlightContent">
                             <canvas id="floorHighlightCanvas" width="400" height="600"></canvas>
                         </div>
+                    </div>
+
+                    <!-- Mobile Full-Width Floor Highlight (shown only on mobile) -->
+                    <div class="mobile-floor-highlight">
+                        <h4>🎯 Floor Location</h4>
+                        <canvas id="floorHighlightCanvasMobile" width="400" height="600"></canvas>
                     </div>
                 </div>
             </div>
@@ -191,6 +197,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (mapCanvas) {
             const ctx = mapCanvas.getContext('2d');
             ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+        }
+        const floorCanvasMobile = document.getElementById('floorHighlightCanvasMobile');
+        if (floorCanvasMobile) {
+            const ctx = floorCanvasMobile.getContext('2d');
+            ctx.clearRect(0, 0, floorCanvasMobile.width, floorCanvasMobile.height);
         }
     }
     
@@ -216,8 +227,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Display floor highlight
     function displayFloorHighlight(to_flr_t_node) {
-        const canvas = document.getElementById('floorHighlightCanvas');
-        FloorHighlightOutput.createFloorHighlight(to_flr_t_node, canvas);
+        const desktopCanvas = document.getElementById('floorHighlightCanvas');
+        const mobileCanvas = document.getElementById('floorHighlightCanvasMobile');
+
+        if (desktopCanvas) {
+            FloorHighlightOutput.createFloorHighlight(to_flr_t_node, desktopCanvas);
+        }
+        if (mobileCanvas) {
+            FloorHighlightOutput.createFloorHighlight(to_flr_t_node, mobileCanvas);
+        }
     }
     
     // Display map with path

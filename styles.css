@@ -9,6 +9,7 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px;
+    font-size: 16px;
 }
 
 .container {
@@ -106,10 +107,7 @@ header h1 {
     min-width: 280px;
 }
 
-div#buildingPictureSection{
-    width: 50%;
-}
-
+div#buildingPictureSection,
 div#floorPictureSection {
     width: 50%;
 }
@@ -139,7 +137,7 @@ div#floorPictureSection {
 .direction-row {
     display: flex;
     justify-content: space-evenly;
-}   
+}
 
 .direction-step {
     background: white;
@@ -182,30 +180,25 @@ div#floorPictureSection {
     margin: 8px 0;
 }
 
-/* Map section - relative positioning for inset */
+/* Map section */
 #mapSection {
     position: relative;
     overflow: hidden;
-}
-
-.map-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
+    margin-bottom: 20px;
 }
 
 #mapContent {
     width: 100%;
 }
 
-/* NEW POSITION: Floor highlight inset - Center-right */
+/* Desktop: Floor highlight inset in bottom-left */
 .floor-inset {
     position: absolute;
-    top: 91%;                    /* Vertically center */
-    left: 5px;                 /* Flush to left with small margin */
-    transform: translateY(-50%); /* Perfect vertical centering */
-    width: 180px;                /* Fixed reasonable width for visibility */
-    max-width: 15%;              /* Responsive cap */
+    top: 91%;
+    left: 5px;
+    transform: translateY(-40%); /* Pulls it up so bottom aligns with top:91% */
+    width: 180px;
+    max-width: 15%;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
@@ -231,9 +224,30 @@ div#floorPictureSection {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Hide any old separate floor highlight section */
-#floorHighlightSection {
+/* Mobile: Full-width floor highlight below the map */
+.mobile-floor-highlight {
     display: none;
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 2px solid #667eea;
+}
+
+.mobile-floor-highlight h4 {
+    text-align: center;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.mobile-floor-highlight canvas {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
 canvas {
@@ -255,4 +269,64 @@ canvas {
 .error-container p {
     color: #c0392b;
     font-weight: 500;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 767px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    #submitBtn {
+        padding: 16px;
+        font-size: 1rem;
+    }
+
+    .output-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    div#buildingPictureSection,
+    div#floorPictureSection {
+        width: 100%;
+    }
+
+    .direction-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .direction-arrow {
+        transform: rotate(90deg);
+        margin: 10px 0;
+        font-size: 1.5rem;
+    }
+
+    .direction-step {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Hide the absolute inset on mobile */
+    .floor-inset {
+        display: none;
+    }
+
+    /* Show the full-width floor highlight below the map */
+    .mobile-floor-highlight {
+        display: block;
+    }
+
+    .output-section h3 {
+        font-size: 1.1rem;
+    }
 }
