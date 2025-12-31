@@ -182,10 +182,10 @@ div#floorPictureSection {
     margin: 8px 0;
 }
 
-/* Make map section relative for absolute positioning of child */
+/* Map section - relative positioning for inset */
 #mapSection {
     position: relative;
-    overflow: hidden; /* Ensures inset doesn't spill out */
+    overflow: hidden;
 }
 
 .map-container {
@@ -198,37 +198,40 @@ div#floorPictureSection {
     width: 100%;
 }
 
-/* Inset floor highlight in bottom-left corner */
+/* NEW POSITION: Floor highlight inset - Center-right */
 .floor-inset {
     position: absolute;
-    bottom: 0px;
-    left: 0px;
-    width: 10%;            /* Scaled down fixed size */
+    top: 91%;                    /* Vertically center */
+    left: 5px;                 /* Flush to left with small margin */
+    transform: translateY(-50%); /* Perfect vertical centering */
+    width: 180px;                /* Fixed reasonable width for visibility */
+    max-width: 15%;              /* Responsive cap */
     background: rgba(255, 255, 255, 0.95);
-    border-radius: 10px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-    padding: 0px;
-    border: 1px solid #667eea;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    padding: 12px;
+    border: 2px solid #667eea;
     z-index: 10;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
 }
 
 .floor-inset h4 {
     margin: 0 0 10px 0;
-    font-size: 0.5rem;
+    font-size: 0.9rem;
     color: #333;
     text-align: center;
+    font-weight: 600;
 }
 
 .floor-inset canvas {
     width: 100% !important;
     height: auto !important;
-    border-radius: 6px;
+    border-radius: 8px;
     background: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Hide the original separate floor highlight section */
+/* Hide any old separate floor highlight section */
 #floorHighlightSection {
     display: none;
 }
