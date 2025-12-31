@@ -12,83 +12,72 @@ class FloorHighlightOutput {
         const building = to_flr_t_node.parent;
         if (!building || !building.children || building.children.length === 0) return null;
 
-        const floors = building.children; // Assumed ordered from lowest to highest
-        const context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        const floors = building.children; // All floor nodes under the building
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        const floorHeight = canvas.height / floors.length;
+        const floorCount = floors.length;
+        const floorHeight = canvas.height / floorCount;
 
-        // Dynamic large fonts
-        const baseFontSize = Math.max(24, Math.min(36, canvas.width * 0.07)); // 24-36px
-        const titleFontSize = Math.max(20, Math.min(30, canvas.width * 0.06));
-        const arrowFontSize = Math.max(32, Math.min(48, canvas.width * 0.10));
+        // Dynamic font sizes that work well even in the small inset
+        const titleFontSize = Math.min(30, canvas.width * 0.07);
+        const numberFontSize = Math.max(28, Math.min(40, canvas.width * 0.09));
+        const arrowFontSize   = Math.max(36, Math.min(56, canvas.width * 0.13));
+        const labelFontSize   = Math.max(18, Math.min(26, canvas.width * 0.06));
 
-        // Sort floors by name to determine correct order (common patterns: Ground, 1, 2... or 1, 2, 3...)
-        // Simple heuristic: assume "Ground" or "G" is lowest, then numeric
-        const sortedFloors = [...floors].sort((a, b) => {
-            const nameA = a.name.toLowerCase();
-            const nameB = b.name.toLowerCase();
-            if (nameA.includes('ground') || nameA === 'g') return -1;
-            if (nameB.includes('ground') || nameB === 'g') return 1;
-            return parseInt(a.name) - parseInt(b.name) || a.name.localeCompare(b.name);
-        });
+        // Draw building name at the very top
+        ctx.font = `bold ${titleFontSize}px Arial, sans-serif`;
+        ctx.fillStyle = '#333333';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(building.name, canvas.width / 2, 30);
 
-        // Find destination index in sorted list
-        const destIndexInSorted = sortedFloors.findIndex(f => f.name === to_flr_t_node.name);
-        const destDisplayNumber = destIndexInSorted + 1; // 1-based
+        // Draw floors from bottom (lowest = 1) to top
+        for (let i = floorCount - 1; i >= 0; i--) {
+            const floorIndexFromBottom = floorCount - i; // 1 = lowest
+            const floorNode = floors[i];
+            const isDestination = floorNode.name === to_flr_t_node.name;
 
-        // Draw building name at top
-        context.font = `bold ${titleFontSize}px Arial, sans-serif`;
-        context.fillStyle = '#333333';
-        context.textAlign = 'center';
-        context.fillText(building.name, canvas.width / 2, 30);
-        context.textAlign = 'left';
-
-        // Draw floors from bottom (lowest) to top (highest)
-        for (let index = floors.length - 1; index >= 0; index--) {
-            const floor = sortedFloors[floors.length - index - 1];
-            const displayNumber = floors.length - index; // 1 at bottom, increasing upward
-            const y = index * floorHeight;
-
-            const isDestination = floor.name === to_flr_t_node.name;
+            const y = i * floorHeight;
 
             // Background
-            context.fillStyle = isDestination ? '#4CAF50' : '#E0E0E0';
-            context.fillRect(0, y, canvas.width, floorHeight);
+            ctx.fillStyle = isDestination ? '#4CAF50' : '#E0E0E0';
+            ctx.fillRect(0, y, canvas.width, floorHeight);
 
-            // Thick white border
-            context.strokeStyle = '#FFFFFF';
-            context.lineWidth = 4;
-            context.strokeRect(0, y, canvas.width, floorHeight);
+            // Thick white separator lines
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(0, y, canvas.width, floorHeight);
 
-            // Floor number (large bold)
-            context.font = `bold ${baseFontSize}px Arial, sans-serif`;
-            context.fillStyle = isDestination ? '#FFFFFF' : '#333333';
-            context.fillText(displayNumber, 30, y + floorHeight / 2);
+            // Floor number (large, bold)
+            ctx.font = `bold ${numberFontSize}px Arial, sans-serif`;
+            ctx.fillStyle = isDestination ? '#FFFFFF' : '#333333';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(floorIndexFromBottom, 20, y + floorHeight / 2);
 
-            // Destination indicator
+            // Destination highlight
             if (isDestination) {
-                // Large arrow
-                context.font = `bold ${arrowFontSize}px Arial Black, sans-serif`;
-                context.fillStyle = '#FFFFFF';
-                context.strokeStyle = '#000000';
-                context.lineWidth = 3;
-                context.textAlign = 'right';
-                context.strokeText('➜', canvas.width - 30, y + floorHeight / 2);
-                context.fillText('➜', canvas.width - 30, y + floorHeight / 2);
+                // Large right-pointing arrow
+                ctx.font = `bold ${arrowFontSize}px Arial Black, sans-serif`;
+                ctx.fillStyle = '#FFFFFF';
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 3;
+                ctx.textAlign = 'right';
+                ctx.strokeText('➜', canvas.width - 20, y + floorHeight / 2);
+                ctx.fillText('➜', canvas.width - 20, y + floorHeight / 2);
 
-                // Optional: add "You Are Here" or just the number is enough
-                context.font = `bold ${baseFontSize - 4}px Arial, sans-serif`;
-                context.textAlign = 'center';
-                context.fillText('YOU ARE HERE', canvas.width / 2, y + floorHeight / 2 + 4);
-                
-                context.textAlign = 'left';
+                // "YOU ARE HERE" label
+                ctx.font = `bold ${labelFontSize}px Arial, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText('YOU ARE HERE', canvas.width / 2, y + floorHeight / 2 + 8);
             }
         }
 
         return canvas;
     }
 
+    
     // ... (rest of the class methods remain unchanged)
     static createDestinationFloorHighlight(to_flr_t_node, canvas) {
         return this.createFloorHighlight(to_flr_t_node, canvas);
@@ -102,5 +91,46 @@ class FloorHighlightOutput {
         return this.createFloorHighlight(to_flr_t_node, canvas);
     }
 
-    // getFloorCount and getFloorIndex unchanged...
+    /**
+     * Gets the number of floors in the building containing the floor node
+     * @param {Object} flr_t_node - Floor tree node
+     * @returns {number} Number of floors in the building, or 0 if invalid
+     */
+    static getFloorCount(flr_t_node) {
+        if (!flr_t_node || !flr_t_node.parent) {
+            return 0;
+        }
+
+        const building = flr_t_node.parent;
+        
+        if (!building.children || !Array.isArray(building.children)) {
+            return 0;
+        }
+
+        return building.children.length;
+    }
+
+    /**
+     * Gets the index of the floor within its building (0-based)
+     * @param {Object} flr_t_node - Floor tree node
+     * @returns {number} Floor index, or -1 if not found
+     */
+    static getFloorIndex(flr_t_node) {
+        if (!flr_t_node || !flr_t_node.parent) {
+            return -1;
+        }
+
+        const building = flr_t_node.parent;
+        
+        if (!building.children || !Array.isArray(building.children)) {
+            return -1;
+        }
+
+        return building.children.findIndex(floor => floor.name === flr_t_node.name);
+    }
+}
+
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = FloorHighlightOutput;
 }
