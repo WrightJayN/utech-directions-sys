@@ -503,39 +503,71 @@ class PathDrawer {
      * @param {number} canvasWidth - Width of the canvas
      * @param {number} canvasHeight - Height of the canvas
      */
-    static drawMapKey(context, canvasWidth, canvasHeight) {
-        const keyX = canvasWidth - 220; // Position from right edge
-        const keyY = canvasHeight - 120; // Position from bottom edge
-        const keyWidth = 200;
-        const keyHeight = 90;
+    static drawMapKey(context, canvasWidth, canvasHeight, scale = 1.8) {
+        // Base dimensions (at scale = 1.0)
+        const baseKeyWidth = 200;
+        const baseKeyHeight = 90;
+        const basePadding = 10;
+        const baseSymbolSize = 20;
+        const baseLineLength = 50;
+        const baseFontSize = 12;
+        const baseSpacing = 30; // Vertical spacing between items
 
-        // Draw white background for key
+        // Scaled values
+        const keyWidth = baseKeyWidth * scale;
+        const keyHeight = baseKeyHeight * scale;
+        const padding = basePadding * scale;
+        const symbolSize = baseSymbolSize * scale;
+        const lineLength = baseLineLength * scale;
+        const fontSize = baseFontSize * scale;
+        const spacing = baseSpacing * scale;
+
+        // Position: bottom-right with margin
+        const marginX = 20 * scale;
+        const marginY = 20 * scale;
+        const keyX = canvasWidth - keyWidth - marginX;
+        const keyY = canvasHeight - keyHeight - marginY;
+
+        // Draw white background with padding
         context.fillStyle = '#FFFFFF';
-        context.fillRect(keyX - 10, keyY - 10, keyWidth + 20, keyHeight + 20);
+        context.fillRect(keyX - padding, keyY - padding, keyWidth + 2 * padding, keyHeight + 2 * padding);
 
-        // Red square for source building
-        context.fillStyle = '#FF0000';
-        context.fillRect(keyX, keyY, 20, 20);
+        // Optional: add a subtle border
+        context.strokeStyle = '#CCCCCC';
+        context.lineWidth = 2 * scale;
+        context.strokeRect(keyX - padding, keyY - padding, keyWidth + 2 * padding, keyHeight + 2 * padding);
+
+        // Set font
+        context.font = `${fontSize}px Arial`;
         context.fillStyle = '#000000';
-        context.font = '12px Arial';
         context.textBaseline = 'middle';
-        context.fillText("Source Building", keyX + 25, keyY + 10);
 
-        // Blue square for destination building
+        const textOffsetX = symbolSize + 8 * scale; // Space between symbol and text
+        const startY = keyY + padding + symbolSize / 2;
+
+        // Red square: Source Building
+        context.fillStyle = '#FF0000';
+        context.fillRect(keyX + padding, keyY + padding, symbolSize, symbolSize);
+        context.fillStyle = '#000000';
+        context.fillText("Source Building", keyX + padding + textOffsetX, startY);
+
+        // Blue square: Destination Building
         context.fillStyle = '#0000FF';
-        context.fillRect(keyX, keyY + 30, 20, 20);
+        context.fillRect(keyX + padding, keyY + padding + spacing, symbolSize, symbolSize);
         context.fillStyle = '#000000';
-        context.fillText("Destination Building", keyX + 25, keyY + 40);
+        context.fillText("Destination Building", keyX + padding + textOffsetX, startY + spacing);
 
-        // Yellow line for path
+        // Yellow line: Path
+        const lineY = keyY + padding + 2 * spacing;
         context.strokeStyle = '#FFD700';
-        context.lineWidth = 5;
+        context.lineWidth = 5 * scale;
         context.beginPath();
-        context.moveTo(keyX, keyY + 70);
-        context.lineTo(keyX + 50, keyY + 70);
+        context.moveTo(keyX + padding, lineY + symbolSize / 2);
+        context.lineTo(keyX + padding + lineLength, lineY + symbolSize / 2);
         context.stroke();
+
         context.fillStyle = '#000000';
-        context.fillText("Path", keyX + 55, keyY + 70);
+        context.fillText("Path", keyX + padding + lineLength + 8 * scale, lineY + symbolSize / 2);
     }
 
     /**
