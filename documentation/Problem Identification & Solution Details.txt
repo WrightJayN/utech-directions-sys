@@ -34,9 +34,10 @@ Limitations
     Due to storage, scalability, and complexity concerns, videos are replaced with building and floor pictures. Building-to-building directions are provided by the Map with Path output.
 
 Tech Stack 
-  JS 
-  HTML 
-  CSS
+  JS      | functionality
+  HTML    | content
+  CSS     | style
+  Python  | scripts
 
 Algorithms
   Dijkstra's Algorithm
