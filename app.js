@@ -17,7 +17,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Preload critical assets
     const preloadImages = [
-        'assets/utech_map.png',
+        'assets/utech_map.webp',
         'assets/buildings/building1.jpg',
         'assets/buildings/building2.jpg',
         'assets/buildings/building4.jpg',
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const canvas = document.getElementById('mapCanvas');
         
         // Load map image first
-        await PathDrawer.loadMapImage('assets/utech_map.png', canvas);
+        await PathDrawer.loadMapImage('assets/utech_map.webp', canvas);
         
         // Get building vertices hash map
         const verticesHashMap = PathDrawer.getBuildingVerticesHashMap();

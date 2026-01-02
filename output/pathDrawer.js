@@ -586,7 +586,7 @@ class PathDrawer {
         const context = canvas.getContext('2d');
 
         // Step 1: Load map image
-        this.loadMapImage('utech_map.png', canvas);
+        this.loadMapImage('utech_map.webp', canvas);
 
         // Step 2: Draw yellow path line
         this.drawPathLine(path, context);
