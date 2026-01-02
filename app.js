@@ -15,6 +15,57 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Preload critical assets
+    const preloadImages = [
+        'assets/utech_map.png',
+        'assets/buildings/building1.jpg',
+        'assets/buildings/building2.jpg',
+        'assets/buildings/building4.jpg',
+        'assets/buildings/building5.jpg',
+        'assets/buildings/building8.jpg',
+        'assets/buildings/ltbsdbld8.jpg',
+        'assets/buildings/building22.jpg',
+        'assets/buildings/building47.jpg',
+        'assets/buildings/ltbsdbld47.jpg',
+        'assets/buildings/walkin_gate.jpg',
+        'assets/buildings/back_gate.jpg',
+        'assets/buildings/main_gate.jpg',
+        'assets/floors/floor1ground.jpg',
+        'assets/floors/floor1a.jpg',
+        'assets/floors/floor1b.jpg',
+        'assets/floors/floor1c.jpg',
+        'assets/floors/floor2a.jpg',
+        'assets/floors/floor2b.jpg',
+        'assets/floors/floor2c.jpg',
+        'assets/floors/basement.jpg',
+        'assets/floors/floor4a.jpg',
+        'assets/floors/floor4b.jpg',
+        'assets/floors/floor4c.jpg',
+        'assets/floors/floor5a.jpg',
+        'assets/floors/floor5b.jpg',
+        'assets/floors/floor5c.jpg',
+        'assets/floors/floor8a.jpg',
+        'assets/floors/floor8b.jpg',
+        'assets/floors/floor8c.jpg',
+        'assets/floors/floorltbsdbld8a.jpg',
+        'assets/floors/floorltbsdbld8b.jpg',
+        'assets/floors/floorltbsdbld8c.jpg',
+        'assets/floors/floorltbsdbld8d.jpg',
+        'assets/floors/floor22a.jpg',
+        'assets/floors/floor22b.jpg',
+        'assets/floors/floor22c.jpg',
+        'assets/floors/floor47a.jpg',
+        'assets/floors/floor47b.jpg',
+        'assets/floors/floor47c.jpg',
+        'assets/floors/floorltbsdbld47a.jpg',
+        'assets/floors/floorltbsdbld47b.jpg',
+    ];
+    preloadImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+
+
     const form = document.getElementById('directionsForm');
     const outputContainer = document.getElementById('output');
     const errorContainer = document.getElementById('error');
