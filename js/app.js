@@ -14,6 +14,7 @@
  * 9. PathDrawer displays map with path drawn
 */
 
+//Module imports
 import {DataCollector} from './input/dataCollector.js';
 import {RoomNodeFinder} from './processing/roomNodeFinder.js';
 import {BuildingFloorNodeFinder} from './processing/buildingFloorNodeFinder.js';
