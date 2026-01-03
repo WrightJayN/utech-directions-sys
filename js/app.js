@@ -12,7 +12,19 @@
  * 7. FloorHighlightOutput highlights destination floor
  * 8. PathFinder finds shortest path between buildings
  * 9. PathDrawer displays map with path drawn
- */
+*/
+
+import {DataCollector} from './input/dataCollector.js';
+import {RoomNodeFinder} from './processing/roomNodeFinder.js';
+import {BuildingFloorNodeFinder} from './processing/buildingFloorNodeFinder.js';
+import {PathFinder} from './processing/pathFinder.js';
+import {BuildingPicturesOutput} from './output/buildingPicturesOutput.js';
+import {FloorHighlightOutput} from './output/floorHighlightOutput.js';
+import {FloorPicturesOutput} from './output/floorPicturesOutput.js';
+import {PathDrawer} from './output/pathDrawer.js';
+import {GraphDatabase} from './storage/graphDatabase.js';
+import {TreeDatabase} from './storage/treeDatabase.js';
+
 
 document.addEventListener('DOMContentLoaded', function() {
     // Preload critical assets
