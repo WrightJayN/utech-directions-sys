@@ -1,1 +1,1 @@
-1.2 faster load times due to compressed images
+1.2.2
