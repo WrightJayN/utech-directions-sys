@@ -54,8 +54,6 @@ class DataCollector {
     }
 }
 
-// Export for use in other modules (if using modules)
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = DataCollector;
-}
+export {DataCollector};
+
 

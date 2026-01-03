@@ -22,22 +22,20 @@ class BuildingPicturesOutput {
         }
 
         // Building pictures mapping
-const buildingPictures = {
-    'building1': 'assets/buildings/building1.jpg',
-    'building2': 'assets/buildings/building2.jpg',
-    'building4': 'assets/buildings/building4.jpg',
-    'building5': 'assets/buildings/building5.jpg',
-    'building8': 'assets/buildings/building8.jpg',
-    'ltbsdbld8': 'assets/buildings/ltbsdbld8.jpg',
-    'building22': 'assets/buildings/building22.jpg',
-    'building47': 'assets/buildings/building47.jpg',
-    'ltbsdbld47': 'assets/buildings/ltbsdbld47.jpg',
-    'walkin gate': 'assets/buildings/walkin_gate.jpg',
-    'back gate': 'assets/buildings/back_gate.jpg',
-    'main gate': 'assets/buildings/main_gate.jpg',
-};
-
-
+        const buildingPictures = {
+            'building1': 'assets/buildings/building1.jpg',
+            'building2': 'assets/buildings/building2.jpg',
+            'building4': 'assets/buildings/building4.jpg',
+            'building5': 'assets/buildings/building5.jpg',
+            'building8': 'assets/buildings/building8.jpg',
+            'ltbsdbld8': 'assets/buildings/ltbsdbld8.jpg',
+            'building22': 'assets/buildings/building22.jpg',
+            'building47': 'assets/buildings/building47.jpg',
+            'ltbsdbld47': 'assets/buildings/ltbsdbld47.jpg',
+            'walkin gate': 'assets/buildings/walkin_gate.jpg',
+            'back gate': 'assets/buildings/back_gate.jpg',
+            'main gate': 'assets/buildings/main_gate.jpg',
+        };
         
         // Get the building name (normalize to lowercase for case-insensitive lookup)
         const buildingName = bld_t_node.name.toLowerCase();
@@ -57,7 +55,4 @@ const buildingPictures = {
     }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = BuildingPicturesOutput;
-}
+export {BuildingPicturesOutput};

@@ -64,7 +64,4 @@ class FloorPicturesOutput {
     }
 }
 
-// Export for Node environments
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = FloorPicturesOutput;
-}
+export {FloorPicturesOutput};
