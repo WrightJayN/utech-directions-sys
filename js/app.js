@@ -15,16 +15,17 @@
 */
 
 //Module imports
-import {DataCollector} from './input/dataCollector.js';
-import {RoomNodeFinder} from './processing/roomNodeFinder.js';
-import {BuildingFloorNodeFinder} from './processing/buildingFloorNodeFinder.js';
-import {PathFinder} from './processing/pathFinder.js';
-import {BuildingPicturesOutput} from './output/buildingPicturesOutput.js';
-import {FloorHighlightOutput} from './output/floorHighlightOutput.js';
-import {FloorPicturesOutput} from './output/floorPicturesOutput.js';
-import {PathDrawer} from './output/pathDrawer.js';
-import {GraphDatabase} from './storage/graphDatabase.js';
-import {TreeDatabase} from './storage/treeDatabase.js';
+import { DataCollector } from './input/dataCollector.js';
+import { RoomNodeFinder } from './processing/roomNodeFinder.js';
+import { BuildingFloorNodeFinder } from './processing/buildingFloorNodeFinder.js';
+import { PathFinder } from './processing/pathFinder.js';
+import { BuildingPicturesOutput } from './output/buildingPicturesOutput.js';
+import { FloorHighlightOutput } from './output/floorHighlightOutput.js';
+import { FloorPicturesOutput } from './output/floorPicturesOutput.js';
+import { PathDrawer } from './output/pathDrawer.js';
+import { showPathLoadingAnimation } from './output/loadingAnimation.js';
+import { GraphDatabase } from './storage/graphDatabase.js';
+import { TreeDatabase } from './storage/treeDatabase.js';
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -91,6 +92,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const toRoomInput = document.getElementById('toRoom').value;
         
         try {
+            // Show the beautiful path animation for 3 seconds
+            await showPathLoadingAnimation(canvasContainer, 3000);
+
             // STEP 1 & 2: Data Collector - Convert inputs to lowercase strings
             const fromRoom = fromRoomInput.trim() === "" ? null : fromRoomInput;
             const toRoom = toRoomInput.trim() === "" ? null : toRoomInput;
@@ -181,6 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
             errorMessage.textContent = error.message;
             errorContainer.style.display = 'block';
+            canvasContainer.innerHTML = ''; // clean up on error
         }
     });
     
