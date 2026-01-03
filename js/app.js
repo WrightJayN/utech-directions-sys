@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const outputContainer = document.getElementById('output');
     const errorContainer = document.getElementById('error');
     const errorMessage = document.getElementById('errorMessage');
+    let isAnimationPlayed = false;
     
     // Initialize databases
     const treeDB = new TreeDatabase();
@@ -87,13 +88,18 @@ document.addEventListener('DOMContentLoaded', function() {
         errorContainer.style.display = 'none';
         clearOutputs();
         
-        // Get form inputs
-        const fromRoomInput = document.getElementById('fromRoom').value;
-        const toRoomInput = document.getElementById('toRoom').value;
+        
         
         try {
             // Show the beautiful path animation for 3 seconds
-            await showPathLoadingAnimation(canvasContainer, 3000);
+            if(!(isAnimationPlayed)){
+                await showPathLoadingAnimation(canvasContainer, 3000);
+                isAnimationPlayed = true;
+            }
+
+            // Get form inputs
+            const fromRoomInput = document.getElementById('fromRoom').value;
+            const toRoomInput = document.getElementById('toRoom').value;
 
             // STEP 1 & 2: Data Collector - Convert inputs to lowercase strings
             const fromRoom = fromRoomInput.trim() === "" ? null : fromRoomInput;
