@@ -19,6 +19,7 @@ import { DataCollector } from './input/dataCollector.js';
 import { RoomNodeFinder } from './processing/roomNodeFinder.js';
 import { BuildingFloorNodeFinder } from './processing/buildingFloorNodeFinder.js';
 import { PathFinder } from './processing/pathFinder.js';
+import { CampusExplorer } from './processing/Explorer.js';
 import { BuildingPicturesOutput } from './output/buildingPicturesOutput.js';
 import { FloorHighlightOutput } from './output/floorHighlightOutput.js';
 import { FloorPicturesOutput } from './output/floorPicturesOutput.js';
@@ -65,6 +66,24 @@ document.addEventListener('DOMContentLoaded', function() {
         img.src = src;
     });
 
+    const form = document.getElementById('directionsForm');
+    const outputContainer = document.getElementById('output');
+    const errorContainer = document.getElementById('error');
+    const errorMessage = document.getElementById('errorMessage');
+    const loadingAnimationContainer = document.getElementById('canvasContainer');
+    let isAnimationPlayed = false;
+    
+    // Initialize databases
+    const treeDB = new TreeDatabase();
+    const campusExplorer = new CampusExplorer(treeDB);
+    campusExplorer.populate();
+    const graphDB = new GraphDatabase();
+    const roomsHashMap = treeDB.getRoomsHashMap();
+    const autocompleteTrie = new AutocompleteTrie();
+    autocompleteTrie.insertAll(roomsHashMap);
+    // Make it available globally or attach to window for now
+    window.autocompleteTrie = autocompleteTrie; // Easy access for inputs    
+
     // Navbar navigation
     const navButtons = document.querySelectorAll('.nav-btn');
     const views = document.querySelectorAll('.view');
@@ -80,6 +99,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 errorContainer.style.display = 'none';
                 clearOutputs();
                 loadingAnimationContainer.innerHTML = ''; //clears loading animation if present
+                
+                if (targetView === 'explorer') {
+                    campusExplorer.populate();
+                }
             }
 
             // Update active states
@@ -93,23 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
             currentView = targetView;
         });
     });
-
-    const form = document.getElementById('directionsForm');
-    const outputContainer = document.getElementById('output');
-    const errorContainer = document.getElementById('error');
-    const errorMessage = document.getElementById('errorMessage');
-    const loadingAnimationContainer = document.getElementById('canvasContainer');
-    let isAnimationPlayed = false;
-    
-    // Initialize databases
-    const treeDB = new TreeDatabase();
-    const graphDB = new GraphDatabase();
-    const roomsHashMap = treeDB.getRoomsHashMap();
-    const autocompleteTrie = new AutocompleteTrie();
-    autocompleteTrie.insertAll(roomsHashMap);
-
-    // Make it available globally or attach to window for now
-    window.autocompleteTrie = autocompleteTrie; // Easy access for inputs
 
     // Create output sections dynamically
     createOutputSections();

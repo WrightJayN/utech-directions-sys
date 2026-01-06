@@ -46,6 +46,85 @@ header h1 {
 }
 
 /* ========================================
+   Explorer Card Style
+   ======================================== */
+
+.building-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.building-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.building-card:hover {
+    opacity: 0.8;
+    transform: translateY(-5px);
+}
+
+.building-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.floor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding-left: 40px; /* offset to right */
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.floor-card {
+    background: #e8e9ea;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.floor-card:hover {
+    opacity: 0.8;
+    transform: translateY(-3px);
+}
+
+.floor-img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.room-list {
+    padding-left: 80px; /* further offset */
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.room-item {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 5px 0;
+    white-space: normal; /* allow wrapping */
+    overflow-wrap: break-word; /* wrap long words */
+    max-width: 180px; /* force wrap if too long */
+}
+
+/* ========================================
    Form Inputs
    ======================================== */
 
