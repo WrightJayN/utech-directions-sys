@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Preload critical assets
     const preloadImages = [
         'assets/utech_map.webp',
-        './assets/utech_crest.jpg',
+        'assets/utech_crest.jpg',
         'assets/buildings/building1.jpg',
         'assets/buildings/building2.jpg',
         'assets/buildings/building5.jpg',

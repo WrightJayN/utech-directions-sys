@@ -92,6 +92,13 @@ header h1 {
     padding: 0 8px;
 }
 
+.building-img,
+.floor-img {
+    object-fit: contain;     /* Keeps crest proportional, no stretching */
+    background: #f8fbff;     /* Light blue background to match UTech colors */
+    padding: 20px;           /* Gives breathing room around the crest */
+}
+
 .floor-card {
     background: #e8f0ff;
     border-radius: 10px;
