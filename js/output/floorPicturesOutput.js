@@ -53,7 +53,7 @@ class FloorPicturesOutput {
         const floorName = flr_t_node.name.toLowerCase();
 
         // Floor names are case-sensitive in mapping, so match directly
-        return floorPictures[flr_t_node.name] || null;
+        return floorPictures[floorName] || null;
     }
 
     /**
