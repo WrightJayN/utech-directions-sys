@@ -68,24 +68,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // Navbar navigation
     const navButtons = document.querySelectorAll('.nav-btn');
     const views = document.querySelectorAll('.view');
+    let currentView = 'explorer'; // Track current view
 
     navButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const targetView = btn.getAttribute('data-view');
 
-            // Update active button
+            // Only clear outputs if switching to a DIFFERENT view
+            if (targetView !== currentView) {
+                outputContainer.style.display = 'none';
+                errorContainer.style.display = 'none';
+                clearOutputs();
+                loadingAnimationContainer.innerHTML = ''; //clears loading animation if present
+            }
+
+            // Update active states
             navButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            // Show target view
             views.forEach(v => v.classList.remove('active'));
             document.getElementById(`${targetView}-view`).classList.add('active');
 
-            // Clear previous outputs when switching
-            outputContainer.style.display = 'none';
-            errorContainer.style.display = 'none';
-            clearOutputs();
-            document.getElementById('canvasContainer').innerHTML = '';
+            // Update current view tracker
+            currentView = targetView;
         });
     });
 
@@ -93,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const outputContainer = document.getElementById('output');
     const errorContainer = document.getElementById('error');
     const errorMessage = document.getElementById('errorMessage');
+    const loadingAnimationContainer = document.getElementById('canvasContainer');
     let isAnimationPlayed = false;
     
     // Initialize databases
@@ -112,17 +118,21 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         
         // Hide previous outputs
-        outputContainer.style.display = 'none';
         errorContainer.style.display = 'none';
-        clearOutputs();
-        
-        try {
-            // Show the beautiful path animation for 3 seconds
-            if(!(isAnimationPlayed)){
-                await showPathLoadingAnimation(canvasContainer, 3000);
-                isAnimationPlayed = true;
-            }
 
+        // Add fade-out for old content
+        outputContainer.classList.add('fade-out');
+        loadingAnimationContainer.classList.add('fade-out');
+        
+        // Show the beautiful path animation for 1 seconds
+        if(!isAnimationPlayed){
+            loadingAnimationContainer.classList.remove('fade-out');
+            loadingAnimationContainer.classList.add('show');
+            await showPathLoadingAnimation(loadingAnimationContainer, 1000);
+            isAnimationPlayed = true;
+        }
+
+        try {      
             // Get form inputs
             const fromRoomInput = document.getElementById('fromRoom').value;
             const toRoomInput = document.getElementById('toRoom').value;
@@ -209,15 +219,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 displayTextDirections(from_rm_t_node, to_rm_t_node, from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node);
             }
             
-            // Show output container
-            outputContainer.style.display = 'block';
-            
+            // Show output with fade-in
+            outputContainer.style.display = 'block';           // Make it visible
+            outputContainer.classList.remove('fade-out');     // In case it was fading out
+            outputContainer.classList.add('show');            // Triggers smooth fade-in
+                
         } catch (error) {
             // Display error
             console.error('Error:', error);
             errorMessage.textContent = error.message;
             errorContainer.style.display = 'block';
-            canvasContainer.innerHTML = ''; // clean up on error
         }
     });
     
