@@ -26,7 +26,7 @@ import { PathDrawer } from './output/pathDrawer.js';
 import { showPathLoadingAnimation } from './output/loadingAnimation.js';
 import { GraphDatabase } from './storage/graphDatabase.js';
 import { TreeDatabase } from './storage/treeDatabase.js';
-
+import { AutocompleteTrie } from './storage/autoCompleteTrie.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Preload critical assets
@@ -76,7 +76,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const treeDB = new TreeDatabase();
     const graphDB = new GraphDatabase();
     const roomsHashMap = treeDB.getRoomsHashMap();
-    
+    const autocompleteTrie = new AutocompleteTrie();
+    autocompleteTrie.insertAll(roomsHashMap);
+
+    // Make it available globally or attach to window for now
+    window.autocompleteTrie = autocompleteTrie; // Easy access for inputs
+
     // Create output sections dynamically
     createOutputSections();
     
@@ -87,8 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
         outputContainer.style.display = 'none';
         errorContainer.style.display = 'none';
         clearOutputs();
-        
-        
         
         try {
             // Show the beautiful path animation for 3 seconds
@@ -371,4 +374,60 @@ document.addEventListener('DOMContentLoaded', function() {
         
         content.innerHTML = html;
     }
+
+    // Autocomplete function for any input
+    function setupAutocomplete(inputId, suggestionsId) {
+        const input = document.getElementById(inputId);
+        const suggestionsBox = document.getElementById(suggestionsId);
+
+        input.addEventListener('input', function() {
+            const query = this.value.trim().toLowerCase();
+            suggestionsBox.innerHTML = '';
+
+            if (query.length === 0) {
+                suggestionsBox.style.display = 'none';
+                return;
+            }
+
+            const suggestions = window.autocompleteTrie.getSuggestions(query, 10);
+
+            if (suggestions.length === 0) {
+                suggestionsBox.style.display = 'none';
+                return;
+            }
+
+            suggestions.forEach(suggestion => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+
+                const highlightStart = suggestion.toLowerCase().indexOf(query);
+                const highlightEnd = highlightStart + query.length;
+
+                const beforeMatch = suggestion.slice(0, highlightStart);
+                const match = suggestion.slice(highlightStart, highlightEnd);
+                const afterMatch = suggestion.slice(highlightEnd);
+
+                item.innerHTML = `${beforeMatch}<strong>${match}</strong>${afterMatch}`;
+
+                item.addEventListener('click', () => {
+                    input.value = suggestion;
+                    suggestionsBox.style.display = 'none';
+                });
+                suggestionsBox.appendChild(item);
+            });
+
+            suggestionsBox.style.display = 'block';
+        });
+
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!input.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                suggestionsBox.style.display = 'none';
+            }
+        });
+    }
+
+    // Setup autocomplete for both inputs
+    setupAutocomplete('fromRoom', 'fromRoomSuggestions');
+    setupAutocomplete('toRoom', 'toRoomSuggestions');
 });
