@@ -12,15 +12,20 @@ class CampusExplorer {
     }
 
     populate() {
-        this.container.innerHTML = ''; // Clear any previous content
+        this.container.innerHTML = '';
 
         const buildings = this.treeDB.root.children.filter(node =>
             !['main gate', 'back gate', 'walkin gate'].includes(node.name.toLowerCase())
         );
 
-        buildings.forEach(building => {
+        buildings.forEach((building, index) => {
             const card = this.createBuildingCard(building);
             this.container.appendChild(card);
+
+            // Staggered fade-in
+            setTimeout(() => {
+                card.classList.add('animate-in');
+            }, index * 100);  // 100ms delay between each card
         });
     }
 
@@ -51,26 +56,36 @@ class CampusExplorer {
     toggleBuilding(card, building) {
         const isExpanded = card.dataset.expanded === 'true';
 
-        // Close if already open
         if (isExpanded) {
-            // Remove existing floor grid
             const floorGrid = card.querySelector('.floor-grid');
-            if (floorGrid) floorGrid.remove();
+            if (floorGrid) {
+                floorGrid.classList.remove('expanded');
+                setTimeout(() => floorGrid.remove(), 500);  // remove after animation
+            }
             card.dataset.expanded = 'false';
             return;
         }
 
-        // Open: Create floor grid
         const floorGrid = document.createElement('div');
         floorGrid.className = 'floor-grid';
 
-        building.children.forEach(floor => {
+        building.children.forEach((floor, index) => {
             const floorCard = this.createFloorCard(floor);
             floorGrid.appendChild(floorCard);
+
+            // Animate floor cards in
+            setTimeout(() => {
+                floorCard.classList.add('animate-in');
+            }, index * 80 + 200);  // slight delay after grid appears
         });
 
         card.appendChild(floorGrid);
         card.dataset.expanded = 'true';
+
+        // Trigger expand animation
+        requestAnimationFrame(() => {
+            floorGrid.classList.add('expanded');
+        });
     }
 
     createFloorCard(floor) {
@@ -102,7 +117,10 @@ class CampusExplorer {
 
         if (isExpanded) {
             const roomList = card.querySelector('.room-list');
-            if (roomList) roomList.remove();
+            if (roomList) {
+                roomList.classList.remove('expanded');
+                setTimeout(() => roomList.remove(), 400);
+            }
             card.dataset.expanded = 'false';
             return;
         }
@@ -123,6 +141,10 @@ class CampusExplorer {
 
         card.appendChild(roomList);
         card.dataset.expanded = 'true';
+
+        requestAnimationFrame(() => {
+            roomList.classList.add('expanded');
+        });
     }
 }
 
