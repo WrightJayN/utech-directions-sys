@@ -8,7 +8,7 @@ class CampusExplorer {
         this.treeDB = treeDB;
         this.container = document.getElementById(containerId);
         this.container.className = 'building-grid';
-        this.fallbackSvg = 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27400%27 height=%27300%27%3E%3Crect fill=%27%23ddd%27 width=%27400%27 height=%27300%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-family=%27sans-serif%27 font-size=%2718%27 fill=%27%23666%27%3EImage Not Available%3C/text%3E%3C/svg%3E';
+        this.placeholderSrc = './assets/utech_crest.jpg';
     }
 
     populate() {
@@ -30,7 +30,7 @@ class CampusExplorer {
         card.dataset.expanded = 'false';
 
         const img = document.createElement('img');
-        img.src = BuildingPicturesOutput.getBuildingPicture(building) || this.fallbackSvg;
+        img.src = BuildingPicturesOutput.getBuildingPicture(building) || this.placeholderSrc;
         img.alt = building.name;
         img.className = 'building-img';
 
@@ -79,7 +79,7 @@ class CampusExplorer {
         card.dataset.expanded = 'false';
 
         const img = document.createElement('img');
-        img.src = FloorPicturesOutput.getFloorPicture(floor) || this.fallbackSvg;
+        img.src = FloorPicturesOutput.getFloorPicture(floor) || this.placeholderSrc;
         img.alt = floor.name;
         img.className = 'floor-img';
 
