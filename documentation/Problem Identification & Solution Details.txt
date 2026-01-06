@@ -48,6 +48,8 @@ Algorithms
     Draw yellow lines along path
     Color in from building in red
     Color in to building in blue
+  Depth-first Search 
+    Used for getting suggestions for autocomplete inputs
 
 Data Structures
   - Rooms Hash Map for searching for rooms 
@@ -56,7 +58,8 @@ Data Structures
     Key::node
     Value::Set of x,y coordinates (vertices of the building)
   - Graph for finding path from building to building
-  - Tree To Graph Hash Map used to find corresponding graph nodes for tree
+  - Tree To Graph Hash Map used to find corresponding graph nodes for tree\
+  - Trie used for storing room names needed for autocomplete
 
 
 Tree Node Structure
