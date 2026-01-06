@@ -53,10 +53,9 @@ class CampusExplorer {
 
         // Close if already open
         if (isExpanded) {
-            const floorGrid = card.nextElementSibling;
-            if (floorGrid && floorGrid.classList.contains('floor-grid')) {
-                floorGrid.remove();
-            }
+            // Remove existing floor grid
+            const floorGrid = card.querySelector('.floor-grid');
+            if (floorGrid) floorGrid.remove();
             card.dataset.expanded = 'false';
             return;
         }
@@ -70,7 +69,7 @@ class CampusExplorer {
             floorGrid.appendChild(floorCard);
         });
 
-        card.insertAdjacentElement('afterend', floorGrid);
+        card.appendChild(floorGrid);
         card.dataset.expanded = 'true';
     }
 
@@ -102,10 +101,8 @@ class CampusExplorer {
         const isExpanded = card.dataset.expanded === 'true';
 
         if (isExpanded) {
-            const roomList = card.nextElementSibling;
-            if (roomList && roomList.classList.contains('room-list')) {
-                roomList.remove();
-            }
+            const roomList = card.querySelector('.room-list');
+            if (roomList) roomList.remove();
             card.dataset.expanded = 'false';
             return;
         }
@@ -124,7 +121,7 @@ class CampusExplorer {
             roomList.appendChild(p);
         });
 
-        card.insertAdjacentElement('afterend', roomList);
+        card.appendChild(roomList);
         card.dataset.expanded = 'true';
     }
 }
