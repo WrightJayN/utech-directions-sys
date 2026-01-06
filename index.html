@@ -12,39 +12,98 @@
             <h1>🎓 UTech Directions System</h1>
             <p style="color: #666; margin-top: 10px;">Find your way around campus</p>
         </header>
+
+        <nav class="navbar">
+            <button class="nav-btn active" data-view="explorer">Explorer</button>
+            <button class="nav-btn" data-view="rooms">Rooms</button>
+            <button class="nav-btn" data-view="floors">Floors</button>
+            <button class="nav-btn" data-view="buildings">Buildings</button>
+        </nav>
         
         <main>
-            <form id="directionsForm">
-                <div class="input-group">
-                    <label for="fromRoom">From Room:</label>
-                    <input 
+            <!-- Explorer View -->
+            <section id="explorer-view" class="view active">
+                <h2>Campus Explorer</h2>
+                <p>Select a building to see its floors and rooms.</p>
+                <div id="buildingList"></div>
+            </section>
+
+            <!-- Rooms View  -->
+            <section id="rooms-view" class="view">
+                <h2>Get Directions: Room to Room</h2>
+                <form id="directionsForm">
+                    <div class="input-group">
+                        <label for="fromRoom">From Room:</label>
+                        <input 
                         type="text" 
                         id="fromRoom" 
                         name="fromRoom" 
                         placeholder="Leave empty for main gate"
                         autocomplete="off"
-                    >
-                    <div id="fromRoomSuggestions" class="suggestions-dropdown"></div>
-                    <small class="hint">Default: main gate</small>
-                </div>
-                
-                <div class="input-group">
-                    <label for="toRoom">To Room: <span class="required">*</span></label>
-                    <input 
+                        >
+                        <div id="fromRoomSuggestions" class="suggestions-dropdown"></div>
+                        <small class="hint">Default: main gate</small>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="toRoom">To Room: <span class="required">*</span></label>
+                        <input 
                         type="text" 
                         id="toRoom" 
                         name="toRoom" 
                         placeholder="Enter room number (e.g., 1A37, 2B5, 8A3)"
                         required
                         autocomplete="off"
-                    >
-                    <div id="toRoomSuggestions" class="suggestions-dropdown"></div>
-                </div>
-                
-                <button type="submit" id="submitBtn">Get Directions</button>
-            </form>
+                        >
+                        <div id="toRoomSuggestions" class="suggestions-dropdown"></div>
+                    </div>
+                    
+                    <button type="submit" id="submitBtn">Get Directions</button>
+                </form>
+            </section>
 
-            <!-- Canvas will be inserted here -->
+            <!-- Floors View -->
+            <section id="floors-view" class="view">
+                <h2>Get Directions: Floor to Floor</h2>
+                <form id="floorsForm">
+                    <div class="input-group">
+                        <label for="fromFloor">From Floor:</label>
+                        <input type="text" id="fromFloor" placeholder="e.g., floor1a">
+                        <div id="fromFloorSuggestions" class="suggestions-dropdown"></div>
+                        <small class="hint">Default: main gate</small>
+                    </div>
+                    <div class="input-group">
+                        <label for="toFloor">To Floor: <span class="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="toFloor" 
+                            required>
+                        <div id="toFloorSuggestions" class="suggestions-dropdown"></div>
+                    </div>
+                    <button type="submit" id="submitBtn">Get Directions</button>
+                </form>
+            </section>
+
+            <!-- Buildings View -->
+            <section id="buildings-view" class="view">
+                <h2>Get Directions: Building to Building</h2>
+                <form id="buildingsForm">
+                    <div class="input-group">
+                        <label for="fromBuilding">From Building:</label>
+                        <input type="text" id="fromBuilding" placeholder="e.g., building1 or main gate">
+                        <div id="fromBuildingSuggestions" class="suggestions-dropdown"></div>
+                        <small class="hint">Default: main gate</small>
+                    </div>
+                    <div class="input-group">
+                        <label for="toBuilding">To Building: <span class="required">*</span></label>
+                        <input type="text" id="toBuilding" required>
+                        <div id="toBuildingSuggestions" class="suggestions-dropdown"></div>
+                    </div>
+                    <button type="submit" id="submitBtn">Get Directions</button>
+                </form>
+            </section>    
+
+            <!-- Shared Output Areas -->
             <div id="canvasContainer"></div>
 
             <div id="output" class="output-container" style="display: none;"></div>

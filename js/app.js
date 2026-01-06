@@ -65,6 +65,29 @@ document.addEventListener('DOMContentLoaded', function() {
         img.src = src;
     });
 
+    // Navbar navigation
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const views = document.querySelectorAll('.view');
+
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetView = btn.getAttribute('data-view');
+
+            // Update active button
+            navButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Show target view
+            views.forEach(v => v.classList.remove('active'));
+            document.getElementById(`${targetView}-view`).classList.add('active');
+
+            // Clear previous outputs when switching
+            outputContainer.style.display = 'none';
+            errorContainer.style.display = 'none';
+            clearOutputs();
+            document.getElementById('canvasContainer').innerHTML = '';
+        });
+    });
 
     const form = document.getElementById('directionsForm');
     const outputContainer = document.getElementById('output');

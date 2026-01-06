@@ -1,3 +1,7 @@
+/* ========================================
+   Global Reset & Base Styles
+   ======================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -12,6 +16,10 @@ body {
     font-size: 16px;
 }
 
+/* ========================================
+   Layout & Container
+   ======================================== */
+
 .container {
     background: white;
     border-radius: 12px;
@@ -21,6 +29,10 @@ body {
     margin: 0 auto;
     padding: 40px;
 }
+
+/* ========================================
+   Header
+   ======================================== */
 
 header {
     text-align: center;
@@ -32,6 +44,10 @@ header h1 {
     font-size: 2rem;
     font-weight: 600;
 }
+
+/* ========================================
+   Form Inputs
+   ======================================== */
 
 .input-group {
     margin-bottom: 20px;
@@ -70,6 +86,10 @@ header h1 {
     font-size: 0.85rem;
 }
 
+/* ========================================
+   Submit Button
+   ======================================== */
+
 #submitBtn {
     width: 100%;
     padding: 14px;
@@ -92,6 +112,10 @@ header h1 {
 #submitBtn:active {
     transform: translateY(0);
 }
+
+/* ========================================
+   Output Layout
+   ======================================== */
 
 .output-container {
     margin-top: 30px;
@@ -133,6 +157,10 @@ div#floorPictureSection {
     margin-top: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+/* ========================================
+   Directions Section
+   ======================================== */
 
 .direction-row {
     display: flex;
@@ -180,7 +208,10 @@ div#floorPictureSection {
     margin: 8px 0;
 }
 
-/* Map section */
+/* ========================================
+   Map Section
+   ======================================== */
+
 #mapSection {
     position: relative;
     overflow: hidden;
@@ -191,12 +222,14 @@ div#floorPictureSection {
     width: 100%;
 }
 
-/* Desktop: Floor highlight inset in bottom-left */
+/* ========================================
+   Floor Highlight – Desktop (Inset Overlay)
+   ======================================== */
 .floor-inset {
     position: absolute;
     top: 91%;
     left: 5px;
-    transform: translateY(-40%); /* Pulls it up so bottom aligns with top:91% */
+    transform: translateY(-40%);
     width: 180px;
     max-width: 15%;
     background: rgba(255, 255, 255, 0.95);
@@ -224,7 +257,9 @@ div#floorPictureSection {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Mobile: Full-width floor highlight below the map */
+/* ========================================
+   Floor Highlight – Mobile (Full-Width Below Map)
+   ======================================== */
 .mobile-floor-highlight {
     display: none;
     background: white;
@@ -250,6 +285,10 @@ div#floorPictureSection {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* ========================================
+   General Canvas Styles
+   ======================================== */
+
 canvas {
     max-width: 100%;
     height: auto;
@@ -257,6 +296,10 @@ canvas {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     background: white;
 }
+
+/* ========================================
+   Error Messages
+   ======================================== */
 
 .error-container {
     margin-top: 20px;
@@ -271,7 +314,98 @@ canvas {
     font-weight: 500;
 }
 
-/* Mobile Responsive Adjustments */
+/* ========================================
+   Autocomplete Suggestions
+   ======================================== */
+
+.suggestions-dropdown {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    width: calc(100% - 32px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    z-index: 100;
+    display: none;
+}
+
+.suggestion-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.suggestion-item:hover,
+.suggestion-item.highlighted {
+    background: #667eea;
+    color: white;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item strong {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.suggestion-item:hover strong {
+    color: white;
+}
+
+/* ========================================
+   Navigation Bar & Views
+   ======================================== */
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    padding: 12px 24px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: #ddd;
+}
+
+.nav-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.view {
+    display: none;
+    animation: fadeIn 0.4s ease-in;
+}
+
+.view.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ========================================
+   Mobile Responsive Adjustments
+   ======================================== */
+
 @media (max-width: 767px) {
     body {
         padding: 10px;
@@ -329,43 +463,4 @@ canvas {
     .output-section h3 {
         font-size: 1.1rem;
     }
-}
-
-
-.suggestions-dropdown {
-    position: absolute;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    max-height: 200px;
-    overflow-y: auto;
-    width: calc(100% - 32px); /* match input width */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    z-index: 100;
-    display: none;
-}
-
-.suggestion-item {
-    padding: 12px 16px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
-}
-
-.suggestion-item:hover,
-.suggestion-item.highlighted {
-    background: #667eea;
-    color: white;
-}
-
-.suggestion-item:last-child {
-    border-bottom: none;
-}
-
-.suggestion-item strong {
-    font-weight: bold;
-    color: #667eea; /* Matches your theme */
-}
-
-.suggestion-item:hover strong {
-    color: white;
 }
