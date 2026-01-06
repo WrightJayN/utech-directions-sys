@@ -70,7 +70,7 @@ class FloorHighlightOutput {
                 // "YOU ARE HERE" label
                 ctx.font = `bold ${labelFontSize}px Arial, sans-serif`;
                 ctx.textAlign = 'center';
-                ctx.fillText('YOU ARE HERE', canvas.width / 2, y + floorHeight / 2 + 8);
+                ctx.fillText('GO HERE', canvas.width / 2, y + floorHeight / 2 + 8);
             }
         }
 
