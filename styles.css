@@ -16,6 +16,8 @@ body {
     font-size: 16px;
 }
 
+
+
 /* ========================================
    Layout & Container
    ======================================== */
@@ -43,6 +45,214 @@ header h1 {
     color: #333;
     font-size: 2rem;
     font-weight: 600;
+}
+
+/* ========================================
+   Header Layout & Settings Button
+   ======================================== */
+
+header {
+    position: relative;            /* Allows absolute positioning of button */
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 10px 0;               /* Optional: some vertical breathing room */
+}
+
+#settingsBtn {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: #333;
+}
+
+#settingsBtn:hover {
+    background: rgba(102, 126, 234, 0.1);   /* Light purple tint from your theme */
+    color: #667eea;
+    transform: translateY(-50%) scale(1.1);
+}
+
+#settingsBtn svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Mobile adjustment */
+@media (max-width: 767px) {
+    #settingsBtn {
+        right: 10px;
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* ========================================
+   Settings Menu Popup
+   ======================================== */
+
+.settings-menu {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 260px;
+    padding: 16px;
+    z-index: 1000;
+    display: none;
+    border: 1px solid #e0e0e0;
+}
+
+.settings-menu::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 18px;
+    width: 16px;
+    height: 16px;
+    background: white;
+    transform: rotate(45deg);
+    border-left: 1px solid #e0e0e0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.settings-item {
+    margin-bottom: 18px;
+}
+
+.settings-item label {
+    display: block;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.settings-item select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.theme-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.theme-buttons button {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.theme-buttons button.active,
+.theme-buttons button:hover {
+    border-color: #667eea;
+    background: #667eea;
+    color: white;
+}
+
+#aboutBtn {
+    width: 100%;
+    padding: 10px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#aboutBtn:hover {
+    background: #e0e0e0;
+}
+
+/* Popup Overlay */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.popup-content {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.popup-content h3 {
+    margin-bottom: 16px;
+    color: #333;
+}
+
+.popup-content p {
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+#closeAbout {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Mobile adjustments */
+@media (max-width: 767px) {
+    .settings-menu {
+        right: 10px;
+        width: calc(100% - 40px);
+        max-width: 300px;
+    }
+
+    .settings-menu::before {
+        right: 14px;
+    }
+}
+
+/* Dark mode styles */
+.dark-mode {
+    background: #121212 !important;
+    color: #e0e0e0;
+}
+
+.dark-mode .container {
+    background: #1e1e1e;
+    color: #e0e0e0;
+}
+
+.dark-mode header h1 {
+    color: #fff;
 }
 
 /* ========================================
