@@ -37,14 +37,54 @@ async function loadVersion() {
 
 // Check for new version every 5 minutes (300000 ms)
 // You can change this interval — e.g., 60000 for every minute (good for development)
+// Check for new version and show toast if available
 async function checkForUpdate() {
     const newVersion = await loadVersion();
+    
     if (newVersion && currentVersion && newVersion !== currentVersion) {
-        // New version detected!
-        if (confirm(`New version ${newVersion} available!\n\nReload now to update?`)) {
-            location.reload(true); // Force reload from server
+        // Key to track if user has already been notified about THIS exact version
+        const notifiedKey = `update_notified_${newVersion}`;
+        
+        // If we've already notified about this version in this session, skip
+        if (sessionStorage.getItem(notifiedKey)) {
+            return; // Do nothing — user already saw it
         }
-        // If user clicks "Cancel", we'll check again later
+
+        // Show toast
+        const toast = document.getElementById('updateToast');
+        const versionText = document.getElementById('newVersionText');
+        const reloadBtn = document.getElementById('reloadNow');
+        const dismissBtn = document.getElementById('dismissToast');
+
+        versionText.textContent = newVersion;
+        toast.classList.add('show');
+
+        // Mark that we've notified about this version
+        sessionStorage.setItem(notifiedKey, 'true');
+
+        // Clean up old notification flags (optional, prevents storage bloat)
+        // Remove flags for previous versions
+        Object.keys(sessionStorage).forEach(key => {
+            if (key.startsWith('update_notified_') && key !== notifiedKey) {
+                sessionStorage.removeItem(key);
+            }
+        });
+
+        // Event listeners
+        reloadBtn.onclick = () => {
+            location.reload(true);
+        };
+
+        dismissBtn.onclick = () => {
+            toast.classList.remove('show');
+        };
+
+        // Auto-hide after 10 seconds
+        setTimeout(() => {
+            if (toast.classList.contains('show')) {
+                toast.classList.remove('show');
+            }
+        }, 10000);
     }
 }
 

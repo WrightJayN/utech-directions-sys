@@ -256,6 +256,91 @@ header {
 }
 
 /* ========================================
+   Toast Notification (Update Available)
+   ======================================== */
+
+.toast-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 16px 20px;
+    max-width: 320px;
+    z-index: 3000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+    border-left: 5px solid #667eea;
+}
+
+.toast-notification.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.toast-content strong {
+    display: block;
+    color: #333;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.toast-content p {
+    color: #555;
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+.toast-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.toast-buttons button {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#reloadNow {
+    background: #667eea;
+    color: white;
+}
+
+#reloadNow:hover {
+    background: #764ba2;
+}
+
+#dismissToast {
+    background: #f0f0f0;
+    color: #333;
+}
+
+#dismissToast:hover {
+    background: #e0e0e0;
+}
+
+/* Mobile adjustment */
+@media (max-width: 767px) {
+    .toast-notification {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+}
+
+
+/* ========================================
    Explorer Card Style
    ======================================== */
 
