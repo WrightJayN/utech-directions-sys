@@ -38,17 +38,24 @@ async function loadVersion() {
 // Check for new version every 5 minutes (300000 ms)
 // You can change this interval — e.g., 60000 for every minute (good for development)
 // Check for new version and show toast if available
+let pendingNewVersion = null; // Stores the new version when detected
 async function checkForUpdate() {
     const newVersion = await loadVersion();
     
     if (newVersion && currentVersion && newVersion !== currentVersion) {
-        // Key to track if user has already been notified about THIS exact version
+        pendingNewVersion = newVersion;
+
         const notifiedKey = `update_notified_${newVersion}`;
         
-        // If we've already notified about this version in this session, skip
         if (sessionStorage.getItem(notifiedKey)) {
-            return; // Do nothing — user already saw it
+            // Already notified — just show badge and menu section
+            showUpdateIndicators(newVersion);
+            return;
         }
+
+        // First time seeing this update
+        sessionStorage.setItem(notifiedKey, 'true');
+        showUpdateIndicators(newVersion);
 
         // Show toast
         const toast = document.getElementById('updateToast');
@@ -59,33 +66,40 @@ async function checkForUpdate() {
         versionText.textContent = newVersion;
         toast.classList.add('show');
 
-        // Mark that we've notified about this version
-        sessionStorage.setItem(notifiedKey, 'true');
+        reloadBtn.onclick = () => location.reload(true);
+        dismissBtn.onclick = () => toast.classList.remove('show');
 
-        // Clean up old notification flags (optional, prevents storage bloat)
-        // Remove flags for previous versions
-        Object.keys(sessionStorage).forEach(key => {
-            if (key.startsWith('update_notified_') && key !== notifiedKey) {
-                sessionStorage.removeItem(key);
-            }
-        });
-
-        // Event listeners
-        reloadBtn.onclick = () => {
-            location.reload(true);
-        };
-
-        dismissBtn.onclick = () => {
-            toast.classList.remove('show');
-        };
-
-        // Auto-hide after 10 seconds
         setTimeout(() => {
             if (toast.classList.contains('show')) {
                 toast.classList.remove('show');
             }
         }, 10000);
+    } else {
+        // No update — hide everything
+        hideUpdateIndicators();
+        pendingNewVersion = null;
     }
+}
+
+function showUpdateIndicators(version) {
+    // Show badge on settings button
+    document.getElementById('settingsBadge').classList.add('show');
+
+    // Show update section in menu
+    const updateSection = document.getElementById('updateSection');
+    const menuVersion = document.getElementById('menuNewVersion');
+    const menuReloadBtn = document.getElementById('menuReloadBtn');
+
+    menuVersion.textContent = version;
+    updateSection.style.display = 'block';
+
+    // Attach reload action
+    menuReloadBtn.onclick = () => location.reload(true);
+}
+
+function hideUpdateIndicators() {
+    document.getElementById('settingsBadge').classList.remove('show');
+    document.getElementById('updateSection').style.display = 'none';
 }
 
 // Initial load
@@ -193,6 +207,9 @@ function applySystemTheme() {
         document.body.classList.remove('dark-mode');
     }
 }
+
+// Initial check on page load
+loadVersion().then(() => checkForUpdate());
 
 // Listen for system theme changes
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
