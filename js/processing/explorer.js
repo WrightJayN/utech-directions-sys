@@ -8,7 +8,7 @@ class CampusExplorer {
         this.treeDB = treeDB;
         this.container = document.getElementById(containerId);
         this.container.className = 'building-grid';
-        this.placeholderSrc = 'assets/utech_crest.jpg';
+        this.placeholderSrc = 'assets/utech_crest.webp';
     }
 
     populate() {
