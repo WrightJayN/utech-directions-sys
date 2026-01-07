@@ -19,7 +19,7 @@ import { DataCollector } from './input/dataCollector.js';
 import { RoomNodeFinder } from './processing/roomNodeFinder.js';
 import { BuildingFloorNodeFinder } from './processing/buildingFloorNodeFinder.js';
 import { PathFinder } from './processing/pathFinder.js';
-import { CampusExplorer } from './processing/Explorer.js';
+import { CampusExplorer } from './processing/temp.js';
 import { BuildingPicturesOutput } from './output/buildingPicturesOutput.js';
 import { FloorHighlightOutput } from './output/floorHighlightOutput.js';
 import { FloorPicturesOutput } from './output/floorPicturesOutput.js';
