@@ -503,7 +503,7 @@ class PathDrawer {
      * @param {number} canvasWidth - Width of the canvas
      * @param {number} canvasHeight - Height of the canvas
      */
-    static drawMapKey(context, canvasWidth, canvasHeight, scale = 1.8) {
+    static drawMapKey(context, canvasWidth, canvasHeight, scale = 2.5) {
         // Base dimensions (at scale = 1.0)
         const baseKeyWidth = 200;
         const baseKeyHeight = 90;
