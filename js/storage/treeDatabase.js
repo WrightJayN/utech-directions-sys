@@ -28,6 +28,8 @@ class TreeDatabase {
 	constructor() {
 		this.root = null;
 		this.roomsHashMap = new Map();
+		this.floorHashMap = new Map();
+		this.buildingHashMap = new Map();
 		this.buildTree();
 	}
 
@@ -38,9 +40,11 @@ class TreeDatabase {
 		// building1
 		const building1 = new TreeNode('building1', 'Go to Engineering Building (Building 1)');
 		this.root.addChild(building1);
+		this.buildingHashMap.set(building1.name, building1);
 
 		const floor1ground = new TreeNode('floor1ground', 'Go to Ground Floor');
 		building1.addChild(floor1ground);
+		this.floorHashMap.set(floor1ground.name, floor1ground);
 
 		const floor1groundRooms = [
 			['engineering tuck shop', 'Go to Engineering tuck shop'],
@@ -91,6 +95,7 @@ class TreeDatabase {
 
 		const floor1a = new TreeNode('floor1a', 'Go to 1st Floor (Floor A)');
 		building1.addChild(floor1a);
+		this.floorHashMap.set(floor1a.name, floor1a);
 
 		const floor1aRooms = [
 			['fenc student affair', 'Go to FENC Student Affairs'],
@@ -113,6 +118,7 @@ class TreeDatabase {
 
 		const floor1b = new TreeNode('floor1b', 'Go to 2nd Floor (Floor B)');
 		building1.addChild(floor1b);
+		this.floorHashMap.set(floor1b.name, floor1b);
 
 		const floor1bRooms = [
 			['1b6', 'Go to room 1B6'],
@@ -132,6 +138,7 @@ class TreeDatabase {
 
 		const floor1c = new TreeNode('floor1c', 'Go to 3rd Floor (Floor C)');
 		building1.addChild(floor1c);
+		this.floorHashMap.set(floor1c.name, floor1c);
 
 		const floor1cRooms = [
 			['1c13', 'Go to room 1C13'],
@@ -152,9 +159,11 @@ class TreeDatabase {
 		// building2
 		const building2 = new TreeNode('building2', 'Go to SCIT Lab (Building 2)');
 		this.root.addChild(building2);
+		this.buildingHashMap.set(building2.name, building2);
 
 		const floor2a = new TreeNode('floor2a', 'Go to 1st Floor (Floor A)');
 		building2.addChild(floor2a);
+		this.floorHashMap.set(floor2a.name, floor2a);
 
 		const floor2aRooms = [
 		];
@@ -167,6 +176,7 @@ class TreeDatabase {
 
 		const floor2b = new TreeNode('floor2b', 'Go to 2nd Floor (Floor B)');
 		building2.addChild(floor2b);
+		this.floorHashMap.set(floor2b.name, floor2b);
 
 		const floor2bRooms = [
 			['2b8', 'Go to room 2B8'],
@@ -185,6 +195,7 @@ class TreeDatabase {
 
 		const floor2c = new TreeNode('floor2c', 'Go to 3rd Floor (Floor C)');
 		building2.addChild(floor2c);
+		this.floorHashMap.set(floor2c.name, floor2c);
 
 		const floor2cRooms = [
 		];
@@ -198,9 +209,11 @@ class TreeDatabase {
 		// building4
 		const building4 = new TreeNode('building4', 'Go to FOBE (Building 4)');
 		this.root.addChild(building4);
+		this.buildingHashMap.set(building4.name, building4);
 
 		const floorbasement = new TreeNode('basement', 'Go to Basement Floor');
 		building4.addChild(floorbasement);
+		this.floorHashMap.set(floorbasement.name, floorbasement);
 
 		const floorbasementRooms = [
 			['lt4', 'Go to LT4'],
@@ -214,6 +227,7 @@ class TreeDatabase {
 
 		const floor4a = new TreeNode('floor4a', 'Go to 1st Floor (Floor A)');
 		building4.addChild(floor4a);
+		this.floorHashMap.set(floor4a.name, floor4a);
 
 		const floor4aRooms = [
 			['4a2', 'Go to room 4A2'],
@@ -240,6 +254,7 @@ class TreeDatabase {
 
 		const floor4b = new TreeNode('floor4b', 'Go to 2nd Floor (Floor B)');
 		building4.addChild(floor4b);
+		this.floorHashMap.set(floor4b.name, floor4b);
 
 		const floor4bRooms = [
 			['4b6 computer lab', 'Go to 4B6 Computer Lab'],
@@ -262,6 +277,7 @@ class TreeDatabase {
 
 		const floor4c = new TreeNode('floor4c', 'Go to 3rd Floor (Floor C)');
 		building4.addChild(floor4c);
+		this.floorHashMap.set(floor4c.name, floor4c);
 
 		const floor4cRooms = [
 			['4c17', 'Go to room 4C17'],
@@ -285,9 +301,11 @@ class TreeDatabase {
 		// building5
 		const building5 = new TreeNode('building5', 'Go to SOBA (Building 5)');
 		this.root.addChild(building5);
+		this.buildingHashMap.set(building5.name, building5);
 
 		const floor5a = new TreeNode('floor5a', 'Go to 1st Floor (Floor A)');
 		building5.addChild(floor5a);
+		this.floorHashMap.set(floor5a.name, floor5a);
 
 		const floor5aRooms = [
 			['5a6', 'Go to room 5A6'],
@@ -306,6 +324,7 @@ class TreeDatabase {
 
 		const floor5b = new TreeNode('floor5b', 'Go to 2nd Floor (Floor B)');
 		building5.addChild(floor5b);
+		this.floorHashMap.set(floor5b.name, floor5b);
 
 		const floor5bRooms = [
 			['5b1', 'Go to room 5B1'],
@@ -325,6 +344,7 @@ class TreeDatabase {
 
 		const floor5c = new TreeNode('floor5c', 'Go to 3rd Floor (Floor C)');
 		building5.addChild(floor5c);
+		this.floorHashMap.set(floor5c.name, floor5c);
 
 		const floor5cRooms = [
 		];
@@ -338,9 +358,11 @@ class TreeDatabase {
 		// building8
 		const building8 = new TreeNode('building8', 'Go to FELS (Building 8)');
 		this.root.addChild(building8);
+		this.buildingHashMap.set(building8.name, building8);
 
 		const floor8a = new TreeNode('floor8a', 'Go to 1st Floor (Floor A)');
 		building8.addChild(floor8a);
+		this.floorHashMap.set(floor8a.name, floor8a);
 
 		const floor8aRooms = [
 			['8a2 computer lab', 'Go to room 8A2 Computer Lab'],
@@ -361,6 +383,7 @@ class TreeDatabase {
 
 		const floor8b = new TreeNode('floor8b', 'Go to 2nd Floor (Floor B)');
 		building8.addChild(floor8b);
+		this.floorHashMap.set(floor8b.name, floor8b);
 
 		const floor8bRooms = [
 			['8b1a', 'Go to room 8B1A'],
@@ -378,6 +401,7 @@ class TreeDatabase {
 
 		const floor8c = new TreeNode('floor8c', 'Go to 3rd Floor (Floor C)');
 		building8.addChild(floor8c);
+		this.floorHashMap.set(floor8c.name, floor8c);
 
 		const floor8cRooms = [
 			['8c7a', 'Go to room 8C7A'],
@@ -399,9 +423,11 @@ class TreeDatabase {
 		// buildingltbsdbld8
 		const ltbsdbld8 = new TreeNode('ltbsdbld8', 'Go to Lecture Theatre beside FELS (building 8)');
 		this.root.addChild(ltbsdbld8);
+		this.buildingHashMap.set(ltbsdbld8.name, ltbsdbld8);
 
 		const floorltbsdbld8a = new TreeNode('floorltbsdbld8a', 'Go to 1st Floor (Basement)');
 		ltbsdbld8.addChild(floorltbsdbld8a);
+		this.floorHashMap.set(floorltbsdbld8a.name, floorltbsdbld8a);
 
 		const floorltbsdbld8aRooms = [
 			['lt10a', 'Go to room LT10A'],
@@ -415,6 +441,7 @@ class TreeDatabase {
 
 		const floorltbsdbld8b = new TreeNode('floorltbsdbld8b', 'Go to 2nd Floor (Ground)');
 		ltbsdbld8.addChild(floorltbsdbld8b);
+		this.floorHashMap.set(floorltbsdbld8b.name, floorltbsdbld8b);
 
 		const floorltbsdbld8bRooms = [
 			['lt9', 'Go to room LT9'],
@@ -428,6 +455,8 @@ class TreeDatabase {
 
 		const floorltbsdbld8c = new TreeNode('floorltbsdbld8c', 'Go to 3rd Floor (Floor A)');
 		ltbsdbld8.addChild(floorltbsdbld8c);
+		this.floorHashMap.set(floorltbsdbld8c.name, floorltbsdbld8c);
+		
 
 		const floorltbsdbld8cRooms = [
 			['lt10b', 'Go to room LT10B'],
@@ -441,6 +470,7 @@ class TreeDatabase {
 
 		const floorltbsdbld8d = new TreeNode('floorltbsdbld8d', 'Go to 3rd Floor (Floor B)');
 		ltbsdbld8.addChild(floorltbsdbld8d);
+		this.floorHashMap.set(floorltbsdbld8d.name, floorltbsdbld8d);
 
 		const floorltbsdbld8dRooms = [
 			['lt9b', 'Go to room LT9B'],
@@ -455,9 +485,11 @@ class TreeDatabase {
 		// building22
 		const building22 = new TreeNode('building22', 'Go to COBAM (Building 22)');
 		this.root.addChild(building22);
+		this.buildingHashMap.set(building22.name, building22);
 
 		const floor22a = new TreeNode('floor22a', 'Go to 1st Floor (Floor A)');
 		building22.addChild(floor22a);
+		this.floorHashMap.set(floor22a.name, floor22a);
 
 		const floor22aRooms = [
 		];
@@ -470,6 +502,7 @@ class TreeDatabase {
 
 		const floor22b = new TreeNode('floor22b', 'Go to 2nd Floor (Floor B)');
 		building22.addChild(floor22b);
+		this.floorHashMap.set(floor22b.name, floor22b);
 
 		const floor22bRooms = [
 			['22b1', 'Go to room 22B1'],
@@ -486,6 +519,7 @@ class TreeDatabase {
 
 		const floor22c = new TreeNode('floor22c', 'Go to 3rd Floor (Floor C)');
 		building22.addChild(floor22c);
+		this.floorHashMap.set(floor22c.name, floor22c);
 
 		const floor22cRooms = [
 			['22c2 computer lab', 'Go to room 22C2 Computer Lab'],
@@ -500,9 +534,12 @@ class TreeDatabase {
 		// building47
 		const building47 = new TreeNode('building47', 'Go to Shared Facilities (Building 47)');
 		this.root.addChild(building47);
+		this.buildingHashMap.set(building47.name, building47);
 
 		const floor47a = new TreeNode('floor47a', 'Go to 1st Floor (Floor A)');
 		building47.addChild(floor47a);
+		this.floorHashMap.set(floor47a.name, floor47a);
+
 
 		const floor47aRooms = [
 			['47a1', 'Go to room 47A1'],
@@ -523,6 +560,8 @@ class TreeDatabase {
 
 		const floor47b = new TreeNode('floor47b', 'Go to 2nd Floor (Floor B)');
 		building47.addChild(floor47b);
+		this.floorHashMap.set(floor47b.name, floor47b);
+
 
 		const floor47bRooms = [
 			['47b1', 'Go to room 47B1'],
@@ -543,6 +582,7 @@ class TreeDatabase {
 
 		const floor47c = new TreeNode('floor47c', 'Go to 3rd Floor (Floor C)');
 		building47.addChild(floor47c);
+		this.floorHashMap.set(floor47c.name, floor47c);
 
 		const floor47cRooms = [
 			['47c1', 'Go to room 47C1'],
@@ -560,9 +600,11 @@ class TreeDatabase {
 		// buildingltbsdbld47
 		const ltbsdbld47 = new TreeNode('ltbsdbld47', 'Go to Lecture Theatre beside Shared Facilities (building 47)');
 		this.root.addChild(ltbsdbld47);
+		this.buildingHashMap.set(ltbsdbld47.name, ltbsdbld47);
 
 		const floorltbsdbld47a = new TreeNode('floorltbsdbld47a', 'Go to 1st floor (Floor A)');
 		ltbsdbld47.addChild(floorltbsdbld47a);
+		this.floorHashMap.set(floorltbsdbld47a.name, floorltbsdbld47a);
 
 		const floorltbsdbld47aRooms = [
 			['lt49', 'Go to LT49'],
@@ -577,6 +619,7 @@ class TreeDatabase {
 
 		const floorltbsdbld47b = new TreeNode('floorltbsdbld47b', 'Go to 2nd floor (Floor B)');
 		ltbsdbld47.addChild(floorltbsdbld47b);
+		this.floorHashMap.set(floorltbsdbld47b.name, floorltbsdbld47b);
 
 		const floorltbsdbld47bRooms = [
 		];
@@ -591,19 +634,33 @@ class TreeDatabase {
 		const walkin_gate = new TreeNode('walkin gate', 'Go to Walk-In Gate');
 		this.root.addChild(walkin_gate);
 		this.roomsHashMap.set('walkin gate', walkin_gate);
+		this.buildingHashMap.set(walkin_gate.name, walkin_gate);
+		this.floorHashMap.set(walkin_gate.name, walkin_gate);
 
 		const back_gate = new TreeNode('back gate', 'Go to Back Gate');
 		this.root.addChild(back_gate);
 		this.roomsHashMap.set('back gate', back_gate);
+		this.buildingHashMap.set(back_gate.name, back_gate);
+		this.floorHashMap.set(back_gate.name, back_gate);
 
 		const main_gate = new TreeNode('main gate', 'Go to Main Gate');
 		this.root.addChild(main_gate);
 		this.roomsHashMap.set('main gate', main_gate);
+		this.buildingHashMap.set(main_gate.name, main_gate);
+		this.floorHashMap.set(main_gate.name, main_gate);
 
 	}
 
 	getRoomsHashMap() {
 		return this.roomsHashMap;
+	}
+
+	getFloorHashMap() {
+		return this.floorHashMap;
+	}
+
+	getBuildingHashMap() {
+		return this.buildingHashMap;
 	}
 
 	getRoot() {
