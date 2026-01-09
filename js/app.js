@@ -80,10 +80,19 @@ document.addEventListener('DOMContentLoaded', function() {
     campusExplorer.populate();
     const graphDB = new GraphDatabase();
     const roomsHashMap = treeDB.getRoomsHashMap();
-    const autocompleteTrie = new AutocompleteTrie();
-    autocompleteTrie.insertAll(roomsHashMap);
+    const floorHashMap = treeDB.getFloorHashMap();
+    const buildingHashMap = treeDB.getBuildingHashMap();
+    const rmAutoCompleteTrie = new AutocompleteTrie();
+    rmAutoCompleteTrie.insertAll(roomsHashMap);
+    const flrAutoCompleteTrie = new AutocompleteTrie();
+    flrAutoCompleteTrie.insertAll(floorHashMap);
+    const bldAutoCompleteTrie = new AutocompleteTrie();
+    bldAutoCompleteTrie.insertAll(buildingHashMap);
+    
     // Make it available globally or attach to window for now
-    window.autocompleteTrie = autocompleteTrie; // Easy access for inputs    
+    window.rmAutoCompleteTrie = rmAutoCompleteTrie; // Easy access for inputs    
+    window.flrAutoCompleteTrie = flrAutoCompleteTrie;
+    window.bldAutoCompleteTrie = bldAutoCompleteTrie;
 
     // Navbar navigation
     const navButtons = document.querySelectorAll('.nav-btn');
@@ -123,6 +132,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
+
+        const roomsTab = document.querySelector('.nav-btn[data-view="rooms"]');
+        const floorsTab = document.querySelector('.nav-btn[data-view="floors"]');
+        const buildingsTab = document.querySelector('.nav-btn[data-view="buildings"]');
         
         // Hide previous outputs
         errorContainer.style.display = 'none';
@@ -139,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
             isAnimationPlayed = true;
         }
 
-        try {      
+        try {     
             // Get form inputs
             const fromRoomInput = document.getElementById('fromRoom').value;
             const toRoomInput = document.getElementById('toRoom').value;
@@ -152,81 +165,89 @@ document.addEventListener('DOMContentLoaded', function() {
             
             console.log('Step 1-2: Processed inputs:', processed);
             
-            // STEP 3: Room Node Finder - Find room tree nodes using Rooms Hash Map
-            const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
-                processed.fromRoom,
-                processed.toRoom,
-                roomsHashMap
-            );
             
-            if (!from_rm_t_node) {
-                throw new Error(`From room "${processed.fromRoom}" not found`);
-            }
-            if (!to_rm_t_node) {
-                throw new Error(`To room "${processed.toRoom}" not found`);
-            }
-            
-            console.log('Step 3: Found room nodes:', from_rm_t_node, to_rm_t_node);
-            
-            // Check if same room
-            if (from_rm_t_node === to_rm_t_node) {
-                throw new Error("These are the same rooms; no directions needed");
-            }
-            
-            // STEP 4: Building/Floor Node Finder - Find building and floor tree nodes
-            const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
-                from_rm_t_node,
-                to_rm_t_node
-            );
-            
-            const { from_bld_t_node, from_flr_t_node, to_bld_t_node, to_flr_t_node } = result;
-            
-            console.log('Step 4: Found building/floor nodes:', result);
-            
-            // STEP 5: Building Pictures Output - Display destination building picture
-            const buildingPicture = BuildingPicturesOutput.getBuildingPicture(to_bld_t_node);
-            if (buildingPicture) {
-                displayBuildingPicture(buildingPicture, to_bld_t_node.name);
-            }
-            
-            console.log('Step 5: Building picture:', buildingPicture);
-            
-            // STEP 6: Floor Pictures Output - Display destination floor picture
-            const floorPicture = FloorPicturesOutput.getFloorPicture(to_flr_t_node);
-            if (floorPicture) {
-                displayFloorPicture(floorPicture, to_flr_t_node.name);
-            }
-            
-            console.log('Step 6: Floor picture:', floorPicture);
-            
-            // STEP 7: Floor Highlight Output - Highlight destination floor
-            displayFloorHighlight(to_flr_t_node);
-            
-            console.log('Step 7: Floor highlight created');
-            
-            // STEP 8: PathFinder - Find shortest path between buildings
-            const path = PathFinder.findPathFromTreeNodes(
-                from_bld_t_node,
-                to_bld_t_node,
-                graphDB
-            );
-            
-            if (!path || path.length === 0) {
-                console.warn('No path found between buildings');
-                displayTextDirections(from_rm_t_node, to_rm_t_node, from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node);
-            } else {
-                console.log('Step 8: Path found:', path);
+            if(roomsTab.classList.contains('active')){ // When dealing with rooms
+                // STEP 3-4: Building and Floor Node location
+                const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
+                    processed.fromRoom,
+                    processed.toRoom,
+                    roomsHashMap
+                );
                 
-                // STEP 9: PathDrawer - Draw map with path
-                await displayMapWithPath(from_bld_t_node, to_bld_t_node, path);
+                if (!from_rm_t_node) {
+                    throw new Error(`From room "${processed.fromRoom}" not found`);
+                }
+                if (!to_rm_t_node) {
+                    throw new Error(`To room "${processed.toRoom}" not found`);
+                }
                 
-                console.log('Step 9: Map with path displayed');
+                console.log('Step 3: Found room nodes:', from_rm_t_node, to_rm_t_node);
+
+                // Check if same room
+                if (from_rm_t_node === to_rm_t_node) {
+                    throw new Error("These are the same rooms; no directions needed");
+                }
                 
-                // Display text directions as well
-                displayTextDirections(from_rm_t_node, to_rm_t_node, from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node);
+                // STEP 4: Building/Floor Node Finder - Find building and floor tree nodes
+                const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
+                    from_rm_t_node,
+                    to_rm_t_node
+                );
+                
+                const { from_bld_t_node, from_flr_t_node, to_bld_t_node, to_flr_t_node } = result;
+                
+                console.log('Step 4: Found building/floor nodes:', result);
+
+                // STEP 5: Building Pictures Output - Display destination building picture
+                const buildingPicture = BuildingPicturesOutput.getBuildingPicture(to_bld_t_node);
+                if (buildingPicture) {
+                    displayBuildingPicture(buildingPicture, to_bld_t_node.name);
+                }
+                
+                console.log('Step 5: Building picture:', buildingPicture);
+                
+                // STEP 6: Floor Pictures Output - Display destination floor picture
+                const floorPicture = FloorPicturesOutput.getFloorPicture(to_flr_t_node);
+                if (floorPicture) {
+                    displayFloorPicture(floorPicture, to_flr_t_node.name);
+                }
+                
+                console.log('Step 6: Floor picture:', floorPicture);
+                
+                // STEP 7: Floor Highlight Output - Highlight destination floor
+                displayFloorHighlight(to_flr_t_node);
+                
+                console.log('Step 7: Floor highlight created');
+                
+                // STEP 8: PathFinder - Find shortest path between buildings
+                const path = PathFinder.findPathFromTreeNodes(
+                    from_bld_t_node,
+                    to_bld_t_node,
+                    graphDB
+                );
+                
+                if (!path || path.length === 0) {
+                    console.warn('No path found between buildings');
+                    displayTextDirections(from_rm_t_node, to_rm_t_node, from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node);
+                } else {
+                    console.log('Step 8: Path found:', path);
+                    
+                    // STEP 9: PathDrawer - Draw map with path
+                    await displayMapWithPath(from_bld_t_node, to_bld_t_node, path);
+                    
+                    console.log('Step 9: Map with path displayed');
+                    
+                    // Display text directions as well
+                    displayTextDirections(from_rm_t_node, to_rm_t_node, from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node);
+                }
+            }else if(floorsTab.classList.contains('active')){ // When dealing with floors
+
+
+                console.log ('floors tab active');
+            }else if(buildingsTab.classList.contains('active')){ // When dealing with buildings
+                console.log ('buildings tab active');
             }
             
-            // Show output with fade-in
             outputContainer.style.display = 'block';           // Make it visible
             outputContainer.classList.remove('fade-out');     // In case it was fading out
             outputContainer.classList.add('show');            // Triggers smooth fade-in
@@ -430,7 +451,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            const suggestions = window.autocompleteTrie.getSuggestions(query, 10);
+            const suggestions = window.rmAutoCompleteTrie.getSuggestions(query, 10);
 
             if (suggestions.length === 0) {
                 suggestionsBox.style.display = 'none';
