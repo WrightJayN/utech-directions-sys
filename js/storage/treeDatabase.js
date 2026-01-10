@@ -634,20 +634,20 @@ class TreeDatabase {
 		const walkin_gate = new TreeNode('walkin gate', 'Go to Walk-In Gate');
 		this.root.addChild(walkin_gate);
 		this.roomsHashMap.set('walkin gate', walkin_gate);
-		this.buildingHashMap.set(walkin_gate.name, walkin_gate);
-		this.floorHashMap.set(walkin_gate.name, walkin_gate);
+		this.buildingHashMap.set('walkin gate', walkin_gate);
+		this.floorHashMap.set('walkin gate', walkin_gate);
 
 		const back_gate = new TreeNode('back gate', 'Go to Back Gate');
 		this.root.addChild(back_gate);
 		this.roomsHashMap.set('back gate', back_gate);
-		this.buildingHashMap.set(back_gate.name, back_gate);
-		this.floorHashMap.set(back_gate.name, back_gate);
+		this.buildingHashMap.set('back gate', back_gate);
+		this.floorHashMap.set('back gate'.name, back_gate);
 
 		const main_gate = new TreeNode('main gate', 'Go to Main Gate');
 		this.root.addChild(main_gate);
 		this.roomsHashMap.set('main gate', main_gate);
-		this.buildingHashMap.set(main_gate.name, main_gate);
-		this.floorHashMap.set(main_gate.name, main_gate);
+		this.buildingHashMap.set('main gate', main_gate);
+		this.floorHashMap.set('main gate', main_gate);
 
 	}
 

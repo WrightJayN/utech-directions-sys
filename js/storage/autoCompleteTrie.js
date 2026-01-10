@@ -15,7 +15,8 @@ class AutocompleteTrie {
     // Insert a single room name (lowercase)
     insert(word) {
         let node = this.root;
-        for (const char of word) {
+        let wordStr = String(word);
+        for (const char of wordStr) {
             if (!node.children[char]) {
                 node.children[char] = new TrieNode();
             }
