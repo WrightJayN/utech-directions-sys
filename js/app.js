@@ -325,12 +325,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!path || path.length === 0) {
                 console.warn('No path found between buildings');
             } else {
-                console.log('Step 8: Path found:', path);
+                console.log('Step 7: Path found:', path);
                 
                 // STEP 8: PathDrawer - Draw map with path
                 await displayMapWithPath(from_bld_t_node, to_bld_t_node, path);
                 
-                console.log('Step 9: Map with path displayed');
+                console.log('Step 8: Map with path displayed');
                 
                 // Display text directions as well
                 displayTextDirectionsForFloors(from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node);
@@ -367,7 +367,57 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {     
+            // Get form inputs
+            const fromBuildingInput = document.getElementById('fromBuilding').value;
+            const toBuildingInput = document.getElementById('toBuilding').value;
+
+            // STEP 1 & 2: Data Collector - Convert inputs to lowercase strings
+            const fromBuilding = fromBuildingInput.trim() === "" ? null : fromBuildingInput;
+            const toBuilding = toBuildingInput.trim() === "" ? null : toBuildingInput;
             
+            const processedBuilding = DataCollector.processBuildingInputs(fromBuilding, toBuilding);
+            
+            console.log('Step 1-2: Processed inputs:', processedBuilding);
+
+            //STEP 3 & 4: Find floor and building node;
+            let from_bld_t_node = buildingHashMap.get(processedBuilding.fromBuilding);
+            let to_bld_t_node = buildingHashMap.get(processedBuilding.toBuilding);
+            if (!from_bld_t_node) {
+                throw new Error(`From floor "${processedBuilding.fromBuilding}" not found`);
+            }
+            if (!to_bld_t_node) {
+                throw new Error(`To floor "${processedBuilding.toBuilding}" not found`);
+            }
+            if(from_bld_t_node === to_bld_t_node){
+                throw new Error("These are the same building; no directions needed");
+            }
+
+            // STEP 5: Building Pictures Output - Display destination building picture
+            const buildingPicture = BuildingPicturesOutput.getBuildingPicture(to_bld_t_node);
+            if (buildingPicture) {
+                displayBuildingPicture(buildingPicture, to_bld_t_node.name);
+            }
+
+            // STEP 6: PathFinder - Find shortest path between buildings
+            const path = PathFinder.findPathFromTreeNodes(
+                from_bld_t_node,
+                to_bld_t_node,
+                graphDB
+            );
+            
+            if (!path || path.length === 0) {
+                console.warn('No path found between buildings');
+            } else {
+                console.log('Step 6: Path found:', path);
+                
+                // STEP 7: PathDrawer - Draw map with path
+                await displayMapWithPath(from_bld_t_node, to_bld_t_node, path);
+                
+                console.log('Step 7: Map with path displayed');
+                
+                // Display text directions as well
+                displayTextDirectionsForBuildings(from_bld_t_node, to_bld_t_node);
+            }
 
             outputContainer.style.display = 'block';           // Make it visible
             outputContainer.classList.remove('fade-out');     // In case it was fading out
@@ -602,7 +652,7 @@ document.addEventListener('DOMContentLoaded', function() {
         content.innerHTML = html;
     }
     // Display text directions from building to building
-    function displayTextDirectionsForBuildings(from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node) {
+    function displayTextDirectionsForBuildings(from_bld_t_node, to_bld_t_node) {
         const content = document.getElementById('textDirectionsContent');
         
         let html = `
