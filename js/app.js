@@ -1,21 +1,4 @@
-/**
- * Main application logic - Integrated UTech Directions System
- * Handles complete flow from user input to final outputs
- * 
- * Flow:
- * 1. User enters from/to rooms
- * 2. DataCollector converts to lowercase strings
- * 3. RoomNodeFinder finds room tree nodes from Rooms Hash Map
- * 4. BuildingFloorNodeFinder finds building/floor tree nodes
- * 5. BuildingPicturesOutput displays destination building picture
- * 6. FloorPicturesOutput displays destination floor picture
- * 7. FloorHighlightOutput highlights destination floor
- * 8. PathFinder finds shortest path between buildings
- * 9. PathDrawer displays map with path drawn
-*/
-
-//Module imports
-import { DataCollector } from './input/dataCollector.js';
+import { inputToString } from './input/inputToString.js';
 import { RoomNodeFinder } from './processing/roomNodeFinder.js';
 import { BuildingFloorNodeFinder } from './processing/buildingFloorNodeFinder.js';
 import { PathFinder } from './processing/pathFinder.js';
@@ -151,43 +134,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {     
-            // Get form inputs
-            const fromRoomInput = document.getElementById('fromRoom').value;
-            const toRoomInput = document.getElementById('toRoom').value;
-
-            // STEP 1 & 2: Data Collector - Convert inputs to lowercase strings
-            const fromRoom = fromRoomInput.trim() === "" ? null : fromRoomInput;
-            const toRoom = toRoomInput.trim() === "" ? null : toRoomInput;
+            const sourceInput = document.getElementById('fromRoom').value;
+            const destionationInput = document.getElementById('toRoom').value;
             
-            const processedRoom = DataCollector.processRoomInputs(fromRoom, toRoom);
+            const sourceAndDestinationRooms = inputToString.turnRoomInputsIntoStrings(sourceInput, destionationInput);
             
-            console.log('Step 1-2: Processed inputs:', processedRoom);
+            console.log('Step 1-2: Inputs as Strings:', sourceAndDestinationRooms);
 
             // STEP 3-4: Building and Floor Node location
-            const [from_rm_t_node, to_rm_t_node] = RoomNodeFinder.findRoomNodes(
-                processedRoom.fromRoom,
-                processedRoom.toRoom,
+            const [sourceRoomNode, destinationRoomNode] = RoomNodeFinder.findRoomNodes(
+                sourceAndDestinationRooms.source,
+                sourceAndDestinationRooms.destination,
                 roomsHashMap
             );
             
-            if (!from_rm_t_node) {
+            if (!sourceRoomNode) {
                 throw new Error(`From room "${processedRoom.fromRoom}" not found`);
             }
-            if (!to_rm_t_node) {
+            if (!destinationRoomNode) {
                 throw new Error(`To room "${processedRoom.toRoom}" not found`);
             }
             
-            console.log('Step 3: Found room nodes:', from_rm_t_node, to_rm_t_node);
+            console.log('Step 3: Found room nodes:', sourceRoomNode, destinationRoomNode);
 
             // Check if same room
-            if (from_rm_t_node === to_rm_t_node) {
+            if (sourceRoomNode === destinationRoomNode) {
                 throw new Error("These are the same rooms; no directions needed");
             }
             
             // STEP 4: Building/Floor Node Finder - Find building and floor tree nodes
             const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
-                from_rm_t_node,
-                to_rm_t_node
+                sourceRoomNode,
+                destinationRoomNode
             );
             
             const { from_bld_t_node, from_flr_t_node, to_bld_t_node, to_flr_t_node } = result;
@@ -233,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Step 9: Map with path displayed');
                 
                 // Display text directions as well
-                displayTextDirectionsForRooms(to_rm_t_node, from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node);
+                displayTextDirectionsForRooms(destinationRoomNode, from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node);
             }            
             outputContainer.style.display = 'block';           // Make it visible
             outputContainer.classList.remove('fade-out');     // In case it was fading out
@@ -556,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Display text directions from room to room
-    function displayTextDirectionsForRooms(to_rm_t_node, from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node) {
+    function displayTextDirectionsForRooms(destinationRoomNode, from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node) {
         const content = document.getElementById('textDirectionsContent');
         
         let html = `
@@ -581,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <li>Follow the yellow path on the map to ${to_bld_t_node.name}</li>
                         <li>Enter ${to_bld_t_node.name}</li>
                         <li>Navigate to ${to_flr_t_node.name}</li>
-                        <li>Find room ${to_rm_t_node.name}</li>
+                        <li>Find room ${destinationRoomNode.name}</li>
                     </ol>
                 </div>
             `;
@@ -592,7 +570,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <ol>
                         <li>You are in ${from_bld_t_node.name}</li>
                         <li>Navigate from ${from_flr_t_node.name} to ${to_flr_t_node.name}</li>
-                        <li>Find room ${to_rm_t_node.name}</li>
+                        <li>Find room ${destinationRoomNode.name}</li>
                     </ol>
                 </div>
             `;
@@ -600,7 +578,7 @@ document.addEventListener('DOMContentLoaded', function() {
             html += `
                 <div class="direction-instructions">
                     <h4>📍 Instructions:</h4>
-                    <p>Both rooms are on the same floor (${to_flr_t_node.name}) in ${to_bld_t_node.name}. Simply navigate along the corridor to find room ${to_rm_t_node.name}.</p>
+                    <p>Both rooms are on the same floor (${to_flr_t_node.name}) in ${to_bld_t_node.name}. Simply navigate along the corridor to find room ${destinationRoomNode.name}.</p>
                 </div>
             `;
         }

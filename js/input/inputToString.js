@@ -1,23 +1,20 @@
 class inputToString {
 
-    static isInputDefined(input){return input === null || input === undefined}
-    static isEmpty(output){return output === ""}
+    static isInputUndefined(input) {return input === null || input === undefined}
+    static isEmpty(output) {return output === ""}
+    static isSource(isSource) {if(isSource === true) return "main gate"};
 
     static turnInputIntoString(input, isSource = false) {
 
-        if (this.isInputDefined(input)) {
-            if (isSource === true) {
-                return "main gate";
-            }
+        if (this.isInputUndefined(input)) {
+            this.isSource(isSource);
             throw new Error("Destination is undefined");
         }
         
         let output = String(input).trim().toLowerCase();
 
         if (this.isEmpty(output)) {
-            if (isSource === true) {
-                return "main gate";
-            }
+            this.isSource(isSource);
             throw new Error("Destination is empty");
         }
         
@@ -29,8 +26,8 @@ class inputToString {
         const destination = this.turnInputIntoString(destinationRoom, false);
         
         return {
-            Source: source,
-            Destination: destination
+            source: source,
+            destination: destination
         };
     }
 
@@ -39,7 +36,7 @@ class inputToString {
         const destination = this.turnInputIntoString(destinationFloor, false);
         
         return {
-            Source: source,
+            source: source,
             Destination: destination
         };
     }
@@ -49,11 +46,10 @@ class inputToString {
         const destination = this.turnInputIntoString(destinationBuilding, false);
         
         return {
-            Source: source,
+            source: source,
             Destination: destination
         };
     }
-
 }
 
-export {inputToString};
+export { inputToString };
