@@ -1,5 +1,5 @@
-import { inputToString } from './input/inputToString.js';
-import { RoomNodeFinder } from './processing/roomNodeFinder.js';
+import { validateInput } from './validateInput.js';
+import { findNodeFromHashMap } from './processing/findNodeFromHashMap.js';
 import { BuildingFloorNodeFinder } from './processing/buildingFloorNodeFinder.js';
 import { PathFinder } from './processing/pathFinder.js';
 import { CampusExplorer } from './processing/explorer.js';
@@ -114,6 +114,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Create output sections dynamically
     createOutputSections();
+
+    async function playAnimation(isAnimationPlayed){
+        loadingAnimationContainer.classList.remove('fade-out');
+        loadingAnimationContainer.classList.add('show');
+        await showPathLoadingAnimation(loadingAnimationContainer, 1000);
+        isAnimationPlayed = true;
+    }
     
     roomForm.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -124,44 +131,23 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add fade-out for old content
         outputContainer.classList.add('fade-out');
         loadingAnimationContainer.classList.add('fade-out');
-        
-        // Show the beautiful path animation for 1 seconds
-        if(!isAnimationPlayed){
-            loadingAnimationContainer.classList.remove('fade-out');
-            loadingAnimationContainer.classList.add('show');
-            await showPathLoadingAnimation(loadingAnimationContainer, 1000);
-            isAnimationPlayed = true;
-        }
 
         try {     
-            const sourceInput = document.getElementById('fromRoom').value;
-            const destionationInput = document.getElementById('toRoom').value;
+            const source = document.getElementById('fromRoom').value;
+            const destination = document.getElementById('toRoom').value;
             
-            const sourceAndDestinationRooms = inputToString.turnRoomInputsIntoStrings(sourceInput, destionationInput);
-            
-            console.log('Step 1-2: Inputs as Strings:', sourceAndDestinationRooms);
+            const validatedInputs = validateInput.validateInputs(source, destination, roomsHashMap);
+            console.log('Step 1 - Validate Inputs:', validatedInputs);
 
-            // STEP 3-4: Building and Floor Node location
-            const [sourceRoomNode, destinationRoomNode] = RoomNodeFinder.findRoomNodes(
-                sourceAndDestinationRooms.source,
-                sourceAndDestinationRooms.destination,
-                roomsHashMap
+            const [sourceRoomNode, destinationRoomNode] = findNodeFromHashMap.findNodes(
+                validatedInputs.source, validatedInputs.destination, roomsHashMap
             );
-            
-            if (!sourceRoomNode) {
-                throw new Error(`From room "${processedRoom.fromRoom}" not found`);
-            }
-            if (!destinationRoomNode) {
-                throw new Error(`To room "${processedRoom.toRoom}" not found`);
-            }
-            
-            console.log('Step 3: Found room nodes:', sourceRoomNode, destinationRoomNode);
+            console.log('Step 2 - Find Nodes from HashMap:', sourceRoomNode, destinationRoomNode);
 
-            // Check if same room
-            if (sourceRoomNode === destinationRoomNode) {
-                throw new Error("These are the same rooms; no directions needed");
-            }
-            
+            // if(!isAnimationPlayed){
+            //     playAnimation(isAnimationPlayed);
+            // }
+
             // STEP 4: Building/Floor Node Finder - Find building and floor tree nodes
             const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
                 sourceRoomNode,

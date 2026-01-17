@@ -1,8 +1,8 @@
 class inputToString {
 
-    static isInputUndefined(input) {return input === null || input === undefined}
-    static isEmpty(output) {return output === ""}
-    static isSource(isSource) {if(isSource === true) return "main gate"};
+    static isInputUndefined(input) {return input == null || input == undefined}
+    static isEmpty(output) {return output == ""}
+    static isSource(isSource) {if(isSource == true) return "main gate"};
 
     static turnInputIntoString(input, isSource = false) {
 
