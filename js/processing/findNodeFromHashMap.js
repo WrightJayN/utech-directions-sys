@@ -1,4 +1,4 @@
-class findNodeFromHashMap {
+class FindNodeFromHashMap {
 
     static findNodes(source, destination, hashmap) {
         let sourceNode = hashmap.get(source);
@@ -8,5 +8,5 @@ class findNodeFromHashMap {
     }
 }
 
-export { findNodeFromHashMap };
+export { FindNodeFromHashMap };
 

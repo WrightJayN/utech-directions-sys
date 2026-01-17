@@ -1,4 +1,4 @@
-class validateInput {
+class ValidateInput {
 
     static isNotEmpty(input) {return !(input == "")}
     static isInHashMap(input, hashmap) {return hashmap.has(input)}; 
@@ -42,4 +42,4 @@ class validateInput {
 
 }
 
-export { validateInput };
+export { ValidateInput };

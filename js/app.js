@@ -1,5 +1,5 @@
-import { validateInput } from './validateInput.js';
-import { findNodeFromHashMap } from './processing/findNodeFromHashMap.js';
+import { ValidateInput } from './validateInput.js';
+import { FindNodeFromHashMap } from './processing/findNodeFromHashMap.js';
 import { BuildingFloorNodeFinder } from './processing/buildingFloorNodeFinder.js';
 import { PathFinder } from './processing/pathFinder.js';
 import { CampusExplorer } from './processing/explorer.js';
@@ -136,10 +136,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const source = document.getElementById('fromRoom').value;
             const destination = document.getElementById('toRoom').value;
             
-            const validatedInputs = validateInput.validateInputs(source, destination, roomsHashMap);
+            const validatedInputs = ValidateInput.validateInputs(source, destination, roomsHashMap);
             console.log('Step 1 - Validate Inputs:', validatedInputs);
 
-            const [sourceRoomNode, destinationRoomNode] = findNodeFromHashMap.findNodes(
+            const [sourceRoomNode, destinationRoomNode] = FindNodeFromHashMap.findNodes(
                 validatedInputs.source, validatedInputs.destination, roomsHashMap
             );
             console.log('Step 2 - Find Nodes from HashMap:', sourceRoomNode, destinationRoomNode);
