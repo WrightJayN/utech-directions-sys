@@ -2,9 +2,8 @@
  * PathFinder Test Suite
  * Tests for Dijkstra's algorithm implementation with weighted edges (pixel distance)
  */
-
-const PathFinder = require('../processing/pathFinder');
-const GraphDatabase = require('../processing/graphDatabase');
+import { PathFinder } from '../js/processing/pathFinder';
+import {GraphDatabase} from '../js/storage/graphDatabase';
 
 describe('PathFinder - Dijkstra\'s Algorithm with Weighted Edges', () => {
   let graphDB;

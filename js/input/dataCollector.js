@@ -88,5 +88,3 @@ class DataCollector {
 }
 
 export {DataCollector};
-
-
