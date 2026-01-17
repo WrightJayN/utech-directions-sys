@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 validatedInputs.source, validatedInputs.destination, roomsHashMap
             );
             console.log('Step 2 - Find Nodes from HashMap:', sourceRoomNode, destinationRoomNode);
-
+            
             // if(!isAnimationPlayed){
             //     playAnimation(isAnimationPlayed);
             // }
