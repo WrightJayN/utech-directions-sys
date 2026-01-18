@@ -6,9 +6,6 @@ class ValidateInput {
     static validateSource(source, hashmap){
         let sourceLowerCase = String(source).trim().toLowerCase();
 
-        console.log(this.isNotEmpty(source));
-        console.log(this.isInHashMap(source, hashmap));
-
         if (this.isNotEmpty(sourceLowerCase) == true && this.isInHashMap(sourceLowerCase, hashmap) == true){
             return sourceLowerCase;
         }else if (this.isNotEmpty(sourceLowerCase) == true && this.isInHashMap(sourceLowerCase, hashmap) == false){
@@ -37,6 +34,7 @@ class ValidateInput {
         if(validatedSource == validatedDestination){
             throw new Error("You are already at your destination");
         }
+        
         return [validatedSource,validatedDestination];
     }
 

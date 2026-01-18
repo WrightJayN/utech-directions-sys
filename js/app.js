@@ -1,6 +1,5 @@
 import { ValidateInput } from './validateInput.js';
-import { FindNodeFromHashMap } from './processing/findNodeFromHashMap.js';
-import { BuildingFloorNodeFinder } from './processing/buildingFloorNodeFinder.js';
+import { FindBuildingAndFloorNodes } from './processing/findBuildingAndFloorNodes.js';
 import { PathFinder } from './processing/pathFinder.js';
 import { CampusExplorer } from './processing/explorer.js';
 import { BuildingPicturesOutput } from './output/buildingPicturesOutput.js';
@@ -139,50 +138,53 @@ document.addEventListener('DOMContentLoaded', function() {
             const validatedInputs = ValidateInput.validateInputs(source, destination, roomsHashMap);
             console.log('Step 1 - Validate Inputs:', validatedInputs);
 
-            const [sourceRoomNode, destinationRoomNode] = FindNodeFromHashMap.findNodes(
-                validatedInputs.source, validatedInputs.destination, roomsHashMap
-            );
+            let sourceRoomNode = roomsHashMap.get(validatedInputs.source);
+            let destinationRoomNode = roomsHashMap.get(validatedInputs.destination);
+
+
+            // const [sourceRoomNode, destinationRoomNode] = FindNodeFromHashMap.findNodes(
+            //     validatedInputs.source, validatedInputs.destination, roomsHashMap
+            // );
             console.log('Step 2 - Find Nodes from HashMap:', sourceRoomNode, destinationRoomNode);
             
             // if(!isAnimationPlayed){
             //     playAnimation(isAnimationPlayed);
             // }
 
-            // STEP 4: Building/Floor Node Finder - Find building and floor tree nodes
-            const result = BuildingFloorNodeFinder.findBuildingAndFloorNodes(
+            const buildingAndFloorNodes = FindBuildingAndFloorNodes.findBuildingAndFloorNodes(
                 sourceRoomNode,
                 destinationRoomNode
             );
             
-            const { from_bld_t_node, from_flr_t_node, to_bld_t_node, to_flr_t_node } = result;
+            const [sourceBuildingNode, sourceFloorNode, destinationBuildingNode, destinationFloorNode] = buildingAndFloorNodes;
             
-            console.log('Step 4: Found building/floor nodes:', result);
+            console.log('Step 3 - Find Building and Floor Nodes:', buildingAndFloorNodes);
 
             // STEP 5: Building Pictures Output - Display destination building picture
-            const buildingPicture = BuildingPicturesOutput.getBuildingPicture(to_bld_t_node);
+            const buildingPicture = BuildingPicturesOutput.getBuildingPicture(destinationBuildingNode);
             if (buildingPicture) {
-                displayBuildingPicture(buildingPicture, to_bld_t_node.name);
+                displayBuildingPicture(buildingPicture, destinationBuildingNode.name);
             }
             
             console.log('Step 5: Building picture:', buildingPicture);
             
             // STEP 6: Floor Pictures Output - Display destination floor picture
-            const floorPicture = FloorPicturesOutput.getFloorPicture(to_flr_t_node);
+            const floorPicture = FloorPicturesOutput.getFloorPicture(destinationFloorNode);
             if (floorPicture) {
-                displayFloorPicture(floorPicture, to_flr_t_node.name);
+                displayFloorPicture(floorPicture, destinationFloorNode.name);
             }
             
             console.log('Step 6: Floor picture:', floorPicture);
             
             // STEP 7: Floor Highlight Output - Highlight destination floor
-            displayFloorHighlight(to_flr_t_node);
+            displayFloorHighlight(destinationFloorNode);
             
             console.log('Step 7: Floor highlight created');
             
             // STEP 8: PathFinder - Find shortest path between buildings
             const path = PathFinder.findPathFromTreeNodes(
-                from_bld_t_node,
-                to_bld_t_node,
+                sourceBuildingNode,
+                destinationBuildingNode,
                 graphDB
             );
             
@@ -192,12 +194,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Step 8: Path found:', path);
                 
                 // STEP 9: PathDrawer - Draw map with path
-                await displayMapWithPath(from_bld_t_node, to_bld_t_node, path);
+                await displayMapWithPath(sourceBuildingNode, destinationBuildingNode, path);
                 
                 console.log('Step 9: Map with path displayed');
                 
                 // Display text directions as well
-                displayTextDirectionsForRooms(destinationRoomNode, from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node);
+                displayTextDirectionsForRooms(destinationRoomNode, sourceBuildingNode, destinationBuildingNode, sourceFloorNode, destinationFloorNode);
             }            
             outputContainer.style.display = 'block';           // Make it visible
             outputContainer.classList.remove('fade-out');     // In case it was fading out
