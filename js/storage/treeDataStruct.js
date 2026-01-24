@@ -1,30 +1,12 @@
-/**
- * Tree Database
-* Creates the tree structure for UTech campus navigation
- * Hierarchy: Root -> Building -> Floor -> Room
- * 
- * Tree Node Structure:
- * - name: string
- * - worded_direction: string
- * - parent: t_node
- * - children: t_node[]
- */
-
-class TreeNode {
-	constructor(name, worded_direction, parent = null) {
+class Node {
+	constructor(name, parent) {
 		this.name = name;
-		this.worded_direction = worded_direction;
 		this.parent = parent;
 		this.children = [];
 	}
-
-	addChild(childNode) {
-		this.children.push(childNode);
-		childNode.parent = this;
-	}
 }
 
-class TreeDatabase {
+class TreeDataStruct {
 	constructor() {
 		this.root = null;
 		this.roomsHashMap = new Map();
@@ -34,65 +16,60 @@ class TreeDatabase {
 	}
 
 	buildTree() {
-		// Create Root Node
-		this.root = new TreeNode('root', 'Starting point');
+		this.root = new Node('root', null);
 
-		// building1
-		const building1 = new TreeNode('building1', 'Go to Engineering Building (Building 1)');
-		this.root.addChild(building1);
+		const building1 = new Node('building1', this.root);
 		this.buildingHashMap.set(building1.name, building1);
 
-		const floor1ground = new TreeNode('floor1ground', 'Go to Ground Floor');
-		building1.addChild(floor1ground);
+		const floor1ground = new Node('floor1ground', building1);
 		this.floorHashMap.set(floor1ground.name, floor1ground);
 
 		const floor1groundRooms = [
-			['engineering tuck shop', 'Go to Engineering tuck shop'],
-			['1a37', 'Go to room 1A37'],
-			['1a36', 'Go to room 1A36'],
-			['1a32', 'Go to room 1A32'],
-			['1a35', 'Go to room 1A35'],
-			['1a27', 'Go to room 1A27'],
-			['1a31', 'Go to room 1A31'],
-			['1a30', 'Go to room 1A30'],
-			['1a28', 'Go to room 1A28'],
-			['1a29', 'Go to room 1A29'],
-			['1a34', 'Go to room 1A34'],
-			['1a25', 'Go to room 1A25'],
-			['1a24', 'Go to room 1A24'],
-			['1a23', 'Go to room 1A23'],
-			['1a21', 'Go to room 1A21'],
-			['1a22', 'Go to room 1A22'],
-			['1a20', 'Go to room 1A20'],
-			['1a19', 'Go to room 1A19'],
-			['1a17', 'Go to room 1A17'],
-			['1a16', 'Go to room 1A16'],
-			['1a15', 'Go to room 1A15'],
-			['1a14b', 'Go to room 1A14B'],
-			['1a14a', 'Go to room 1A14A'],
-			['1a10', 'Go to room 1A10'],
-			['1a12', 'Go to room 1A12'],
-			['1ax', 'Go to room 1AX'],
-			['1a11', 'Go to room 1A11'],
-			['1a9', 'Go to room 1A9'],
-			['1a8b', 'Go to room 1A8B'],
-			['1a8a', 'Go to room 1A8A'],
-			['1a7b', 'Go to room 1A7B'],
-			['1a7a', 'Go to room 1A7A'],
-			['1a5', 'Go to room 1A5'],
-			['1a6', 'Go to room 1A6'],
-			['1a3', 'Go to room 1A3'],
-			['1a4', 'Go to room 1A4'],
-			['1a2a', 'Go to room 1A2A'],
-			['1a1', 'Go to room 1A1'],
+			['engineering tuck shop'],
+			['1a37'],
+			['1a36'],
+			['1a32'],
+			['1a35'],
+			['1a27'],
+			['1a31'],
+			['1a30'],
+			['1a28'],
+			['1a29'],
+			['1a34'],
+			['1a25'],
+			['1a24'],
+			['1a23'],
+			['1a21'],
+			['1a22'],
+			['1a20'],
+			['1a19'],
+			['1a17'],
+			['1a16'],
+			['1a15'],
+			['1a14b'],
+			['1a14a'],
+			['1a10'],
+			['1a12'],
+			['1ax'],
+			['1a11'],
+			['1a9'],
+			['1a8b'],
+			['1a8a'],
+			['1a7b'],
+			['1a7a'],
+			['1a5'],
+			['1a6'],
+			['1a3'],
+			['1a4'],
+			['1a2a'],
+			['1a1']
 		];
 
-		floor1groundRooms.forEach(([roomName, direction]) => {
-			const roomNode = new TreeNode(roomName, direction);
-			floor1ground.addChild(roomNode);
+		floor1groundRooms.forEach(([roomName]) => {
+			const roomNode = new Node(roomName, floor1ground);
 			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
 		});
-
+		/*
 		const floor1a = new TreeNode('floor1a', 'Go to 1st Floor (Floor A)');
 		building1.addChild(floor1a);
 		this.floorHashMap.set(floor1a.name, floor1a);
@@ -648,7 +625,7 @@ class TreeDatabase {
 		this.roomsHashMap.set('main gate', main_gate);
 		this.buildingHashMap.set('main gate', main_gate);
 		this.floorHashMap.set('main gate', main_gate);
-
+		*/
 	}
 
 	getRoomsHashMap() {
@@ -668,4 +645,4 @@ class TreeDatabase {
 	}
 }
 
-export {TreeDatabase};
+export {TreeDataStruct};

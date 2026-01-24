@@ -8,7 +8,7 @@ import { FloorPicturesOutput } from './output/floorPicturesOutput.js';
 import { PathDrawer } from './output/pathDrawer.js';
 import { showPathLoadingAnimation } from './output/loadingAnimation.js';
 import { GraphDatabase } from './storage/graphDatabase.js';
-import { TreeDatabase } from './storage/treeDatabase.js';
+import { TreeDataStruct } from './storage/treeDataStruct.js';
 import { AutocompleteTrie } from './storage/autoCompleteTrie.js';
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let isAnimationPlayed = false;
     
     // Initialize databases
-    const treeDB = new TreeDatabase();
+    const treeDB = new TreeDataStruct();
     const campusExplorer = new CampusExplorer(treeDB);
     campusExplorer.populate();
     const graphDB = new GraphDatabase();
@@ -138,26 +138,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const validatedInputs = ValidateInput.validateInputs(source, destination, roomsHashMap);
             console.log('Step 1 - Validate Inputs:', validatedInputs);
 
-            let sourceRoomNode = roomsHashMap.get(validatedInputs.source);
-            let destinationRoomNode = roomsHashMap.get(validatedInputs.destination);
-
-
-            // const [sourceRoomNode, destinationRoomNode] = FindNodeFromHashMap.findNodes(
-            //     validatedInputs.source, validatedInputs.destination, roomsHashMap
-            // );
+            let sourceRoomNode = roomsHashMap.get(source);
+            let destinationRoomNode = roomsHashMap.get(destination);
             console.log('Step 2 - Find Nodes from HashMap:', sourceRoomNode, destinationRoomNode);
-            
-            // if(!isAnimationPlayed){
-            //     playAnimation(isAnimationPlayed);
-            // }
 
-            const buildingAndFloorNodes = FindBuildingAndFloorNodes.findBuildingAndFloorNodes(
-                sourceRoomNode,
-                destinationRoomNode
-            );
-            
+            const buildingAndFloorNodes = FindBuildingAndFloorNodes.findBuildingAndFloorNodes(sourceRoomNode, destinationRoomNode);
             const [sourceBuildingNode, sourceFloorNode, destinationBuildingNode, destinationFloorNode] = buildingAndFloorNodes;
-            
             console.log('Step 3 - Find Building and Floor Nodes:', buildingAndFloorNodes);
 
             // STEP 5: Building Pictures Output - Display destination building picture
