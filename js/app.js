@@ -135,18 +135,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const source = document.getElementById('fromRoom').value;
             const destination = document.getElementById('toRoom').value;
             
-            const validatedInputs = ValidateInput.validateInputs(source, destination, roomsHashMap);
-            console.log('Step 1 - Validate Inputs:', validatedInputs);
+            const [validatedSource, validatedDestination] = ValidateInput.validateInputs(source, destination, roomsHashMap);
+            console.log('Step 1 - Validate Inputs:', [validatedSource, validatedDestination]);
 
-            let sourceRoomNode = roomsHashMap.get(source);
-            let destinationRoomNode = roomsHashMap.get(destination);
+            let sourceRoomNode = roomsHashMap.get(validatedSource);
+            let destinationRoomNode = roomsHashMap.get(validatedDestination);
             console.log('Step 2 - Find Nodes from HashMap:', sourceRoomNode, destinationRoomNode);
 
             const buildingAndFloorNodes = FindBuildingAndFloorNodes.findBuildingAndFloorNodes(sourceRoomNode, destinationRoomNode);
             const [sourceBuildingNode, sourceFloorNode, destinationBuildingNode, destinationFloorNode] = buildingAndFloorNodes;
             console.log('Step 3 - Find Building and Floor Nodes:', buildingAndFloorNodes);
 
-            // STEP 5: Building Pictures Output - Display destination building picture
             const buildingPicture = BuildingPicturesOutput.getBuildingPicture(destinationBuildingNode);
             if (buildingPicture) {
                 displayBuildingPicture(buildingPicture, destinationBuildingNode.name);
