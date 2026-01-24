@@ -18,13 +18,13 @@ class TreeDataStruct {
 	buildTree() {
 		this.root = new Node('root', null);
 
-		const building1 = new Node('building1', this.root);
-		this.buildingHashMap.set(building1.name, building1);
+		const FENC = new Node('Faculty of Engineering and Computing', this.root);
+		this.buildingHashMap.set(FENC.name, FENC);
 
-		const floor1ground = new Node('floor1ground', building1);
-		this.floorHashMap.set(floor1ground.name, floor1ground);
+		const FENC_GROUND = new Node('GROUND', FENC);
+		this.floorHashMap.set(FENC_GROUND.name, FENC_GROUND);
 
-		const floor1groundRooms = [
+		const FENC_GROUND_ROOMS = [
 			['engineering tuck shop'],
 			['1a37'],
 			['1a36'],
@@ -65,8 +65,8 @@ class TreeDataStruct {
 			['1a1']
 		];
 
-		floor1groundRooms.forEach(([roomName]) => {
-			const roomNode = new Node(roomName, floor1ground);
+		FENC_GROUND_ROOMS.forEach(([roomName]) => {
+			const roomNode = new Node(roomName, FENC_GROUND);
 			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
 		});
 		/*

@@ -46,7 +46,7 @@ class GraphDatabase {
 
     buildGraph() {
         // Created Nodes
-        const building1 = new GraphNode('building1', 'building', 1805, 1614);
+        const FENC = new GraphNode('Faculty of Engineering and Computing', 'building', 1805, 1614);
         const building2 = new GraphNode('building2', 'building', 1573, 1754);
         const building4 = new GraphNode('building4', 'building', 1176, 2142);
         const building5 = new GraphNode('building5', 'building', 1330, 1969);
@@ -121,7 +121,7 @@ class GraphDatabase {
         const w61 = new GraphNode('w61', 'walkway', 1536, 941);
 
         // Add to utechgraph
-        this.utechgraph.set('building1', building1);
+        this.utechgraph.set('building1', FENC);
         this.utechgraph.set('building2', building2);
         this.utechgraph.set('building4', building4);
         this.utechgraph.set('building5', building5);
@@ -215,7 +215,7 @@ class GraphDatabase {
         w14.addBidirectionalNeighbor(w15);
         w15.addBidirectionalNeighbor(w16);
         w16.addBidirectionalNeighbor(w9);
-        w19.addBidirectionalNeighbor(building1);
+        w19.addBidirectionalNeighbor(FENC);
         w21.addBidirectionalNeighbor(w20);
         w21.addBidirectionalNeighbor(ltbsdbld8);
         w21.addBidirectionalNeighbor(building8);
