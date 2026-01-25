@@ -1,22 +1,3 @@
-/**
- * Graph Database Component
- * Creates the graph structure for UTech campus navigation with weighted edges
- * 
- * Graph Node Structure:
- * - name: string
- * - type: 'building' or 'walkway'
- * - neighbors: g_node[]
- * - x_coor: number (pixel coordinate)
- * - y_coor: number (pixel coordinate)
- * 
- * Edge weights are calculated as Euclidean distance between nodes
- * 
- * Map Feature Classification:
- * A. Walkways (type='walkway'): Straight segments, Curves, Intersections, Roundabouts
- * B. Buildings (type='building'): Building entrance nodes
- * C. Gates (type='building'): Main gate, Walkin gate, Back gate
- */
-
 class GraphNode {
     constructor(name, type, x_coor, y_coor) {
         this.name = name;
@@ -40,7 +21,7 @@ class GraphNode {
 
 class GraphDatabase {
     constructor() {
-        this.utechgraph = new Map();
+        this.graph = new Map();
         this.buildGraph();
     }
 
@@ -120,80 +101,80 @@ class GraphDatabase {
         const w60 = new GraphNode('w60', 'walkway', 1726, 2021);
         const w61 = new GraphNode('w61', 'walkway', 1536, 941);
 
-        // Add to utechgraph
-        this.utechgraph.set('building1', FENC);
-        this.utechgraph.set('building2', building2);
-        this.utechgraph.set('building4', building4);
-        this.utechgraph.set('building5', building5);
-        this.utechgraph.set('building8', building8);
-        this.utechgraph.set('ltbsdbld8', ltbsdbld8);
-        this.utechgraph.set('building22', building22);
-        this.utechgraph.set('building47', building47);
-        this.utechgraph.set('ltbsdbld47', ltbsdbld47);
-        this.utechgraph.set('back gate', back_gate);
-        this.utechgraph.set('walkin gate', walkin_gate);
-        this.utechgraph.set('main gate', main_gate);
-        this.utechgraph.set('w1', w1);
-        this.utechgraph.set('w2', w2);
-        this.utechgraph.set('w3', w3);
-        this.utechgraph.set('w4', w4);
-        this.utechgraph.set('w5', w5);
-        this.utechgraph.set('w6', w6);
-        this.utechgraph.set('w7', w7);
-        this.utechgraph.set('w8', w8);
-        this.utechgraph.set('w9', w9);
-        this.utechgraph.set('w10', w10);
-        this.utechgraph.set('w11', w11);
-        this.utechgraph.set('w12', w12);
-        this.utechgraph.set('w13', w13);
-        this.utechgraph.set('w14', w14);
-        this.utechgraph.set('w15', w15);
-        this.utechgraph.set('w16', w16);
-        this.utechgraph.set('w17', w17);
-        this.utechgraph.set('w18', w18);
-        this.utechgraph.set('w19', w19);
-        this.utechgraph.set('w20', w20);
-        this.utechgraph.set('w21', w21);
-        this.utechgraph.set('w22', w22);
-        this.utechgraph.set('w23', w23);
-        this.utechgraph.set('w24', w24);
-        this.utechgraph.set('w25', w25);
-        this.utechgraph.set('w26', w26);
-        this.utechgraph.set('w27', w27);
-        this.utechgraph.set('w28', w28);
-        this.utechgraph.set('w29', w29);
-        this.utechgraph.set('w30', w30);
-        this.utechgraph.set('w31', w31);
-        this.utechgraph.set('w32', w32);
-        this.utechgraph.set('w33', w33);
-        this.utechgraph.set('w34', w34);
-        this.utechgraph.set('w35', w35);
-        this.utechgraph.set('w36', w36);
-        this.utechgraph.set('w37', w37);
-        this.utechgraph.set('w38', w38);
-        this.utechgraph.set('w40', w40);
-        this.utechgraph.set('w39', w39);
-        this.utechgraph.set('w41', w41);
-        this.utechgraph.set('w42', w42);
-        this.utechgraph.set('w43', w43);
-        this.utechgraph.set('w44', w44);
-        this.utechgraph.set('w45', w45);
-        this.utechgraph.set('w48', w48);
-        this.utechgraph.set('w46', w46);
-        this.utechgraph.set('w47', w47);
-        this.utechgraph.set('w49', w49);
-        this.utechgraph.set('w50', w50);
-        this.utechgraph.set('w51', w51);
-        this.utechgraph.set('w52', w52);
-        this.utechgraph.set('w53', w53);
-        this.utechgraph.set('w54', w54);
-        this.utechgraph.set('w55', w55);
-        this.utechgraph.set('w56', w56);
-        this.utechgraph.set('w57', w57);
-        this.utechgraph.set('w58', w58);
-        this.utechgraph.set('w59', w59);
-        this.utechgraph.set('w60', w60);
-        this.utechgraph.set('w61', w61);
+        // Add to graph
+        this.graph.set('Faculty of Engineering and Computing', FENC);
+        this.graph.set('building2', building2);
+        this.graph.set('building4', building4);
+        this.graph.set('building5', building5);
+        this.graph.set('building8', building8);
+        this.graph.set('ltbsdbld8', ltbsdbld8);
+        this.graph.set('building22', building22);
+        this.graph.set('building47', building47);
+        this.graph.set('ltbsdbld47', ltbsdbld47);
+        this.graph.set('back gate', back_gate);
+        this.graph.set('walkin gate', walkin_gate);
+        this.graph.set('main gate', main_gate);
+        this.graph.set('w1', w1);
+        this.graph.set('w2', w2);
+        this.graph.set('w3', w3);
+        this.graph.set('w4', w4);
+        this.graph.set('w5', w5);
+        this.graph.set('w6', w6);
+        this.graph.set('w7', w7);
+        this.graph.set('w8', w8);
+        this.graph.set('w9', w9);
+        this.graph.set('w10', w10);
+        this.graph.set('w11', w11);
+        this.graph.set('w12', w12);
+        this.graph.set('w13', w13);
+        this.graph.set('w14', w14);
+        this.graph.set('w15', w15);
+        this.graph.set('w16', w16);
+        this.graph.set('w17', w17);
+        this.graph.set('w18', w18);
+        this.graph.set('w19', w19);
+        this.graph.set('w20', w20);
+        this.graph.set('w21', w21);
+        this.graph.set('w22', w22);
+        this.graph.set('w23', w23);
+        this.graph.set('w24', w24);
+        this.graph.set('w25', w25);
+        this.graph.set('w26', w26);
+        this.graph.set('w27', w27);
+        this.graph.set('w28', w28);
+        this.graph.set('w29', w29);
+        this.graph.set('w30', w30);
+        this.graph.set('w31', w31);
+        this.graph.set('w32', w32);
+        this.graph.set('w33', w33);
+        this.graph.set('w34', w34);
+        this.graph.set('w35', w35);
+        this.graph.set('w36', w36);
+        this.graph.set('w37', w37);
+        this.graph.set('w38', w38);
+        this.graph.set('w40', w40);
+        this.graph.set('w39', w39);
+        this.graph.set('w41', w41);
+        this.graph.set('w42', w42);
+        this.graph.set('w43', w43);
+        this.graph.set('w44', w44);
+        this.graph.set('w45', w45);
+        this.graph.set('w48', w48);
+        this.graph.set('w46', w46);
+        this.graph.set('w47', w47);
+        this.graph.set('w49', w49);
+        this.graph.set('w50', w50);
+        this.graph.set('w51', w51);
+        this.graph.set('w52', w52);
+        this.graph.set('w53', w53);
+        this.graph.set('w54', w54);
+        this.graph.set('w55', w55);
+        this.graph.set('w56', w56);
+        this.graph.set('w57', w57);
+        this.graph.set('w58', w58);
+        this.graph.set('w59', w59);
+        this.graph.set('w60', w60);
+        this.graph.set('w61', w61);
 
         // Connections
         main_gate.addBidirectionalNeighbor(w1);
@@ -283,25 +264,25 @@ class GraphDatabase {
         w61.addBidirectionalNeighbor(w53);
     }
 
-    getutechgraph() {
-        return this.utechgraph;
+    getgraph() {
+        return this.graph;
     }
 
     getNode(nodeName) {
-        return this.utechgraph.get(nodeName);
+        return this.graph.get(nodeName);
     }
     
     getAllNodes() {
-        return Array.from(this.utechgraph.values());
+        return Array.from(this.graph.values());
     }
     
     getAllBuildings() {
-        return Array.from(this.utechgraph.values()).filter(node => node.type === 'building');
+        return Array.from(this.graph.values()).filter(node => node.type === 'building');
     }
     
     getAllWalkways() {
-        return Array.from(this.utechgraph.values()).filter(node => node.type === 'walkway');
+        return Array.from(this.graph.values()).filter(node => node.type === 'walkway');
     }
 }
 
-export {GraphDatabase};
+export { GraphDatabase };

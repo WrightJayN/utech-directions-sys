@@ -1,50 +1,18 @@
-/**
- * PathFinder Component
- * Implements optimized Dijkstra's algorithm to find shortest path between buildings
- * Uses pixel distance as edge weights
- * 
- * Algorithm: Dijkstra's shortest path with MinHeap/Priority Queue
- * Edge weights: Euclidean distance between node coordinates
- */
-
-/**
- * MinHeap/Priority Queue Implementation
- * A binary tree where parent is always smaller than children
- * Used to efficiently get the minimum element
- */
 class MinHeap {
     constructor() {
         this.heap = [];
     }
-
-    /**
-     * Get size of heap
-     */
-    size() {
+    getHeapLength() {
         return this.heap.length;
     }
-
-    /**
-     * Check if heap is empty
-     */
-    isEmpty() {
+    isHeapEmpty() {
         return this.heap.length === 0;
     }
-
-    /**
-     * Add element to heap and maintain heap property
-     * Time Complexity: O(log V)
-     */
-    insert(node, priority) {
+    insertElementIntoHeap(node, priority) {
         this.heap.push({ node, priority });
-        this.bubbleUp(this.heap.length - 1);
+        this.moveElementUpHeap(this.heap.length - 1);
     }
-
-    /**
-     * Remove and return element with minimum priority
-     * Time Complexity: O(log V)
-     */
-    extractMin() {
+    extractMinValueFromHeap() {
         if (this.isEmpty()) return null;
         
         if (this.heap.length === 1) {
@@ -53,36 +21,24 @@ class MinHeap {
 
         const min = this.heap[0];
         this.heap[0] = this.heap.pop();
-        this.bubbleDown(0);
+        this.moveElementDownHeap(0);
         
         return min;
     }
-
-    /**
-     * Move element up to maintain heap property
-     * Called after insertion
-     */
-    bubbleUp(index) {
+    moveElementUpHeap(index) {
         while (index > 0) {
             const parentIndex = Math.floor((index - 1) / 2);
             
             if (this.heap[parentIndex].priority <= this.heap[index].priority) {
                 break;
             }
-            
-            // Swap with parent
-            [this.heap[parentIndex], this.heap[index]] = 
-            [this.heap[index], this.heap[parentIndex]];
+
+            [this.heap[parentIndex], this.heap[index]] = [this.heap[index], this.heap[parentIndex]];
             
             index = parentIndex;
         }
     }
-
-    /**
-     * Move element down to maintain heap property
-     * Called after extraction
-     */
-    bubbleDown(index) {
+    moveElementDownHeap(index) {
         while (true) {
             const leftChild = 2 * index + 1;
             const rightChild = 2 * index + 2;
@@ -99,23 +55,15 @@ class MinHeap {
             }
 
             if (smallest === index) break;
-
-            // Swap with smallest child
-            [this.heap[index], this.heap[smallest]] = 
-            [this.heap[smallest], this.heap[index]];
+            [this.heap[index], this.heap[smallest]] = [this.heap[smallest], this.heap[index]];
             
             index = smallest;
         }
     }
 }
 
-class PathFinder {
-    /**
-     * Calculates Euclidean distance between two nodes
-     * @param {Object} node1 - First node with x_coor and y_coor
-     * @param {Object} node2 - Second node with x_coor and y_coor
-     * @returns {number} Euclidean distance in pixels
-     */
+class FindPath {
+
     static calculateDistance(node1, node2) {
         if (!node1 || !node2) return Infinity;
         
@@ -251,69 +199,5 @@ class PathFinder {
 
         return null; // Path not found or invalid
     }
-
-    /**
-     * Converts tree nodes (bld_t_nodes) to graph nodes (bld_g_nodes) and finds path
-     * @param {Object} fromBldTNode - Building tree node (from)
-     * @param {Object} toBldTNode - Building tree node (to)
-     * @param {Object} graphDB - GraphDatabase instance
-     * @returns {Array|null} Array of graph nodes representing the path
-     */
-    static findPathFromTreeNodes(fromBldTNode, toBldTNode, graphDB) {
-        if (!fromBldTNode || !toBldTNode || !graphDB) {
-            return null;
-        }
-
-        // Get the building graph from GraphDatabase
-        const  utechgraph = graphDB.getutechgraph();
-        if (!utechgraph) {
-            return null;
-        }
-
-        // Convert tree node names to graph node keys
-        const fromNodeName = this.convertTreeNodeToGraphKey(fromBldTNode);
-        const toNodeName = this.convertTreeNodeToGraphKey(toBldTNode);
-
-        if (!fromNodeName || !toNodeName) {
-            return null;
-        }
-
-        // Find corresponding graph nodes
-        const fromGNode = utechgraph.get(fromNodeName);
-        const toGNode = utechgraph.get(toNodeName);
-
-        if (!fromGNode || !toGNode) {
-            return null;
-        }
-
-        // Find path using graph nodes
-        return this.findPath(fromGNode, toGNode, utechgraph);
-    }
-
-    /**
-     * Converts tree node name to graph node key
-     * @param {Object} treeNode - Tree node
-     * @returns {string} Graph node key
-     */
-    static convertTreeNodeToGraphKey(treeNode) {
-        if (!treeNode || !treeNode.name) {
-            return null;
-        }
-
-        const nodeName = treeNode.name.toLowerCase();
-
-        // Handle gates - they use the same name in both structures
-        if (nodeName === 'main gate' || nodeName === 'walkin gate' || nodeName === 'back gate') {
-            return nodeName;
-        }
-
-        // Handle buildings - map tree building names to graph building names
-        if (nodeName.startsWith('building')) {
-            return nodeName;
-        }
-
-        return null;
-    }
 }
-
-export {PathFinder};
+export { FindPath };

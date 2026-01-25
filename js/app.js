@@ -2,7 +2,7 @@ import { ValidateInput } from './validateInput.js';
 import { FindBuildingAndFloorNodes } from './processing/findBuildingAndFloorNodes.js';
 import { GetBuildingPicture } from './output/getBuildingPicture.js';
 import { GetFloorPictures } from './output/getfloorPictures.js';
-import { PathFinder } from './processing/pathFinder.js';
+import { FindPath } from './processing/FindPath.js';
 import { PathDrawer } from './output/pathDrawer.js';
 import { CampusExplorer } from './processing/explorer.js';
 import { GraphDatabase } from './storage/graphDatabase.js';
@@ -145,12 +145,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }            
             console.log('Step 5: Floor picture:', floorPicture);
             
-            // STEP 8: PathFinder - Find shortest path between buildings
-            const path = PathFinder.findPathFromTreeNodes(
-                sourceBuildingNode,
-                destinationBuildingNode,
-                graphDB
-            );
+            const sourceBuildingNodeForGraph = graphDB.graph.get(sourceBuildingNode.name);
+            const destinationBuildingNodeForGraph = graphDB.graph.get(destinationBuildingNode.name);
+            const path = FindPath.findPath(sourceBuildingNodeForGraph, destinationBuildingNodeForGraph, graphDB.graph);
             
             if (!path || path.length === 0) {
                 console.warn('No path found between buildings');
@@ -237,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // STEP 7: PathFinder - Find shortest path between buildings
-            const path = PathFinder.findPathFromTreeNodes(
+            const path = FindPath.findPathFromTreeNodes(
                 from_bld_t_node,
                 to_bld_t_node,
                 graphDB
@@ -311,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // STEP 6: PathFinder - Find shortest path between buildings
-            const path = PathFinder.findPathFromTreeNodes(
+            const path = FindPath.findPathFromTreeNodes(
                 from_bld_t_node,
                 to_bld_t_node,
                 graphDB
