@@ -3,7 +3,7 @@ class GetBuildingPicture {
     static getBuildingPicture(node) {
         const buildingPictures = {
             'Faculty of Engineering and Computing': 'assets/buildings/FENC.jpg',
-            'building2': 'assets/buildings/SCIT.jpg',
+            'School of Computing and Information Technology': 'assets/buildings/SCIT.jpg',
             'building8': 'assets/buildings/building8.jpg',
             'building22': 'assets/buildings/building22.jpg',
             'building5': 'assets/buildings/building5.jpg',

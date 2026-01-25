@@ -6,7 +6,7 @@ class GetFloorPictures {
             'floor1a': 'assets/floors/floor1a.jpg',
             'floor1b': 'assets/floors/floor1b.jpg',
             'floor1c': 'assets/floors/floor1c.jpg',
-            'floor2a': 'assets/floors/SCIT_GROUND.jpg',
+            'SCIT GROUND': 'assets/floors/SCIT_GROUND.jpg',
             'floor2b': 'assets/floors/floor2b.jpg',
             // 'floor2c': 'assets/floors/floor2c.jpg',
             'floor8a': 'assets/floors/floor8a.jpg',
