@@ -67,7 +67,7 @@ class TreeDataStruct {
 
 		FENC_GROUND_ROOMS.forEach(([roomName]) => {
 			const roomNode = new Node(roomName, FENC_GROUND);
-			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
+			this.roomsHashMap.set(roomName.toUpperCase(), roomNode);
 		});
 		/*
 		const floor1a = new TreeNode('floor1a', 'Go to 1st Floor (Floor A)');
@@ -133,21 +133,18 @@ class TreeDataStruct {
 			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
 		});
 
-		// building2
-		const building2 = new TreeNode('building2', 'Go to SCIT Lab (Building 2)');
-		this.root.addChild(building2);
-		this.buildingHashMap.set(building2.name, building2);
+		
+		const SCIT = new TreeNode('School of Computing and Information Technology');
+		this.buildingHashMap.set(SCIT.name, SCIT);
 
-		const floor2a = new TreeNode('floor2a', 'Go to 1st Floor (Floor A)');
-		building2.addChild(floor2a);
-		this.floorHashMap.set(floor2a.name, floor2a);
+		const SCIT_GROUND = new TreeNode('SCIT GROUND');
+		this.floorHashMap.set(SCIT_GROUND.name, SCIT_GROUND);
 
-		const floor2aRooms = [
+		const SCIT_GROUND_ROOMS = [
 		];
 
-		floor2aRooms.forEach(([roomName, direction]) => {
-			const roomNode = new TreeNode(roomName, direction);
-			floor2a.addChild(roomNode);
+		SCIT_GROUND_ROOMS.forEach(([roomName]) => {
+			const roomNode = new TreeNode(roomName);
 			this.roomsHashMap.set(roomName.toLowerCase(), roomNode);
 		});
 

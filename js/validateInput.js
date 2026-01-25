@@ -4,7 +4,7 @@ class ValidateInput {
     static isInHashMap(input, hashmap) {return hashmap.has(input)}; 
 
     static validateSource(source, hashmap){
-        let sourceLowerCase = String(source).trim().toLowerCase();
+        let sourceLowerCase = String(source).trim().toUpperCase();
 
         if (this.isNotEmpty(sourceLowerCase) == true && this.isInHashMap(sourceLowerCase, hashmap) == true){
             return sourceLowerCase;
@@ -16,7 +16,7 @@ class ValidateInput {
     }
 
     static validateDestination(destination, hashmap){
-        let destinationLowerCase = String(destination).trim().toLowerCase();
+        let destinationLowerCase = String(destination).trim().toUpperCase();
 
         if(this.isNotEmpty(destinationLowerCase) == true && this.isInHashMap(destinationLowerCase, hashmap) == true){
             return destinationLowerCase;

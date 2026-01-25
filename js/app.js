@@ -154,7 +154,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 console.log('Step 6: Path found:', path);
                 
-                // STEP 9: PathDrawer - Draw map with path
                 await displayMapWithPath(sourceBuildingNode, destinationBuildingNode, path);
                 
                 console.log('Step 7: Map with path displayed');
