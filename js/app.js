@@ -3,7 +3,7 @@ import { FindBuildingAndFloorNodes } from './processing/findBuildingAndFloorNode
 import { GetBuildingPicture } from './output/getBuildingPicture.js';
 import { GetFloorPictures } from './output/getfloorPictures.js';
 import { FindPath } from './processing/FindPath.js';
-import { PathDrawer } from './output/pathDrawer.js';
+import { DrawPath } from './output/drawPath.js';
 import { CampusExplorer } from './processing/explorer.js';
 import { GraphDatabase } from './storage/graphDatabase.js';
 import { TreeDataStruct } from './storage/treeDataStruct.js';
@@ -145,9 +145,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }            
             console.log('Step 5: Floor picture:', floorPicture);
             
-            const sourceBuildingNodeForGraph = graphDB.graph.get(sourceBuildingNode.name);
-            const destinationBuildingNodeForGraph = graphDB.graph.get(destinationBuildingNode.name);
-            const path = FindPath.findPath(sourceBuildingNodeForGraph, destinationBuildingNodeForGraph, graphDB.graph);
+            const sourceBuildingNodeFromGraph = graphDB.graph.get(sourceBuildingNode.name);
+            const destinationBuildingNodeFromGraph = graphDB.graph.get(destinationBuildingNode.name);
+            const path = FindPath.findPath(sourceBuildingNodeFromGraph, destinationBuildingNodeFromGraph, graphDB.graph);
             
             if (!path || path.length === 0) {
                 console.warn('No path found between buildings');
@@ -410,17 +410,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const canvas = document.getElementById('mapCanvas');
         
         // Load map image first
-        await PathDrawer.loadMapImage('assets/utech_map.webp', canvas);
-        
-        // Get building vertices hash map
-        const verticesHashMap = PathDrawer.getBuildingVerticesHashMap();
-        
+        await DrawPath.loadMapImage('assets/utech_map.webp', canvas);
+
         // Create complete map with path
-        PathDrawer.createMapWithPath(
+        DrawPath.createMapWithPath(
             sourceBuildingNode,
             destinationBuildingNode,
             path,
-            verticesHashMap,
             canvas
         );
     }
@@ -434,9 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="direction-step">
                 <p><strong>From:</strong> ${sourceBuildingNode.name} · ${sourceFloorNode.name}</p>
                 </div>
-                <br>
-                <div class="direction-arrow">↓</div>
-                <br>
+                <div class="direction-arrow">→</div>
                 <div class="direction-step">
                 <p><strong>To:</strong> ${destinationBuildingNode.name} · ${destinationFloorNode.name}</p>
                 </div>
@@ -468,7 +462,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </ol>
                 </div>
             `;
-        } else if(sourceRoomNode !== destinationRoomNode){
+        } else if(sourceRoomNode.name !== destinationRoomNode.name){
             html += `
                 <div class="direction-instructions">
                     <h4>Directions:</h4>

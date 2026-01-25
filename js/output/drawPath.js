@@ -1,32 +1,7 @@
-/**
- * PathDrawer Component
- * Draws the campus map with path and colored buildings
- * 
- * According to documentation:
- * - Loads UTech map image and creates canvas
- * - Draws yellow lines along path from PathFinder
- * - Gets vertices of from and to buildings from Building Vertices Hash Map
- * - Colors from building red and to building blue using their vertices
- * - Sends map with drawn path to user
- * 
- * Drawing Algorithm:
- * 1. Load map image onto canvas
- * 2. Draw yellow path line connecting all nodes in path
- * 3. Get building vertices from Building Vertices Hash Map
- * 4. Color from building in red
- * 5. Color to building in blue
- */
+class DrawPath {
 
-class PathDrawer {
-    /**
-     * Building Vertices Hash Map
-     * Maps building names to their vertex coordinates (polygon points)
-     * Key: building name (string)
-     * Value: Array of {x, y} coordinates representing building outline
-     */
     static buildingVerticesHashMap = new Map([
-         ['building1', [
-            // TODO: Add vertices {x: , y: }
+         ['Faculty of Engineering and Computing', [
             {x: 1760, y: 1500},
             {x: 1815, y: 1500},
             {x: 1815, y: 1535},
@@ -86,8 +61,7 @@ class PathDrawer {
             {x: 1755, y: 1616},
             {x: 1763, y: 1615}
         ]],
-        ['building2', [
-            // TODO: Add vertices {x: , y: }
+        ['School of Computing and Information Technology', [
             {x: 1543, y: 1722},
             {x: 1613, y: 1721},
             {x: 1612, y: 1742},
@@ -366,12 +340,6 @@ class PathDrawer {
 
     ]);
 
-    /**
-     * Loads map image and returns a promise
-     * @param {string} imagePath - Path to the map image
-     * @param {HTMLCanvasElement} canvas - Canvas element to draw on
-     * @returns {Promise<Image>} Promise that resolves with loaded image
-     */
     static loadMapImage(imagePath, canvas) {
         return new Promise((resolve, reject) => {
             const img = new Image();
@@ -396,46 +364,17 @@ class PathDrawer {
         });
     }
 
-    /**
-     * Gets building vertices from Building Vertices Hash Map
-     * @param {Object} buildingNode - Building graph node with name property
-     * @param {Map} verticesHashMap - Building Vertices Hash Map (optional, uses default if not provided)
-     * @returns {Array|null} Array of {x, y} vertices or null if not found
-     */
-    static getBuildingVertices(buildingNode, verticesHashMap = null) {
-        // Validate input
-        if (!buildingNode || !buildingNode.name) {
-            return null;
-        }
+    static getBuildingVertices(buildingNode) {
+        const buildingName = buildingNode.name;
+        const vertices = this.buildingVerticesHashMap.get(buildingName);
 
-        // Use provided hash map or default
-        const hashMap = verticesHashMap || this.buildingVerticesHashMap;
-        
-        if (!hashMap) {
-            return null;
-        }
-
-        // Get vertices from hash map
-        const buildingName = buildingNode.name.toLowerCase();
-        const vertices = hashMap.get(buildingName);
-
-        return vertices || undefined;
+        return vertices;
     }
 
-    /**
-     * Colors a building using its vertices
-     * @param {Array} vertices - Array of {x, y} vertices representing building outline
-     * @param {string} color - Color to fill building (e.g., '#FF0000' for red)
-     * @param {CanvasRenderingContext2D} context - Canvas 2D context
-     * @returns {boolean} True if successful, false otherwise
-     */
-    static colorBuilding(vertices, color, context) {
-        // Validate inputs
-        if (!vertices || !Array.isArray(vertices) || vertices.length === 0) {
-            return false;
-        }
 
-        if (!color || !context) {
+    static colorBuilding(vertices, color, context) {
+        // Validate vertices, color and context
+        if (!vertices || !Array.isArray(vertices) || vertices.length === 0 || !color || !context) {
             return false;
         }
 
@@ -467,12 +406,8 @@ class PathDrawer {
      * @returns {boolean} True if successful, false otherwise
      */
     static drawPathLine(path, context) {
-        // Validate inputs
-        if (!path || !Array.isArray(path) || path.length < 2) {
-            return false;
-        }
-
-        if (!context) {
+        // Validate path and context
+        if (!path || !Array.isArray(path) || path.length < 2 || !context) {
             return false;
         }
 
@@ -497,12 +432,6 @@ class PathDrawer {
         return true;
     }
 
-    /**
-     * Draws the map key/legend on the canvas
-     * @param {CanvasRenderingContext2D} context - Canvas 2D context
-     * @param {number} canvasWidth - Width of the canvas
-     * @param {number} canvasHeight - Height of the canvas
-     */
     static drawMapKey(context, canvasWidth, canvasHeight, scale = 2.5) {
         // Base dimensions (at scale = 1.0)
         const baseKeyWidth = 200;
@@ -570,63 +499,30 @@ class PathDrawer {
         context.fillText("Path", keyX + padding + lineLength + 8 * scale, lineY + symbolSize / 2);
     }
 
-    /**
-     * Creates complete map with path and colored buildings
-     * Main method that coordinates all drawing operations
-     * 
-     * @param {Object} fromBuilding - Starting building graph node
-     * @param {Object} toBuilding - Destination building graph node
-     * @param {Array} path - Array of graph nodes representing the path
-     * @param {Map} verticesHashMap - Building Vertices Hash Map (optional)
-     * @param {HTMLCanvasElement} canvas - Canvas element to draw on
-     * @returns {HTMLCanvasElement} Canvas with complete map drawing
-     */
-    static createMapWithPath(fromBuilding, toBuilding, path, verticesHashMap, canvas) {
+    static createMapWithPath(sourceBuilding, destinationBuilding, path, canvas) {
         // Get canvas context
         const context = canvas.getContext('2d');
 
-        // Step 1: Load map image
-        this.loadMapImage('utech_map.webp', canvas);
-
-        // Step 2: Draw yellow path line
+        // Draw yellow path line
         this.drawPathLine(path, context);
 
-        // Step 3: Get vertices for from building and color it red
-        const fromVertices = this.getBuildingVertices(fromBuilding, verticesHashMap);
-        if (fromVertices) {
-            this.colorBuilding(fromVertices, '#FF0000', context); // Red
+        // Get vertices for source building and color it red
+        const sourceVertices = this.getBuildingVertices(sourceBuilding);
+        if (sourceVertices) {
+            this.colorBuilding(sourceVertices, '#FF0000', context); // Red
         }
 
-        // Step 4: Get vertices for to building and color it blue
-        const toVertices = this.getBuildingVertices(toBuilding, verticesHashMap);
-        if (toVertices) {
-            this.colorBuilding(toVertices, '#0000FF', context); // Blue
+        // Get vertices for destination building and color it blue
+        const destinationVertices = this.getBuildingVertices(destinationBuilding);
+        if (destinationVertices) {
+            this.colorBuilding(destinationVertices, '#0000FF', context); // Blue
         }
 
-        // Step 5: Draw the map key
+        // Draw the map key
         this.drawMapKey(context, canvas.width, canvas.height);
 
         return canvas;
     }
-
-    /**
-     * Gets the default Building Vertices Hash Map
-     * @returns {Map} The building vertices hash map
-     */
-    static getBuildingVerticesHashMap() {
-        return this.buildingVerticesHashMap;
-    }
-
-    /**
-     * Sets custom building vertices
-     * @param {string} buildingName - Name of the building
-     * @param {Array} vertices - Array of {x, y} vertices
-     */
-    static setBuildingVertices(buildingName, vertices) {
-        if (buildingName && vertices && Array.isArray(vertices)) {
-            this.buildingVerticesHashMap.set(buildingName.toLowerCase(), vertices);
-        }
-    }
 }
 
-export {PathDrawer};
+export { DrawPath };
