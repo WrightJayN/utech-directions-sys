@@ -1,12 +1,10 @@
 import { ValidateInput } from './validateInput.js';
 import { FindBuildingAndFloorNodes } from './processing/findBuildingAndFloorNodes.js';
-import { PathFinder } from './processing/pathFinder.js';
-import { CampusExplorer } from './processing/explorer.js';
 import { GetBuildingPicture } from './output/getBuildingPicture.js';
-import { FloorHighlightOutput } from './output/floorHighlightOutput.js';
 import { GetFloorPictures } from './output/getfloorPictures.js';
+import { PathFinder } from './processing/pathFinder.js';
 import { PathDrawer } from './output/pathDrawer.js';
-import { showPathLoadingAnimation } from './output/loadingAnimation.js';
+import { CampusExplorer } from './processing/explorer.js';
 import { GraphDatabase } from './storage/graphDatabase.js';
 import { TreeDataStruct } from './storage/treeDataStruct.js';
 import { AutocompleteTrie } from './storage/autoCompleteTrie.js';
@@ -55,8 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const outputContainer = document.getElementById('output');
     const errorContainer = document.getElementById('error');
     const errorMessage = document.getElementById('errorMessage');
-    const loadingAnimationContainer = document.getElementById('canvasContainer');
-    let isAnimationPlayed = false;
     
     // Initialize databases
     const treeDB = new TreeDataStruct();
@@ -92,7 +88,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 outputContainer.style.display = 'none';
                 errorContainer.style.display = 'none';
                 clearOutputs();
-                loadingAnimationContainer.innerHTML = ''; //clears loading animation if present
                 
                 if (targetView === 'explorer') {
                     campusExplorer.populate();
@@ -113,13 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Create output sections dynamically
     createOutputSections();
-
-    async function playAnimation(isAnimationPlayed){
-        loadingAnimationContainer.classList.remove('fade-out');
-        loadingAnimationContainer.classList.add('show');
-        await showPathLoadingAnimation(loadingAnimationContainer, 1000);
-        isAnimationPlayed = true;
-    }
     
     roomForm.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -129,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Add fade-out for old content
         outputContainer.classList.add('fade-out');
-        loadingAnimationContainer.classList.add('fade-out');
 
         try {     
             const source = document.getElementById('fromRoom').value;
@@ -158,11 +145,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }            
             console.log('Step 5: Floor picture:', floorPicture);
             
-            // STEP 7: Floor Highlight Output - Highlight destination floor
-            displayFloorHighlight(destinationFloorNode);
-            
-            console.log('Step 6: Floor highlight created');
-            
             // STEP 8: PathFinder - Find shortest path between buildings
             const path = PathFinder.findPathFromTreeNodes(
                 sourceBuildingNode,
@@ -173,12 +155,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!path || path.length === 0) {
                 console.warn('No path found between buildings');
             } else {
-                console.log('Step 7: Path found:', path);
+                console.log('Step 6: Path found:', path);
                 
                 // STEP 9: PathDrawer - Draw map with path
                 await displayMapWithPath(sourceBuildingNode, destinationBuildingNode, path);
                 
-                console.log('Step 8: Map with path displayed');
+                console.log('Step 7: Map with path displayed');
                 
                 // Display text directions as well
                 displayTextDirectionsForRooms(destinationRoomNode, sourceBuildingNode, destinationBuildingNode, sourceFloorNode, destinationFloorNode);
@@ -203,16 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Add fade-out for old content
         outputContainer.classList.add('fade-out');
-        loadingAnimationContainer.classList.add('fade-out');
         
-        // Show the beautiful path animation for 1 seconds
-        if(!isAnimationPlayed){
-            loadingAnimationContainer.classList.remove('fade-out');
-            loadingAnimationContainer.classList.add('show');
-            await showPathLoadingAnimation(loadingAnimationContainer, 1000);
-            isAnimationPlayed = true;
-        }
-
         try {     
             // Get form inputs
             const fromFloorInput = document.getElementById('fromFloor').value;
@@ -304,15 +277,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Add fade-out for old content
         outputContainer.classList.add('fade-out');
-        loadingAnimationContainer.classList.add('fade-out');
-        
-        // Show the beautiful path animation for 1 seconds
-        if(!isAnimationPlayed){
-            loadingAnimationContainer.classList.remove('fade-out');
-            loadingAnimationContainer.classList.add('show');
-            await showPathLoadingAnimation(loadingAnimationContainer, 1000);
-            isAnimationPlayed = true;
-        }
 
         try {     
             // Get form inputs
@@ -408,20 +372,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div id="mapContent">
                         <canvas id="mapCanvas"></canvas>
                     </div>
-                    
-                    <!-- Desktop Inset Floor Highlight -->
-                    <div class="floor-inset">
-                        <h4>🎯 Floor Location</h4>
-                        <div id="floorHighlightContent">
-                            <canvas id="floorHighlightCanvas" width="400" height="600"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Mobile Full-Width Floor Highlight (shown only on mobile) -->
-                    <div class="mobile-floor-highlight">
-                        <h4>🎯 Floor Location</h4>
-                        <canvas id="floorHighlightCanvasMobile" width="400" height="600"></canvas>
-                    </div>
                 </div>
             </div>
 
@@ -433,20 +383,10 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('textDirectionsContent').innerHTML = '';
         document.getElementById('buildingPictureContent').innerHTML = '';
         document.getElementById('floorPictureContent').innerHTML = '';
-        const floorCanvas = document.getElementById('floorHighlightCanvas');
-        if (floorCanvas) {
-            const ctx = floorCanvas.getContext('2d');
-            ctx.clearRect(0, 0, floorCanvas.width, floorCanvas.height);
-        }
         const mapCanvas = document.getElementById('mapCanvas');
         if (mapCanvas) {
             const ctx = mapCanvas.getContext('2d');
             ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
-        }
-        const floorCanvasMobile = document.getElementById('floorHighlightCanvasMobile');
-        if (floorCanvasMobile) {
-            const ctx = floorCanvasMobile.getContext('2d');
-            ctx.clearRect(0, 0, floorCanvasMobile.width, floorCanvasMobile.height);
         }
     }
     
@@ -468,19 +408,6 @@ document.addEventListener('DOMContentLoaded', function() {
             <img src="${picturePath}" alt="${floorName}" class="output-image"
                  onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%23ddd\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'18\' fill=\'%23666\'%3EFloor Image Not Available%3C/text%3E%3C/svg%3E';">
         `;
-    }
-    
-    // Display floor highlight
-    function displayFloorHighlight(to_flr_t_node) {
-        const desktopCanvas = document.getElementById('floorHighlightCanvas');
-        const mobileCanvas = document.getElementById('floorHighlightCanvasMobile');
-
-        if (desktopCanvas) {
-            FloorHighlightOutput.createFloorHighlight(to_flr_t_node, desktopCanvas);
-        }
-        if (mobileCanvas) {
-            FloorHighlightOutput.createFloorHighlight(to_flr_t_node, mobileCanvas);
-        }
     }
     
     // Display map with path
