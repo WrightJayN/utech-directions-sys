@@ -13,7 +13,7 @@ class MinHeap {
         this.moveElementUpHeap(this.heap.length - 1);
     }
     extractMinValueFromHeap() {
-        if (this.isEmpty()) return null;
+        if (this.isHeapEmpty()) return null;
         
         if (this.heap.length === 1) {
             return this.heap.pop();
@@ -108,12 +108,12 @@ class FindPath {
         distances.set(startNode, 0);
         
         // Add start node to priority queue
-        minHeap.insert(startNode, 0);
+        minHeap.insertElementIntoHeap(startNode, 0);
 
         // Dijkstra's algorithm main loop with MinHeap optimization
-        while (!minHeap.isEmpty()) {
+        while (!minHeap.isHeapEmpty()) {
             // OPTIMIZATION: MinHeap gives us minimum distance node in O(log V) time
-            const { node: currentNode, priority: currentDistance } = minHeap.extractMin();
+            const { node: currentNode, priority: currentDistance } = minHeap.extractMinValueFromHeap();
 
             // Skip if already visited (can happen with duplicate entries in heap)
             if (visited.has(currentNode)) {
@@ -165,7 +165,7 @@ class FindPath {
                         
                         // OPTIMIZATION: Add to heap with new distance
                         // Heap will automatically keep smallest distances at top
-                        minHeap.insert(neighbor, distanceThroughCurrent);
+                        minHeap.insertElementIntoHeap(neighbor, distanceThroughCurrent);
                     }
                 }
             }

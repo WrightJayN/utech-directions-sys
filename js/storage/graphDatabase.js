@@ -28,7 +28,7 @@ class GraphDatabase {
     buildGraph() {
         // Created Nodes
         const FENC = new GraphNode('Faculty of Engineering and Computing', 'building', 1805, 1614);
-        const building2 = new GraphNode('building2', 'building', 1573, 1754);
+        const SCIT = new GraphNode('School of Computing and Information Technology', 'building', 1573, 1754);
         const building4 = new GraphNode('building4', 'building', 1176, 2142);
         const building5 = new GraphNode('building5', 'building', 1330, 1969);
         const building8 = new GraphNode('building8', 'building', 1358, 1598);
@@ -103,7 +103,7 @@ class GraphDatabase {
 
         // Add to graph
         this.graph.set('Faculty of Engineering and Computing', FENC);
-        this.graph.set('building2', building2);
+        this.graph.set('School of Computing and Information Technology', SCIT);
         this.graph.set('building4', building4);
         this.graph.set('building5', building5);
         this.graph.set('building8', building8);
@@ -235,7 +235,7 @@ class GraphDatabase {
         w39.addBidirectionalNeighbor(w44);
         w39.addBidirectionalNeighbor(w43);
         w43.addBidirectionalNeighbor(w44);
-        building2.addBidirectionalNeighbor(w35);
+        SCIT.addBidirectionalNeighbor(w35);
         w40.addBidirectionalNeighbor(w43);
         w19.addBidirectionalNeighbor(w45);
         w44.addBidirectionalNeighbor(w45);
