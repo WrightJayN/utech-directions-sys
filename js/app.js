@@ -2,9 +2,9 @@ import { ValidateInput } from './validateInput.js';
 import { FindBuildingAndFloorNodes } from './processing/findBuildingAndFloorNodes.js';
 import { PathFinder } from './processing/pathFinder.js';
 import { CampusExplorer } from './processing/explorer.js';
-import { BuildingPicturesOutput } from './output/buildingPicturesOutput.js';
+import { GetBuildingPicture } from './output/getBuildingPicture.js';
 import { FloorHighlightOutput } from './output/floorHighlightOutput.js';
-import { FloorPicturesOutput } from './output/floorPicturesOutput.js';
+import { GetFloorPictures } from './output/getfloorPictures.js';
 import { PathDrawer } from './output/pathDrawer.js';
 import { showPathLoadingAnimation } from './output/loadingAnimation.js';
 import { GraphDatabase } from './storage/graphDatabase.js';
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const preloadImages = [
         'assets/utech_map.webp',
         'assets/utech_crest.webp',
-        'assets/buildings/building1.jpg',
+        'assets/buildings/FENC.jpg',
         'assets/buildings/building2.jpg',
         'assets/buildings/building5.jpg',
         'assets/buildings/building8.jpg',
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
         //'assets/buildings/walkin_gate.jpg',
         //'assets/buildings/back_gate.jpg',
         //'assets/buildings/main_gate.jpg',
-        'assets/floors/floor1ground.jpg',
+        'assets/floors/FENC_GROUND.jpg',
         'assets/floors/floor1a.jpg',
         'assets/floors/floor1b.jpg',
         'assets/floors/floor1c.jpg',
@@ -146,25 +146,22 @@ document.addEventListener('DOMContentLoaded', function() {
             const [sourceBuildingNode, sourceFloorNode, destinationBuildingNode, destinationFloorNode] = buildingAndFloorNodes;
             console.log('Step 3 - Find Building and Floor Nodes:', buildingAndFloorNodes);
 
-            const buildingPicture = BuildingPicturesOutput.getBuildingPicture(destinationBuildingNode);
+            const buildingPicture = GetBuildingPicture.getBuildingPicture(destinationBuildingNode);
             if (buildingPicture) {
                 displayBuildingPicture(buildingPicture, destinationBuildingNode.name);
-            }
-            
-            console.log('Step 5: Building picture:', buildingPicture);
-            
-            // STEP 6: Floor Pictures Output - Display destination floor picture
-            const floorPicture = FloorPicturesOutput.getFloorPicture(destinationFloorNode);
+            }            
+            console.log('Step 4: Building picture:', buildingPicture);
+
+            const floorPicture = GetFloorPictures.getFloorPicture(destinationFloorNode);
             if (floorPicture) {
                 displayFloorPicture(floorPicture, destinationFloorNode.name);
-            }
-            
-            console.log('Step 6: Floor picture:', floorPicture);
+            }            
+            console.log('Step 5: Floor picture:', floorPicture);
             
             // STEP 7: Floor Highlight Output - Highlight destination floor
             displayFloorHighlight(destinationFloorNode);
             
-            console.log('Step 7: Floor highlight created');
+            console.log('Step 6: Floor highlight created');
             
             // STEP 8: PathFinder - Find shortest path between buildings
             const path = PathFinder.findPathFromTreeNodes(
@@ -176,12 +173,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!path || path.length === 0) {
                 console.warn('No path found between buildings');
             } else {
-                console.log('Step 8: Path found:', path);
+                console.log('Step 7: Path found:', path);
                 
                 // STEP 9: PathDrawer - Draw map with path
                 await displayMapWithPath(sourceBuildingNode, destinationBuildingNode, path);
                 
-                console.log('Step 9: Map with path displayed');
+                console.log('Step 8: Map with path displayed');
                 
                 // Display text directions as well
                 displayTextDirectionsForRooms(destinationRoomNode, sourceBuildingNode, destinationBuildingNode, sourceFloorNode, destinationFloorNode);
@@ -255,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // STEP 5: Building Pictures Output - Display destination building picture
-            const buildingPicture = BuildingPicturesOutput.getBuildingPicture(to_bld_t_node);
+            const buildingPicture = GetBuildingPicture.getBuildingPicture(to_bld_t_node);
             if (buildingPicture) {
                 displayBuildingPicture(buildingPicture, to_bld_t_node.name);
             }
@@ -344,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // STEP 5: Building Pictures Output - Display destination building picture
-            const buildingPicture = BuildingPicturesOutput.getBuildingPicture(to_bld_t_node);
+            const buildingPicture = GetBuildingPicture.getBuildingPicture(to_bld_t_node);
             if (buildingPicture) {
                 displayBuildingPicture(buildingPicture, to_bld_t_node.name);
             }

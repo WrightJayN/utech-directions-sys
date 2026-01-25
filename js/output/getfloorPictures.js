@@ -1,24 +1,8 @@
-/**
- * FloorPicturesOutput
- * Takes a flr_t_node (floor tree node) and returns the image file path
- * associated with that floor.
- */
+class GetFloorPictures {
 
-class FloorPicturesOutput {
-    /**
-     * Gets the floor picture path for a given floor tree node
-     * @param {Object} flr_t_node - Floor tree node: {name, worded_direction, parent, children}
-     * @returns {string|null} Image path or null if not found
-     */
-    static getFloorPicture(flr_t_node) {
-        // Validate input
-        if (!flr_t_node || !flr_t_node.name) {
-            return null;
-        }
-
-        // Mapping of floors to image paths
+    static getFloorPicture(node) {
         const floorPictures = {
-            'floor1ground': 'assets/floors/floor1ground.jpg',
+            'FENC GROUND': 'assets/floors/FENC_GROUND.jpg',
             'floor1a': 'assets/floors/floor1a.jpg',
             'floor1b': 'assets/floors/floor1b.jpg',
             'floor1c': 'assets/floors/floor1c.jpg',
@@ -48,20 +32,9 @@ class FloorPicturesOutput {
             // 'floorltbsdbld47a': 'assets/floors/floorltbsdbld47a.jpg',
             // 'floorltbsdbld47b': 'assets/floors/floorltbsdbld47b.jpg',
         };
-
-        // Normalize and lookup
-        const floorName = flr_t_node.name.toLowerCase();
-
-        // Floor names are case-sensitive in mapping, so match directly
-        return floorPictures[floorName] || null;
-    }
-
-    /**
-     * Convenience wrapper matching system naming consistency
-     */
-    static getDestinationFloorPicture(to_flr_t_node) {
-        return this.getFloorPicture(to_flr_t_node);
+        const floorName = node.name;
+        return floorPictures[floorName];
     }
 }
 
-export {FloorPicturesOutput};
+export { GetFloorPictures };

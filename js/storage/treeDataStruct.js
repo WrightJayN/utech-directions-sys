@@ -21,7 +21,7 @@ class TreeDataStruct {
 		const FENC = new Node('Faculty of Engineering and Computing', this.root);
 		this.buildingHashMap.set(FENC.name, FENC);
 
-		const FENC_GROUND = new Node('GROUND', FENC);
+		const FENC_GROUND = new Node('FENC GROUND', FENC);
 		this.floorHashMap.set(FENC_GROUND.name, FENC_GROUND);
 
 		const FENC_GROUND_ROOMS = [

@@ -1,7 +1,7 @@
 // js/explorer/campusExplorer.js
 
-import { BuildingPicturesOutput } from '../output/buildingPicturesOutput.js';
-import { FloorPicturesOutput } from '../output/floorPicturesOutput.js';
+import { GetBuildingPicture } from '../output/getBuildingPicture.js';
+import { GetFloorPictures } from '../output/getfloorPictures.js';
 
 class CampusExplorer {
     constructor(treeDB, containerId = 'buildingList') {
@@ -35,7 +35,7 @@ class CampusExplorer {
         card.dataset.expanded = 'false';
 
         const img = document.createElement('img');
-        img.src = BuildingPicturesOutput.getBuildingPicture(building) || this.placeholderSrc;
+        img.src = GetBuildingPicture.getBuildingPicture(building) || this.placeholderSrc;
         img.alt = building.name;
         img.className = 'building-img';
 
@@ -94,7 +94,7 @@ class CampusExplorer {
         card.dataset.expanded = 'false';
 
         const img = document.createElement('img');
-        img.src = FloorPicturesOutput.getFloorPicture(floor) || this.placeholderSrc;
+        img.src = GetFloorPictures.getFloorPicture(floor) || this.placeholderSrc;
         img.alt = floor.name;
         img.className = 'floor-img';
 
