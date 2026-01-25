@@ -125,14 +125,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const [validatedSource, validatedDestination] = ValidateInput.validateInputs(source, destination, roomsHashMap);
             console.log('Step 1 - Validate Inputs:', [validatedSource, validatedDestination]);
 
-            let sourceRoomNode = roomsHashMap.get(validatedSource);
-            let destinationRoomNode = roomsHashMap.get(validatedDestination);
+            const sourceRoomNode = roomsHashMap.get(validatedSource);
+            const destinationRoomNode = roomsHashMap.get(validatedDestination);
             console.log('Step 2 - Find Nodes from HashMap:', sourceRoomNode, destinationRoomNode);
 
             const buildingAndFloorNodes = FindBuildingAndFloorNodes.findBuildingAndFloorNodes(sourceRoomNode, destinationRoomNode);
             const [sourceBuildingNode, sourceFloorNode, destinationBuildingNode, destinationFloorNode] = buildingAndFloorNodes;
             console.log('Step 3 - Find Building and Floor Nodes:', buildingAndFloorNodes);
-
+ 
             const buildingPicture = GetBuildingPicture.getBuildingPicture(destinationBuildingNode);
             if (buildingPicture) {
                 displayBuildingPicture(buildingPicture, destinationBuildingNode.name);
@@ -157,9 +157,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 await displayMapWithPath(sourceBuildingNode, destinationBuildingNode, path);
                 
                 console.log('Step 7: Map with path displayed');
-                
-                // Display text directions as well
-                displayTextDirectionsForRooms(destinationRoomNode, sourceBuildingNode, destinationBuildingNode, sourceFloorNode, destinationFloorNode);
+
+                displayTextDirectionsForRooms(sourceRoomNode, destinationRoomNode, sourceBuildingNode, destinationBuildingNode, sourceFloorNode, destinationFloorNode);
             }            
             outputContainer.style.display = 'block';           // Make it visible
             outputContainer.classList.remove('fade-out');     // In case it was fading out
@@ -407,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Display map with path
-    async function displayMapWithPath(from_bld_t_node, to_bld_t_node, path) {
+    async function displayMapWithPath(sourceBuildingNode, destinationBuildingNode, path) {
         const canvas = document.getElementById('mapCanvas');
         
         // Load map image first
@@ -418,8 +417,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Create complete map with path
         PathDrawer.createMapWithPath(
-            from_bld_t_node,
-            to_bld_t_node,
+            sourceBuildingNode,
+            destinationBuildingNode,
             path,
             verticesHashMap,
             canvas
@@ -427,51 +426,53 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Display text directions from room to room
-    function displayTextDirectionsForRooms(destinationRoomNode, from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node) {
+    function displayTextDirectionsForRooms(sourceRoomNode, destinationRoomNode, sourceBuildingNode, destinationBuildingNode, sourceFloorNode, destinationFloorNode) {
         const content = document.getElementById('textDirectionsContent');
         
         let html = `
             <div class="direction-row">
                 <div class="direction-step">
-                <p><strong>From:</strong> ${from_bld_t_node.name} · ${from_flr_t_node.name}</p>
+                <p><strong>From:</strong> ${sourceBuildingNode.name} · ${sourceFloorNode.name}</p>
                 </div>
-                <div class="direction-arrow">→</div>
+                <br>
+                <div class="direction-arrow">↓</div>
+                <br>
                 <div class="direction-step">
-                <p><strong>To:</strong> ${to_bld_t_node.name} · ${to_flr_t_node.name}</p>
+                <p><strong>To:</strong> ${destinationBuildingNode.name} · ${destinationFloorNode.name}</p>
                 </div>
             </div>
         `;
         
-        // Add building-to-building directions if different buildings
-        if (from_bld_t_node.name !== to_bld_t_node.name) {
+        // Add building-to-building directions if buildings are different
+        if (sourceBuildingNode.name !== destinationBuildingNode.name) {
             html += `
                 <div class="direction-instructions">
-                    <h4>📍 Instructions:</h4>
+                    <h4>Directions:</h4>
                     <ol>
-                        <li>Exit ${from_bld_t_node.name}</li>
-                        <li>Follow the yellow path on the map to ${to_bld_t_node.name}</li>
-                        <li>Enter ${to_bld_t_node.name}</li>
-                        <li>Navigate to ${to_flr_t_node.name}</li>
-                        <li>Find room ${destinationRoomNode.name}</li>
+                        <li>Exit ${sourceBuildingNode.name}</li>
+                        <li>Follow the yellow path on the map to ${destinationBuildingNode.name}</li>
+                        <li>Enter ${destinationBuildingNode.name}</li>
+                        <li>Navigate to ${destinationFloorNode.name}</li>
+                        <li>Find ${destinationRoomNode.name}</li>
                     </ol>
                 </div>
             `;
-        } else if (from_flr_t_node.name !== to_flr_t_node.name) {
+        } else if (sourceFloorNode.name !== destinationFloorNode.name) {
             html += `
                 <div class="direction-instructions">
-                    <h4>📍 Instructions:</h4>
+                    <h4>Directions:</h4>
                     <ol>
-                        <li>You are in ${from_bld_t_node.name}</li>
-                        <li>Navigate from ${from_flr_t_node.name} to ${to_flr_t_node.name}</li>
-                        <li>Find room ${destinationRoomNode.name}</li>
+                        <li>You are in ${sourceBuildingNode.name}</li>
+                        <li>Navigate from ${sourceFloorNode.name} to ${destinationFloorNode.name}</li>
+                        <li>Find ${destinationRoomNode.name}</li>
                     </ol>
                 </div>
             `;
-        } else {
+        } else if(sourceRoomNode !== destinationRoomNode){
             html += `
                 <div class="direction-instructions">
-                    <h4>📍 Instructions:</h4>
-                    <p>Both rooms are on the same floor (${to_flr_t_node.name}) in ${to_bld_t_node.name}. Simply navigate along the corridor to find room ${destinationRoomNode.name}.</p>
+                    <h4>Directions:</h4>
+                    <p>Both rooms are on ${destinationFloorNode.name} in ${destinationBuildingNode.name}. \nSimply navigate along the corridor to find ${destinationRoomNode.name}.</p>
                 </div>
             `;
         }
