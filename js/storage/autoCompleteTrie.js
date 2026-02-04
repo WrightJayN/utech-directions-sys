@@ -1,5 +1,3 @@
-// js/storage/autocompleteTrie.js
-
 class TrieNode {
     constructor() {
         this.children = {};     // Use plain object {} for speed and simplicity
