@@ -3,11 +3,11 @@ class GetFloorPictures {
     static getFloorPicture(node) {
         const floorPictures = {
             'FENC GROUND': 'assets/floors/FENC_GROUND.jpg',
-            'floor1a': 'assets/floors/floor1a.jpg',
-            'floor1b': 'assets/floors/floor1b.jpg',
-            'floor1c': 'assets/floors/floor1c.jpg',
+            'floor1a': 'assets/floors/FENC_1.jpg',
+            'floor1b': 'assets/floors/FENC_2.jpg',
+            'floor1c': 'assets/floors/FENC_3.jpg',
             'SCIT GROUND': 'assets/floors/SCIT_GROUND.jpg',
-            'floor2b': 'assets/floors/floor2b.jpg',
+            'floor2b': 'assets/floors/SCIT_2.jpg',
             // 'floor2c': 'assets/floors/floor2c.jpg',
             'floor8a': 'assets/floors/floor8a.jpg',
             'floor8b': 'assets/floors/floor8b.jpg',

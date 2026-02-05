@@ -1,8 +1,9 @@
 class Node {
-	constructor(name, parent) {
+	constructor(name, parent, type) {
 		this.name = name;
 		this.parent = parent;
 		this.children = [];
+		this.type = type; // "room" "floor" "building"
 	}
 }
 
@@ -10,19 +11,17 @@ class TreeDataStruct {
 	constructor() {
 		this.root = null;
 		this.roomsHashMap = new Map();
-		this.floorHashMap = new Map();
-		this.buildingHashMap = new Map();
 		this.buildTree();
 	}
 
 	buildTree() {
-		this.root = new Node('root', null);
+		this.root = new Node('root', null, null);
 
-		const FENC = new Node('Faculty of Engineering and Computing', this.root);
-		this.buildingHashMap.set(FENC.name, FENC);
+		const FENC = new Node('Faculty of Engineering and Computing', this.root, 'building');
+		this.roomsHashMap.set(FENC.name, FENC);
 
-		const FENC_GROUND = new Node('FENC GROUND', FENC);
-		this.floorHashMap.set(FENC_GROUND.name, FENC_GROUND);
+		const FENC_GROUND = new Node('FENC GROUND', FENC, 'floor');
+		this.roomsHashMap.set(FENC_GROUND.name, FENC_GROUND);
 
 		const FENC_GROUND_ROOMS = [
 			['engineering tuck shop'],
@@ -66,15 +65,15 @@ class TreeDataStruct {
 		];
 
 		FENC_GROUND_ROOMS.forEach(([roomName]) => {
-			const roomNode = new Node(roomName, FENC_GROUND);
+			const roomNode = new Node(roomName, FENC_GROUND, 'room');
 			this.roomsHashMap.set(roomName.toUpperCase(), roomNode);
 		});
 
-		const SCIT = new Node('School of Computing and Information Technology', this.root);
-		this.buildingHashMap.set(SCIT.name, SCIT);
+		const SCIT = new Node('School of Computing and Information Technology', this.root, 'building');
+		this.roomsHashMap.set(SCIT.name, SCIT);
 
-		const SCIT_GROUND = new Node('SCIT GROUND', SCIT);
-		this.floorHashMap.set(SCIT_GROUND.name, SCIT_GROUND);
+		const SCIT_GROUND = new Node('SCIT GROUND', SCIT, 'floor');
+		this.roomsHashMap.set(SCIT_GROUND.name, SCIT_GROUND);
 
 		const SCIT_GROUND_ROOMS = [
 			['Lab A'],
@@ -83,7 +82,7 @@ class TreeDataStruct {
 		];
 
 		SCIT_GROUND_ROOMS.forEach(([roomName]) => {
-			const roomNode = new Node(roomName, SCIT_GROUND);
+			const roomNode = new Node(roomName, SCIT_GROUND, 'room');
 			this.roomsHashMap.set(roomName.toUpperCase(), roomNode);
 		});
 		/*

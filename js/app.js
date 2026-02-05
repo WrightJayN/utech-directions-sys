@@ -1,5 +1,5 @@
 import { ValidateInput } from './validateInput.js';
-import { FindBuildingAndFloorNodes } from './processing/findBuildingAndFloorNodes.js';
+import { FindRequiredNodes } from './processing/findRequiredNode.js';
 import { GetBuildingPicture } from './output/getBuildingPicture.js';
 import { GetFloorPictures } from './output/getfloorPictures.js';
 import { FindPath } from './processing/FindPath.js';
@@ -12,35 +12,29 @@ import { AutocompleteTrie } from './storage/autoCompleteTrie.js';
 document.addEventListener('DOMContentLoaded', function() {
     // Preload critical assets
     const preloadImages = [
-        'assets/utech_map.webp',
-        'assets/utech_crest.webp',
+        'assets/UTECH_MAP.webp',
+        'assets/UTECH_CREST.webp',
         'assets/buildings/FENC.jpg',
         'assets/buildings/SCIT.jpg',
-        'assets/buildings/building5.jpg',
-        'assets/buildings/building8.jpg',
-        'assets/buildings/building22.jpg',
-        'assets/buildings/building47.jpg',
-        //'assets/buildings/walkin_gate.jpg',
-        //'assets/buildings/back_gate.jpg',
-        //'assets/buildings/main_gate.jpg',
+        'assets/buildings/SOBA.jpg',
+        'assets/buildings/FELS.jpg',
+        'assets/buildings/COBAM.jpg',
+        'assets/buildings/SHARED_FACILITIES.jpg',
+        'assets/buildings/LT48.jpg',
         'assets/floors/FENC_GROUND.jpg',
-        'assets/floors/floor1a.jpg',
-        'assets/floors/floor1b.jpg',
-        'assets/floors/floor1c.jpg',
+        'assets/floors/FENC_1.jpg',
+        'assets/floors/FENC_2.jpg',
+        'assets/floors/FENC_3.jpg',
         'assets/floors/SCIT_GROUND.jpg',
-        'assets/floors/floor2b.jpg',
-        //'assets/floors/floor2c.jpg',
-        //'assets/floors/floor5a.jpg',
-        'assets/floors/floor5b.jpg',
-        //'assets/floors/floor5c.jpg',
-        'assets/floors/floor8a.jpg',
-        'assets/floors/floor8b.jpg',
-        'assets/floors/floor8c.jpg',
-        'assets/floors/floor47a.jpg',
-        'assets/floors/floor47b.jpg',
-        'assets/floors/floor47c.jpg',
-        //'assets/floors/floorltbsdbld47a.jpg',
-        //'assets/floors/floorltbsdbld47b.jpg',
+        'assets/floors/SCIT_1.jpg',
+        'assets/floors/SOBA_1.jpg',
+        'assets/floors/FELS_GROUND.jpg',
+        'assets/floors/FELS_1.jpg',
+        'assets/floors/FELS_2.jpg',
+        'assets/floors/SHARED_FACILITIES_GROUND.jpg',
+        'assets/floors/SHARED_FACILITIES_1.jpg',
+        'assets/floors/SHARED_FACILITIES_2.jpg',
+        
     ];
     preloadImages.forEach(src => {
         const img = new Image();
@@ -48,8 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const roomForm = document.getElementById('directionsForm');
-    const floorForm = document.getElementById('floorsForm');
-    const buildingForm = document.getElementById('buildingsForm');
     const outputContainer = document.getElementById('output');
     const errorContainer = document.getElementById('error');
     const errorMessage = document.getElementById('errorMessage');
@@ -60,19 +52,11 @@ document.addEventListener('DOMContentLoaded', function() {
     campusExplorer.populate();
     const graphDB = new GraphDatabase();
     const roomsHashMap = treeDB.getRoomsHashMap();
-    const floorHashMap = treeDB.getFloorHashMap();
-    const buildingHashMap = treeDB.getBuildingHashMap();
     const rmAutoCompleteTrie = new AutocompleteTrie();
     rmAutoCompleteTrie.insertAll(roomsHashMap);
-    const flrAutoCompleteTrie = new AutocompleteTrie();
-    flrAutoCompleteTrie.insertAll(floorHashMap);
-    const bldAutoCompleteTrie = new AutocompleteTrie();
-    bldAutoCompleteTrie.insertAll(buildingHashMap);
     
     // Make it available globally or attach to window for now
-    window.rmAutoCompleteTrie = rmAutoCompleteTrie; // Easy access for inputs    
-    window.flrAutoCompleteTrie = flrAutoCompleteTrie;
-    window.bldAutoCompleteTrie = bldAutoCompleteTrie;
+    window.rmAutoCompleteTrie = rmAutoCompleteTrie; // Easy access for inputs
 
     // Navbar navigation
     const navButtons = document.querySelectorAll('.nav-btn');
@@ -125,13 +109,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const [validatedSource, validatedDestination] = ValidateInput.validateInputs(source, destination, roomsHashMap);
             console.log('Step 1 - Validate Inputs:', [validatedSource, validatedDestination]);
 
-            const sourceRoomNode = roomsHashMap.get(validatedSource);
-            const destinationRoomNode = roomsHashMap.get(validatedDestination);
-            console.log('Step 2 - Find Nodes from HashMap:', sourceRoomNode, destinationRoomNode);
+            const sourceNode = roomsHashMap.get(validatedSource);
+            const destinationNode = roomsHashMap.get(validatedDestination);
+            console.log('Step 2 - Find Nodes from HashMap:', sourceNode, destinationNode);
 
-            const buildingAndFloorNodes = FindBuildingAndFloorNodes.findBuildingAndFloorNodes(sourceRoomNode, destinationRoomNode);
-            const [sourceBuildingNode, sourceFloorNode, destinationBuildingNode, destinationFloorNode] = buildingAndFloorNodes;
-            console.log('Step 3 - Find Building and Floor Nodes:', buildingAndFloorNodes);
+            const requiredNodes = FindRequiredNodes.findRequiredNodes(sourceNode, destinationNode);
+            const [sourceBuildingNode, sourceFloorNode, sourceRoomNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode] = requiredNodes;
+            console.log('Step 3 - Find Building and Floor Nodes:', requiredNodes);
  
             const buildingPicture = GetBuildingPicture.getBuildingPicture(destinationBuildingNode);
             if (buildingPicture) {
@@ -158,174 +142,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 console.log('Step 7: Map with path displayed');
 
-                displayTextDirectionsForRooms(sourceRoomNode, destinationRoomNode, sourceBuildingNode, destinationBuildingNode, sourceFloorNode, destinationFloorNode);
+                displayTextDirectionsForRooms(sourceBuildingNode, sourceFloorNode, sourceRoomNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode);
             }            
-            outputContainer.style.display = 'block';           // Make it visible
-            outputContainer.classList.remove('fade-out');     // In case it was fading out
-            outputContainer.classList.add('show');            // Triggers smooth fade-in
-                
-        } catch (error) {
-            // Display error
-            console.error('Error:', error);
-            errorMessage.textContent = error.message;
-            errorContainer.style.display = 'block';
-        }
-    });
-
-    floorForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        // Hide previous outputs
-        errorContainer.style.display = 'none';
-
-        // Add fade-out for old content
-        outputContainer.classList.add('fade-out');
-        
-        try {     
-            // Get form inputs
-            const fromFloorInput = document.getElementById('fromFloor').value;
-            const toFloorInput = document.getElementById('toFloor').value;
-
-            // STEP 1 & 2: Data Collector - Convert inputs to lowercase strings
-            const fromFloor = fromFloorInput.trim() === "" ? null : fromFloorInput;
-            const toFloor = toFloorInput.trim() === "" ? null : toFloorInput;
-            
-            const processedFloor = DataCollector.processFloorInputs(fromFloor, toFloor);
-            
-            console.log('Step 1-2: Processed inputs:', processedFloor);
-
-            //STEP 3 & 4: Find floor and building node
-            let from_flr_t_node = floorHashMap.get(processedFloor.fromFloor) ?? null;
-            let to_flr_t_node = floorHashMap.get(processedFloor.toFloor) ?? null;
-            let from_bld_t_node = null;
-            let to_bld_t_node = null;
-            if (!from_flr_t_node) {
-                throw new Error(`From floor "${processedFloor.fromFloor}" not found`);
-            }
-            if (!to_flr_t_node) {
-                throw new Error(`To floor "${processedFloor.toFloor}" not found`);
-            }
-            if(from_flr_t_node === to_flr_t_node){
-                throw new Error("These are the same floor; no directions needed");
-            }
-            if(from_flr_t_node.name == "main gate" || from_flr_t_node.name == "back gate" || from_flr_t_node.name == "walkin gate"){
-                from_bld_t_node = buildingHashMap.get(from_flr_t_node.name);
-            }else{
-                from_bld_t_node = from_flr_t_node.parent;
-            }
-            if(to_flr_t_node.name == "main gate" || to_flr_t_node.name == "back gate" || to_flr_t_node.name == "walkin gate"){
-                to_bld_t_node = buildingHashMap.get(to_flr_t_node.name);
-            }else{
-                to_bld_t_node = to_flr_t_node.parent;
-            }
-
-            // STEP 5: Building Pictures Output - Display destination building picture
-            const buildingPicture = GetBuildingPicture.getBuildingPicture(to_bld_t_node);
-            if (buildingPicture) {
-                displayBuildingPicture(buildingPicture, to_bld_t_node.name);
-            }
-
-            // STEP 6: Floor Pictures Output - Display destination floor picture
-            const floorPicture = FloorPicturesOutput.getFloorPicture(to_flr_t_node);
-            if (floorPicture) {
-                displayFloorPicture(floorPicture, to_flr_t_node.name);
-            }
-
-            // STEP 7: PathFinder - Find shortest path between buildings
-            const path = FindPath.findPathFromTreeNodes(
-                from_bld_t_node,
-                to_bld_t_node,
-                graphDB
-            );
-            
-            if (!path || path.length === 0) {
-                console.warn('No path found between buildings');
-            } else {
-                console.log('Step 7: Path found:', path);
-                
-                // STEP 8: PathDrawer - Draw map with path
-                await displayMapWithPath(from_bld_t_node, to_bld_t_node, path);
-                
-                console.log('Step 8: Map with path displayed');
-                
-                // Display text directions as well
-                displayTextDirectionsForFloors(from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node);
-            }
-
-            outputContainer.style.display = 'block';           // Make it visible
-            outputContainer.classList.remove('fade-out');     // In case it was fading out
-            outputContainer.classList.add('show');            // Triggers smooth fade-in
-                
-        } catch (error) {
-            // Display error
-            console.error('Error:', error);
-            errorMessage.textContent = error.message;
-            errorContainer.style.display = 'block';
-        }
-    });
-    
-    buildingForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        // Hide previous outputs
-        errorContainer.style.display = 'none';
-
-        // Add fade-out for old content
-        outputContainer.classList.add('fade-out');
-
-        try {     
-            // Get form inputs
-            const fromBuildingInput = document.getElementById('fromBuilding').value;
-            const toBuildingInput = document.getElementById('toBuilding').value;
-
-            // STEP 1 & 2: Data Collector - Convert inputs to lowercase strings
-            const fromBuilding = fromBuildingInput.trim() === "" ? null : fromBuildingInput;
-            const toBuilding = toBuildingInput.trim() === "" ? null : toBuildingInput;
-            
-            const processedBuilding = DataCollector.processBuildingInputs(fromBuilding, toBuilding);
-            
-            console.log('Step 1-2: Processed inputs:', processedBuilding);
-
-            //STEP 3 & 4: Find floor and building node;
-            let from_bld_t_node = buildingHashMap.get(processedBuilding.fromBuilding);
-            let to_bld_t_node = buildingHashMap.get(processedBuilding.toBuilding);
-            if (!from_bld_t_node) {
-                throw new Error(`From floor "${processedBuilding.fromBuilding}" not found`);
-            }
-            if (!to_bld_t_node) {
-                throw new Error(`To floor "${processedBuilding.toBuilding}" not found`);
-            }
-            if(from_bld_t_node === to_bld_t_node){
-                throw new Error("These are the same building; no directions needed");
-            }
-
-            // STEP 5: Building Pictures Output - Display destination building picture
-            const buildingPicture = GetBuildingPicture.getBuildingPicture(to_bld_t_node);
-            if (buildingPicture) {
-                displayBuildingPicture(buildingPicture, to_bld_t_node.name);
-            }
-
-            // STEP 6: PathFinder - Find shortest path between buildings
-            const path = FindPath.findPathFromTreeNodes(
-                from_bld_t_node,
-                to_bld_t_node,
-                graphDB
-            );
-            
-            if (!path || path.length === 0) {
-                console.warn('No path found between buildings');
-            } else {
-                console.log('Step 6: Path found:', path);
-                
-                // STEP 7: PathDrawer - Draw map with path
-                await displayMapWithPath(from_bld_t_node, to_bld_t_node, path);
-                
-                console.log('Step 7: Map with path displayed');
-                
-                // Display text directions as well
-                displayTextDirectionsForBuildings(from_bld_t_node, to_bld_t_node);
-            }
-
             outputContainer.style.display = 'block';           // Make it visible
             outputContainer.classList.remove('fade-out');     // In case it was fading out
             outputContainer.classList.add('show');            // Triggers smooth fade-in
@@ -340,29 +158,27 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Helper function to create output sections
     function createOutputSections() {
-        outputContainer.innerHTML = `
-            <h2>Directions</h2>
-            
+        outputContainer.innerHTML = `            
             <div id="textDirections" class="output-section">
-                <h3>📍 Summary</h3>
+                <h3>Summary</h3>
                 <div id="textDirectionsContent"></div>
             </div>
             
             <div class="output-row">
                 <div id="buildingPictureSection" class="output-section.half">
-                    <h3>🏢 Destination Building</h3>
+                    <h3>Destination Building</h3>
                     <div id="buildingPictureContent"></div>
                 </div>
                 
                 <div id="floorPictureSection" class="output-section.half">
-                    <h3>🔢 Destination Floor</h3>
+                    <h3>Destination Floor</h3>
                     <div id="floorPictureContent"></div>
                 </div>
             </div>
 
-            <!-- Map section with inset floor highlight -->
+            <!-- Map section -->
             <div class="output-section" id="mapSection">
-                <h3>🗺️ Campus Map with Route</h3>
+                <h3>Map with Route</h3>
                 <div class="map-container">
                     <div id="mapContent">
                         <canvas id="mapCanvas"></canvas>
@@ -420,137 +236,187 @@ document.addEventListener('DOMContentLoaded', function() {
             canvas
         );
     }
+
+    function goingToRoomInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode){
+        return `
+            <div class="direction-instructions">
+                <h4>Directions:</h4>
+                <ol>
+                    <li>Exit ${sourceBuildingNode.name}</li>
+                    <li>Follow the yellow path on the map to ${destinationBuildingNode.name}</li>
+                    <li>Enter ${destinationBuildingNode.name}</li>
+                    <li>Navigate to ${destinationFloorNode.name}</li>
+                    <li>Find ${destinationRoomNode.name}</li>
+                </ol>
+            </div>
+        `;
+    }
+
+    function goingToFloorInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode){
+        return `
+            <div class="direction-instructions">
+                <h4>Instructions:</h4>
+                <ol>
+                    <li>Exit ${sourceBuildingNode.name}</li>
+                    <li>Follow the yellow path on the map to ${destinationBuildingNode.name}</li>
+                    <li>Enter ${destinationBuildingNode.name}</li>
+                    <li>Navigate to ${destinationFloorNode.name}</li>
+                </ol>
+            </div>
+        `;
+    }
+
+    function goingToBuildingInDifferentBuilding(sourceBuildingNode, destinationBuildingNode){
+        return `
+            <div class="direction-instructions">
+                <h4>Instructions:</h4>
+                <ol>
+                    <li>Exit ${sourceBuildingNode.name}</li>
+                    <li>Follow the yellow path on the map to ${destinationBuildingNode.name}</li>
+                    <li>Enter ${destinationBuildingNode.name}</li>
+                </ol>
+            </div>
+        `;
+    }
+
     
     // Display text directions from room to room
-    function displayTextDirectionsForRooms(sourceRoomNode, destinationRoomNode, sourceBuildingNode, destinationBuildingNode, sourceFloorNode, destinationFloorNode) {
+    function displayTextDirectionsForRooms(sourceBuildingNode, sourceFloorNode, sourceRoomNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode) {
         const content = document.getElementById('textDirectionsContent');
-        
-        let html = `
-            <div class="direction-row">
+
+        // Edits html tags to indicate source and destination buildings and/or floors
+        let html = `<div class="direction-row">`;
+        if(sourceRoomNode === null && sourceFloorNode === null){
+            html = `
+                <div class="direction-step">
+                <p><strong>From:</strong> ${sourceBuildingNode.name}</p>
+                </div>
+            `;
+        }else{
+            html = `
                 <div class="direction-step">
                 <p><strong>From:</strong> ${sourceBuildingNode.name} · ${sourceFloorNode.name}</p>
                 </div>
+            `;
+        }        
+        html = `
                 <div class="direction-arrow">→</div>
-                <div class="direction-step">
-                <p><strong>To:</strong> ${destinationBuildingNode.name} · ${destinationFloorNode.name}</p>
-                </div>
+        `;
+        if(destinationRoomNode === null && destinationFloorNode === null){
+            html = `
+                    <div class="direction-step">
+                    <p><strong>To:</strong> ${destinationBuildingNode.name}</p>
+                    </div>
+            `;
+        }else{
+            html = `
+                    <div class="direction-step">
+                    <p><strong>To:</strong> ${destinationBuildingNode.name} · ${destinationFloorNode.name}</p>
+                    </div>
+            `;
+        }
+        html = `
             </div>
         `;
         
-        // Add building-to-building directions if buildings are different
-        if (sourceBuildingNode.name !== destinationBuildingNode.name) {
-            html += `
-                <div class="direction-instructions">
-                    <h4>Directions:</h4>
-                    <ol>
-                        <li>Exit ${sourceBuildingNode.name}</li>
-                        <li>Follow the yellow path on the map to ${destinationBuildingNode.name}</li>
-                        <li>Enter ${destinationBuildingNode.name}</li>
-                        <li>Navigate to ${destinationFloorNode.name}</li>
-                        <li>Find ${destinationRoomNode.name}</li>
-                    </ol>
-                </div>
-            `;
-        } else if (sourceFloorNode.name !== destinationFloorNode.name) {
-            html += `
-                <div class="direction-instructions">
-                    <h4>Directions:</h4>
-                    <ol>
-                        <li>You are in ${sourceBuildingNode.name}</li>
-                        <li>Navigate from ${sourceFloorNode.name} to ${destinationFloorNode.name}</li>
-                        <li>Find ${destinationRoomNode.name}</li>
-                    </ol>
-                </div>
-            `;
-        } else if(sourceRoomNode.name !== destinationRoomNode.name){
-            html += `
-                <div class="direction-instructions">
-                    <h4>Directions:</h4>
-                    <p>Both rooms are on ${destinationFloorNode.name} in ${destinationBuildingNode.name}. \nSimply navigate along the corridor to find ${destinationRoomNode.name}.</p>
-                </div>
-            `;
-        }
-        
-        content.innerHTML = html;
-    }
 
-    // Display text directions from floor to floor
-    function displayTextDirectionsForFloors(from_bld_t_node, to_bld_t_node, from_flr_t_node, to_flr_t_node) {
-        const content = document.getElementById('textDirectionsContent');
-        
-        let html = `
-            <div class="direction-row">
-                <div class="direction-step">
-                <p><strong>From:</strong> ${from_bld_t_node.name} · ${from_flr_t_node.name}</p>
-                </div>
-                <div class="direction-arrow">→</div>
-                <div class="direction-step">
-                <p><strong>To:</strong> ${to_bld_t_node.name} · ${to_flr_t_node.name}</p>
-                </div>
-            </div>
-        `;
-        
-        // Add building-to-building directions if different buildings
-        if (from_bld_t_node.name !== to_bld_t_node.name) {
-            html += `
-                <div class="direction-instructions">
-                    <h4>📍 Instructions:</h4>
-                    <ol>
-                        <li>Exit ${from_bld_t_node.name}</li>
-                        <li>Follow the yellow path on the map to ${to_bld_t_node.name}</li>
-                        <li>Enter ${to_bld_t_node.name}</li>
-                        <li>Navigate to ${to_flr_t_node.name}</li>
-                    </ol>
-                </div>
-            `;
-        } else if (from_flr_t_node.name !== to_flr_t_node.name) {
-            html += `
-                <div class="direction-instructions">
-                    <h4>📍 Instructions:</h4>
-                    <ol>
-                        <li>You are in ${from_bld_t_node.name}</li>
-                        <li>Navigate from ${from_flr_t_node.name} to ${to_flr_t_node.name}</li>
-                    </ol>
-                </div>
-            `;
-        }
-        
-        content.innerHTML = html;
-    }
-    // Display text directions from building to building
-    function displayTextDirectionsForBuildings(from_bld_t_node, to_bld_t_node) {
-        const content = document.getElementById('textDirectionsContent');
-        
-        let html = `
-            <div class="direction-row">
-                <div class="direction-step">
-                <p><strong>From:</strong> ${from_bld_t_node.name}</p>
-                </div>
-                <div class="direction-arrow">→</div>
-                <div class="direction-step">
-                <p><strong>To:</strong> ${to_bld_t_node.name}</p>
-                </div>
-            </div>
-        `;
-        
-        // Add building-to-building directions if different buildings
-        if (from_bld_t_node.name !== to_bld_t_node.name) {
-            html += `
-                <div class="direction-instructions">
-                    <h4>📍 Instructions:</h4>
-                    <ol>
-                        <li>Exit ${from_bld_t_node.name}</li>
-                        <li>Follow the yellow path on the map to ${to_bld_t_node.name}</li>
-                        <li>Enter ${to_bld_t_node.name}</li>
-                    </ol>
-                </div>
-            `;
-        }
-        
-        content.innerHTML = html;
-    }
-    
+        if(sourceRoomNode !== null && destinationRoomNode !== null){ // source is room and destination is room
+            if (sourceBuildingNode.name !== destinationBuildingNode.name) { // different buildings
+                html += goingToRoomInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode);
+            } else if (sourceFloorNode.name !== destinationFloorNode.name) { // different floors
+                html += `
+                    <div class="direction-instructions">
+                        <h4>Directions:</h4>
+                        <ol>
+                            <li>You are in ${sourceBuildingNode.name}</li>
+                            <li>Navigate from ${sourceFloorNode.name} to ${destinationFloorNode.name}</li>
+                            <li>Find ${destinationRoomNode.name}</li>
+                        </ol>
+                    </div>
+                `;
+            } else if(sourceRoomNode.name !== destinationRoomNode.name){ // different rooms
+                html += `
+                    <div class="direction-instructions">
+                        <h4>Directions:</h4>
+                        <p>Both rooms are on ${destinationFloorNode.name} in ${destinationBuildingNode.name}. \nSimply navigate along the corridor to find ${destinationRoomNode.name}.</p>
+                    </div>
+                `;
+            }else if(sourceRoomNode.name === destinationRoomNode.name){ // same rooms
+                html += ``;
+            }
 
+        }else if(sourceFloorNode !== null && destinationFloorNode !== null){ // source is floor and destination is floor
+            if (sourceBuildingNode.name !== destinationBuildingNode.name) { // different buildings
+                html += goingToFloorInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode);
+            } else if (sourceFloorNode.name !== destinationFloorNode.name) { // different floors
+                html += `
+                    <div class="direction-instructions">
+                        <h4>Instructions:</h4>
+                        <ol>
+                            <li>You are in ${sourceBuildingNode.name}</li>
+                            <li>Navigate from ${sourceFloorNode.name} to ${destinationFloorNode.name}</li>
+                        </ol>
+                    </div>
+                `;
+            } else if (sourceFloorNode.name === sourceFloorNode.name){
+                html += ``;
+            }
+        }else if(sourceBuildingNode !== null && destinationBuildingNode !== null){ // source is building and destination is building
+            if (sourceBuildingNode.name !== destinationBuildingNode.name) { // different buildings
+                html += goingToBuildingInDifferentBuilding(sourceBuildingNode, destinationBuildingNode);
+            }else if(sourceBuildingNode.name === destinationBuildingNode.name){
+                html += ``;
+            }
+        }else if(sourceRoomNode !== null && destinationRoomNode === null){ // source is room but destination is not  
+            if(destinationFloorNode !== null){ // destination is floor
+                if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
+                    html += goingToFloorInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode);
+                }else if(sourceFloorNode.name !== destinationFloorNode.name){ // different floors
+                    html += ``;
+                }else if(sourceFloorNode.name === destinationFloorNode.name){ // same floors
+                    html += ``;
+                }
+            }else if(destinationBuildingNode !== null){ // destination is building
+                if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
+                    html += goingToBuildingInDifferentBuilding(sourceBuildingNode, destinationBuildingNode);
+                }else if(sourceBuildingNode.name === destinationBuildingNode.name){ // same buildings
+                    html += ``;
+                }
+            }
+        }else if(sourceFloorNode !== null && destinationFloorNode === null){ // source is floor but destination is not
+            if(destinationRoomNode !== null){ // destination is room
+               if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
+                    html += goingToRoomInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode);
+                }else if(sourceFloorNode.name !== destinationFloorNode.name){ // different floors
+                    html += ``;
+                }else if(sourceFloorNode.name === destinationFloorNode.name){ // same floors
+                    html += ``;
+                }
+            }else if(destinationBuildingNode !== null){ // destination is building
+                if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
+                    html += goingToBuildingInDifferentBuilding(sourceBuildingNode, destinationBuildingNode);
+                }else if(sourceBuildingNode.name === destinationBuildingNode.name){ // same buildings
+                    html += ``;
+                }
+            }
+        }else if(sourceBuildingNode !== null && destinationBuildingNode === null){ // source is building but destination is not
+            if(destinationRoomNode !== null){ // destination is room
+                if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
+                    html += goingToRoomInDifferentBuilding(sourceBuildingNode, destinationBuildingNode,destinationFloorNode, destinationRoomNode);
+                }else if(sourceBuildingNode.name === destinationBuildingNode.name){ // same buildings
+                    html += ``;
+                }
+            }else if(destinationFloorNode !== null){ // destination is floor
+                if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
+                    html += goingToFloorInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode);
+                }else if(sourceBuildingNode.name === destinationBuildingNode.name){ // same buildings
+                    html += ``;
+                }
+            }
+        }
+        
+        content.innerHTML = html;
+    }
 
     // Autocomplete function for any input
     function setupAutocomplete(inputId, suggestionsId) {
