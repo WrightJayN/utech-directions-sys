@@ -4,6 +4,7 @@ import { GetBuildingPicture } from './output/getBuildingPicture.js';
 import { GetFloorPictures } from './output/getfloorPictures.js';
 import { FindPath } from './processing/FindPath.js';
 import { DrawPath } from './output/drawPath.js';
+import { DisplayTextDirections } from './processing/displayTextDirections.js';
 import { CampusExplorer } from './processing/explorer.js';
 import { GraphDatabase } from './storage/graphDatabase.js';
 import { TreeDataStruct } from './storage/treeDataStruct.js';
@@ -51,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const campusExplorer = new CampusExplorer(treeDB);
     campusExplorer.populate();
     const graphDB = new GraphDatabase();
-    const roomsHashMap = treeDB.getRoomsHashMap();
+    const roomsHashMap = treeDB.getHashMap();
     const rmAutoCompleteTrie = new AutocompleteTrie();
     rmAutoCompleteTrie.insertAll(roomsHashMap);
     
@@ -123,11 +124,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }            
             console.log('Step 4: Building picture:', buildingPicture);
 
-            const floorPicture = GetFloorPictures.getFloorPicture(destinationFloorNode);
-            if (floorPicture) {
-                displayFloorPicture(floorPicture, destinationFloorNode.name);
-            }            
-            console.log('Step 5: Floor picture:', floorPicture);
+            if(destinationFloorNode){
+                const floorPicture = GetFloorPictures.getFloorPicture(destinationFloorNode);
+                if (floorPicture) {
+                    displayFloorPicture(floorPicture, destinationFloorNode.name);
+                }            
+                console.log('Step 5: Floor picture:', floorPicture);
+            }
             
             const sourceBuildingNodeFromGraph = graphDB.graph.get(sourceBuildingNode.name);
             const destinationBuildingNodeFromGraph = graphDB.graph.get(destinationBuildingNode.name);
@@ -142,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 console.log('Step 7: Map with path displayed');
 
-                displayTextDirectionsForRooms(sourceBuildingNode, sourceFloorNode, sourceRoomNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode);
+                DisplayTextDirections.displayTextDirections(sourceBuildingNode, sourceFloorNode, sourceRoomNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode);
             }            
             outputContainer.style.display = 'block';           // Make it visible
             outputContainer.classList.remove('fade-out');     // In case it was fading out
@@ -160,7 +163,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function createOutputSections() {
         outputContainer.innerHTML = `            
             <div id="textDirections" class="output-section">
-                <h3>Summary</h3>
                 <div id="textDirectionsContent"></div>
             </div>
             
@@ -235,187 +237,6 @@ document.addEventListener('DOMContentLoaded', function() {
             path,
             canvas
         );
-    }
-
-    function goingToRoomInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode){
-        return `
-            <div class="direction-instructions">
-                <h4>Directions:</h4>
-                <ol>
-                    <li>Exit ${sourceBuildingNode.name}</li>
-                    <li>Follow the yellow path on the map to ${destinationBuildingNode.name}</li>
-                    <li>Enter ${destinationBuildingNode.name}</li>
-                    <li>Navigate to ${destinationFloorNode.name}</li>
-                    <li>Find ${destinationRoomNode.name}</li>
-                </ol>
-            </div>
-        `;
-    }
-
-    function goingToFloorInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode){
-        return `
-            <div class="direction-instructions">
-                <h4>Instructions:</h4>
-                <ol>
-                    <li>Exit ${sourceBuildingNode.name}</li>
-                    <li>Follow the yellow path on the map to ${destinationBuildingNode.name}</li>
-                    <li>Enter ${destinationBuildingNode.name}</li>
-                    <li>Navigate to ${destinationFloorNode.name}</li>
-                </ol>
-            </div>
-        `;
-    }
-
-    function goingToBuildingInDifferentBuilding(sourceBuildingNode, destinationBuildingNode){
-        return `
-            <div class="direction-instructions">
-                <h4>Instructions:</h4>
-                <ol>
-                    <li>Exit ${sourceBuildingNode.name}</li>
-                    <li>Follow the yellow path on the map to ${destinationBuildingNode.name}</li>
-                    <li>Enter ${destinationBuildingNode.name}</li>
-                </ol>
-            </div>
-        `;
-    }
-
-    
-    // Display text directions from room to room
-    function displayTextDirectionsForRooms(sourceBuildingNode, sourceFloorNode, sourceRoomNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode) {
-        const content = document.getElementById('textDirectionsContent');
-
-        // Edits html tags to indicate source and destination buildings and/or floors
-        let html = `<div class="direction-row">`;
-        if(sourceRoomNode === null && sourceFloorNode === null){
-            html = `
-                <div class="direction-step">
-                <p><strong>From:</strong> ${sourceBuildingNode.name}</p>
-                </div>
-            `;
-        }else{
-            html = `
-                <div class="direction-step">
-                <p><strong>From:</strong> ${sourceBuildingNode.name} · ${sourceFloorNode.name}</p>
-                </div>
-            `;
-        }        
-        html = `
-                <div class="direction-arrow">→</div>
-        `;
-        if(destinationRoomNode === null && destinationFloorNode === null){
-            html = `
-                    <div class="direction-step">
-                    <p><strong>To:</strong> ${destinationBuildingNode.name}</p>
-                    </div>
-            `;
-        }else{
-            html = `
-                    <div class="direction-step">
-                    <p><strong>To:</strong> ${destinationBuildingNode.name} · ${destinationFloorNode.name}</p>
-                    </div>
-            `;
-        }
-        html = `
-            </div>
-        `;
-        
-
-        if(sourceRoomNode !== null && destinationRoomNode !== null){ // source is room and destination is room
-            if (sourceBuildingNode.name !== destinationBuildingNode.name) { // different buildings
-                html += goingToRoomInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode);
-            } else if (sourceFloorNode.name !== destinationFloorNode.name) { // different floors
-                html += `
-                    <div class="direction-instructions">
-                        <h4>Directions:</h4>
-                        <ol>
-                            <li>You are in ${sourceBuildingNode.name}</li>
-                            <li>Navigate from ${sourceFloorNode.name} to ${destinationFloorNode.name}</li>
-                            <li>Find ${destinationRoomNode.name}</li>
-                        </ol>
-                    </div>
-                `;
-            } else if(sourceRoomNode.name !== destinationRoomNode.name){ // different rooms
-                html += `
-                    <div class="direction-instructions">
-                        <h4>Directions:</h4>
-                        <p>Both rooms are on ${destinationFloorNode.name} in ${destinationBuildingNode.name}. \nSimply navigate along the corridor to find ${destinationRoomNode.name}.</p>
-                    </div>
-                `;
-            }else if(sourceRoomNode.name === destinationRoomNode.name){ // same rooms
-                html += ``;
-            }
-
-        }else if(sourceFloorNode !== null && destinationFloorNode !== null){ // source is floor and destination is floor
-            if (sourceBuildingNode.name !== destinationBuildingNode.name) { // different buildings
-                html += goingToFloorInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode);
-            } else if (sourceFloorNode.name !== destinationFloorNode.name) { // different floors
-                html += `
-                    <div class="direction-instructions">
-                        <h4>Instructions:</h4>
-                        <ol>
-                            <li>You are in ${sourceBuildingNode.name}</li>
-                            <li>Navigate from ${sourceFloorNode.name} to ${destinationFloorNode.name}</li>
-                        </ol>
-                    </div>
-                `;
-            } else if (sourceFloorNode.name === sourceFloorNode.name){
-                html += ``;
-            }
-        }else if(sourceBuildingNode !== null && destinationBuildingNode !== null){ // source is building and destination is building
-            if (sourceBuildingNode.name !== destinationBuildingNode.name) { // different buildings
-                html += goingToBuildingInDifferentBuilding(sourceBuildingNode, destinationBuildingNode);
-            }else if(sourceBuildingNode.name === destinationBuildingNode.name){
-                html += ``;
-            }
-        }else if(sourceRoomNode !== null && destinationRoomNode === null){ // source is room but destination is not  
-            if(destinationFloorNode !== null){ // destination is floor
-                if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
-                    html += goingToFloorInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode);
-                }else if(sourceFloorNode.name !== destinationFloorNode.name){ // different floors
-                    html += ``;
-                }else if(sourceFloorNode.name === destinationFloorNode.name){ // same floors
-                    html += ``;
-                }
-            }else if(destinationBuildingNode !== null){ // destination is building
-                if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
-                    html += goingToBuildingInDifferentBuilding(sourceBuildingNode, destinationBuildingNode);
-                }else if(sourceBuildingNode.name === destinationBuildingNode.name){ // same buildings
-                    html += ``;
-                }
-            }
-        }else if(sourceFloorNode !== null && destinationFloorNode === null){ // source is floor but destination is not
-            if(destinationRoomNode !== null){ // destination is room
-               if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
-                    html += goingToRoomInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode);
-                }else if(sourceFloorNode.name !== destinationFloorNode.name){ // different floors
-                    html += ``;
-                }else if(sourceFloorNode.name === destinationFloorNode.name){ // same floors
-                    html += ``;
-                }
-            }else if(destinationBuildingNode !== null){ // destination is building
-                if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
-                    html += goingToBuildingInDifferentBuilding(sourceBuildingNode, destinationBuildingNode);
-                }else if(sourceBuildingNode.name === destinationBuildingNode.name){ // same buildings
-                    html += ``;
-                }
-            }
-        }else if(sourceBuildingNode !== null && destinationBuildingNode === null){ // source is building but destination is not
-            if(destinationRoomNode !== null){ // destination is room
-                if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
-                    html += goingToRoomInDifferentBuilding(sourceBuildingNode, destinationBuildingNode,destinationFloorNode, destinationRoomNode);
-                }else if(sourceBuildingNode.name === destinationBuildingNode.name){ // same buildings
-                    html += ``;
-                }
-            }else if(destinationFloorNode !== null){ // destination is floor
-                if(sourceBuildingNode.name !== destinationBuildingNode.name){ // different buildings
-                    html += goingToFloorInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode);
-                }else if(sourceBuildingNode.name === destinationBuildingNode.name){ // same buildings
-                    html += ``;
-                }
-            }
-        }
-        
-        content.innerHTML = html;
     }
 
     // Autocomplete function for any input

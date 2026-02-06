@@ -4,25 +4,25 @@ class ValidateInput {
     static isInHashMap(input, hashmap) {return hashmap.has(input)}; 
 
     static validateSource(source, hashmap){
-        let sourceLowerCase = String(source).trim().toUpperCase();
+        let sourceUpperCase = String(source).trim().toUpperCase();
 
-        if (this.isNotEmpty(sourceLowerCase) == true && this.isInHashMap(sourceLowerCase, hashmap) == true){
-            return sourceLowerCase;
-        }else if (this.isNotEmpty(sourceLowerCase) == true && this.isInHashMap(sourceLowerCase, hashmap) == false){
-            throw new Error(`Couldn't find: ${sourceLowerCase}`);
-        }else if (this.isNotEmpty(sourceLowerCase) == false){
+        if (this.isNotEmpty(sourceUpperCase) == true && this.isInHashMap(sourceUpperCase, hashmap) == true){
+            return sourceUpperCase;
+        }else if (this.isNotEmpty(sourceUpperCase) == true && this.isInHashMap(sourceUpperCase, hashmap) == false){
+            throw new Error(`Couldn't find: ${sourceUpperCase}`);
+        }else if (this.isNotEmpty(sourceUpperCase) == false){
             return "main gate";
         }
     }
 
     static validateDestination(destination, hashmap){
-        let destinationLowerCase = String(destination).trim().toUpperCase();
+        let destinationUpperCase = String(destination).trim().toUpperCase();
 
-        if(this.isNotEmpty(destinationLowerCase) == true && this.isInHashMap(destinationLowerCase, hashmap) == true){
-            return destinationLowerCase;
-        }else if (this.isNotEmpty(destinationLowerCase) == true && this.isInHashMap(destinationLowerCase, hashmap) == false){
-            throw new Error(`Couldn't find: ${destinationLowerCase}`);
-        }else if (this.isNotEmpty(destinationLowerCase) == false){
+        if(this.isNotEmpty(destinationUpperCase) == true && this.isInHashMap(destinationUpperCase, hashmap) == true){
+            return destinationUpperCase;
+        }else if (this.isNotEmpty(destinationUpperCase) == true && this.isInHashMap(destinationUpperCase, hashmap) == false){
+            throw new Error(`Couldn't find: ${destinationUpperCase}`);
+        }else if (this.isNotEmpty(destinationUpperCase) == false){
             throw new Error(`Destination can't be empty`);
         }
     }
@@ -30,10 +30,6 @@ class ValidateInput {
     static validateInputs(source, destination, hashmap){
         let validatedSource = this.validateSource(source, hashmap);
         let validatedDestination = this.validateDestination(destination, hashmap);
-
-        if(validatedSource == validatedDestination){
-            throw new Error("You are already at your destination");
-        }
         
         return [validatedSource,validatedDestination];
     }
