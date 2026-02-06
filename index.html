@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UTech Directions System</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="./assets/UTECH_ICON.png">
 </head>
 <body>
-    <div class="container">
+    <div class="container" style="padding-top: 10px;">
         <header>
-            <h1>🎓 UTech Directions System</h1>
-            <p style="color: #666; margin-top: 10px;">Find your way around campus</p>
+            <div style="display: flex; justify-content: center;">
+                <div>
+                    <img src="./assets/UTECH_HEADING.png" width="41" height="52">
+                    <h1>UTech Directions System</h1>
+                    <p style="color: #666; margin-top: 10px;">Find your way around Papine Campus</p>
+                </div>
+
             <!-- Settings Button -->
             <button id="settingsBtn" aria-label="Settings">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -19,6 +25,7 @@
                 </svg>
                 <span id="settingsBadge" class="settings-badge">New</span>
             </button>
+            </div>
         </header>
 
         <!-- Settings Popup Menu -->
@@ -38,8 +45,6 @@
                 <select id="startupTab">
                     <option value="explorer">Explorer</option>
                     <option value="room">Room</option>
-                    <option value="floor">Floor</option>
-                    <option value="building">Building</option>
                 </select>
             </div>
 
@@ -60,10 +65,10 @@
         <!-- About Popup -->
         <div id="aboutPopup" class="popup-overlay">
             <div class="popup-content">
-                <h3>About UTech Campus Navigator</h3>
-                <p>A modern way to explore buildings, floors, and rooms at the University of Technology, Jamaica.</p>
+                <h3>About</h3>
+                <p>This is a directions system made with the intention of providing on-campus guidance for papine campus</p>
                 <p><strong>Version:</strong> <span id="appVersion">Loading...</span></p>
-                <p>Made with ❤️ for UTech students and visitors.</p>
+                <p>Made for UTech students by UTech students</p>
                 <button id="closeAbout">Close</button>
             </div>
         </div>
@@ -117,45 +122,6 @@
                 </form>
             </section>
 
-            <!-- Floors View -->
-            <section id="floors-view" class="view">
-                <h2>Get Directions: Floor to Floor</h2>
-                <form id="floorsForm">
-                    <div class="input-group">
-                        <label for="fromFloor">From Floor:</label>
-                        <input type="text" id="fromFloor" placeholder="e.g., floor1a">
-                        <div id="fromFloorSuggestions" class="suggestions-dropdown"></div>
-                        <small class="hint">Default: main gate</small>
-                    </div>
-                    <div class="input-group">
-                        <label for="toFloor">To Floor: <span class="required">*</span></label>
-                        <input type="text" id="toFloor" placeholder="Enter floor with building # and level (e.g., floor1a, floor2c, floor8b)" required>
-                        <div id="toFloorSuggestions" class="suggestions-dropdown"></div>
-                    </div>
-                    <button type="submit" id="submitBtn">Get Directions</button>
-                </form>
-            </section>
-
-            <!-- Buildings View -->
-            <section id="buildings-view" class="view">
-                <h2>Get Directions: Building to Building</h2>
-                <form id="buildingsForm">
-                    <div class="input-group">
-                        <label for="fromBuilding">From Building:</label>
-                        <input type="text" id="fromBuilding" placeholder="e.g., building1 or main gate">
-                        <div id="fromBuildingSuggestions" class="suggestions-dropdown"></div>
-                        <small class="hint">Default: main gate</small>
-                    </div>
-                    <div class="input-group">
-                        <label for="toBuilding">To Building: <span class="required">*</span></label>
-                        <input type="text" id="toBuilding" placerholder="Enter building with building number (e.g., building47, building1, building22)" required>
-                        <div id="toBuildingSuggestions" class="suggestions-dropdown"></div>
-                    </div>
-                    <button type="submit" id="submitBtn">Get Directions</button>
-                </form>
-            </section>    
-
-            <!-- Shared Output Areas -->
             <div id="canvasContainer"></div>
 
             <div id="output" class="output-container" style="display: none;"></div>
