@@ -8,7 +8,6 @@ import { DisplayTextDirections } from './processing/displayTextDirections.js';
 import { CampusExplorer } from './processing/explorer.js';
 import { GraphDatabase } from './storage/graphDatabase.js';
 import { TreeDataStruct } from './storage/treeDataStruct.js';
-import { AutocompleteTrie } from './storage/autoCompleteTrie.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Preload critical assets
@@ -53,11 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
     campusExplorer.populate();
     const graphDB = new GraphDatabase();
     const roomsHashMap = treeDB.getHashMap();
-    const rmAutoCompleteTrie = new AutocompleteTrie();
-    rmAutoCompleteTrie.insertAll(roomsHashMap);
-    
-    // Make it available globally or attach to window for now
-    window.rmAutoCompleteTrie = rmAutoCompleteTrie; // Easy access for inputs
 
     // Navbar navigation
     const navButtons = document.querySelectorAll('.nav-btn');
@@ -130,6 +124,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     displayFloorPicture(floorPicture, destinationFloorNode.name);
                 }            
                 console.log('Step 5: Floor picture:', floorPicture);
+            }else {
+                document.getElementById('floorPictureSection').style.display = 'none'; //Hide floor output when destination input is a building
             }
             
             const sourceBuildingNodeFromGraph = graphDB.graph.get(sourceBuildingNode.name);
@@ -238,60 +234,4 @@ document.addEventListener('DOMContentLoaded', function() {
             canvas
         );
     }
-
-    // Autocomplete function for any input
-    function setupAutocomplete(inputId, suggestionsId) {
-        const input = document.getElementById(inputId);
-        const suggestionsBox = document.getElementById(suggestionsId);
-
-        input.addEventListener('input', function() {
-            const query = this.value.trim().toLowerCase();
-            suggestionsBox.innerHTML = '';
-
-            if (query.length === 0) {
-                suggestionsBox.style.display = 'none';
-                return;
-            }
-
-            const suggestions = window.rmAutoCompleteTrie.getSuggestions(query, 10);
-
-            if (suggestions.length === 0) {
-                suggestionsBox.style.display = 'none';
-                return;
-            }
-
-            suggestions.forEach(suggestion => {
-                const item = document.createElement('div');
-                item.className = 'suggestion-item';
-
-                const highlightStart = suggestion.toLowerCase().indexOf(query);
-                const highlightEnd = highlightStart + query.length;
-
-                const beforeMatch = suggestion.slice(0, highlightStart);
-                const match = suggestion.slice(highlightStart, highlightEnd);
-                const afterMatch = suggestion.slice(highlightEnd);
-
-                item.innerHTML = `${beforeMatch}<strong>${match}</strong>${afterMatch}`;
-
-                item.addEventListener('click', () => {
-                    input.value = suggestion;
-                    suggestionsBox.style.display = 'none';
-                });
-                suggestionsBox.appendChild(item);
-            });
-
-            suggestionsBox.style.display = 'block';
-        });
-
-        // Hide suggestions when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!input.contains(e.target) && !suggestionsBox.contains(e.target)) {
-                suggestionsBox.style.display = 'none';
-            }
-        });
-    }
-
-    // Setup autocomplete for both inputs
-    setupAutocomplete('fromRoom', 'fromRoomSuggestions');
-    setupAutocomplete('toRoom', 'toRoomSuggestions');
 });

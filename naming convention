@@ -1,7 +1,0 @@
-variables - camelCase - noun
-classes - PascalCase
-html elements - kebab-case
-boolean - camelCase - noun verb combo
-functions - camelCase - verb
-constants - camelCase - noun
-branching - newline

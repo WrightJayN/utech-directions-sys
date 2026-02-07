@@ -86,20 +86,20 @@
                 <div id="buildingList"></div>
             </section>
 
-            <!-- Rooms View  -->
+            <!-- Directions View  -->
             <section id="rooms-view" class="view">
                 <h2>Get Directions</h2>
                 <form id="directionsForm">
                     <div class="input-group">
-                        <label for="fromRoom">From Room/Floor/Building:</label>
+                        <label for="sourceInput">From Room/Floor/Building:</label>
                         <input 
                         type="text" 
-                        id="fromRoom" 
-                        name="fromRoom" 
+                        id="sourceInput" 
+                        name="sourceInput" 
                         placeholder="Leave empty for main gate"
                         autocomplete="off"
                         >
-                        <div id="fromRoomSuggestions" class="suggestions-dropdown"></div>
+                        <div id="sourceInputSuggestions" class="suggestions-dropdown"></div>
                         <small class="hint">Default: main gate</small>
                     </div>
                     
@@ -107,13 +107,13 @@
                         <label for="toRoom">To Room/Floor/Building: <span class="required">*</span></label>
                         <input 
                         type="text" 
-                        id="toRoom" 
-                        name="toRoom" 
+                        id="destinationInput" 
+                        name="destinationInput" 
                         placeholder="Enter room number (e.g., 1A37, 2B5, 8A3)"
                         required
                         autocomplete="off"
                         >
-                        <div id="toRoomSuggestions" class="suggestions-dropdown"></div>
+                        <div id="destinationInputSuggestions" class="suggestions-dropdown"></div>
                     </div>
                     
                     <button type="submit" id="submitBtn">Get Directions</button>
