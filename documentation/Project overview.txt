@@ -1,0 +1,22 @@
+Problem: Lack of readily available directions for finding rooms/floors/buildings at UTech, Ja Papine Campus
+Solution: A lightweight web app used for requesting directions from one location on campus to another.
+Tech Stack: HTML, CSS, and JS
+Algorithms:
+  Dijkstra's Algorithm (Path Finding): For finding the shortest path with weighted edges (pixel distance) 
+  Path Drawing Algorithm: For coloring in source and destination buildings and pathway
+  Fuzzy Search: For autocomplete with high tolerance of user mistakes.
+Data Structures:
+  HashMap: For quick lookup of room/floor/building
+  Tree: For organizing and maintaining relationship between rooms, floors and buildings
+  Building Vertices HashMap: For keeping track of building vertices needed for coloring
+  Graph: For storing nodes and edges needed for path finding
+Main Data Flow:
+  Input: Two inputs for source and destination (where the user is coming from and where they want to go)
+  Validation: Ensures both inputs are not empty and exist in the tree (this is done by checking the HashMap)
+  Find Required Nodes: Gets the corresponding node from the HashMap for both inputs
+  Building Picture: Outputs the building picture of the destination input
+  Floor Picture: Outputs the floor picture of the destination input if destination input is not a building
+  Map with Route: Outputs a map of utech with the source and destination buildings and path between them colored
+Limitations:
+  No video is shown but rather pictures
+  Map is not interactive
