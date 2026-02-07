@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/WrightJayN/Utech-directions-sys#readme",
   "devDependencies": {
+    "fuse.js": "^7.1.0",
     "sass": "^1.97.3"
   }
 }
