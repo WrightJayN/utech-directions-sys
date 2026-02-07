@@ -1,4 +1,4 @@
-import { ValidateInput } from './validateInput.js';
+import { ValidateInput } from './processing/validateInput.js';
 import { FindRequiredNodes } from './processing/findRequiredNode.js';
 import { GetBuildingPicture } from './output/getBuildingPicture.js';
 import { GetFloorPictures } from './output/getfloorPictures.js';
