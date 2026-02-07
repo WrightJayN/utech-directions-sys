@@ -98,8 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
         outputContainer.classList.add('fade-out');
 
         try {     
-            const source = document.getElementById('fromRoom').value;
-            const destination = document.getElementById('toRoom').value;
+            const source = document.getElementById('sourceInput').value;
+            const destination = document.getElementById('destinationInput').value;
             
             const [validatedSource, validatedDestination] = ValidateInput.validateInputs(source, destination, roomsHashMap);
             console.log('Step 1 - Validate Inputs:', [validatedSource, validatedDestination]);
