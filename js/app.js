@@ -1,11 +1,12 @@
 import { ValidateInput } from './processing/validateInput.js';
 import { FindRequiredNodes } from './processing/findRequiredNode.js';
-import { GetBuildingPicture } from './output/getBuildingPicture.js';
-import { GetFloorPictures } from './output/getfloorPictures.js';
 import { FindPath } from './processing/FindPath.js';
-import { DrawPath } from './output/drawPath.js';
 import { DisplayTextDirections } from './processing/displayTextDirections.js';
 import { CampusExplorer } from './processing/explorer.js';
+import { LocationSuggest } from './processing/locationSuggest.js';
+import { GetBuildingPicture } from './output/getBuildingPicture.js';
+import { GetFloorPictures } from './output/getfloorPictures.js';
+import { DrawPath } from './output/drawPath.js';
 import { GraphDatabase } from './storage/graphDatabase.js';
 import { TreeDataStruct } from './storage/treeDataStruct.js';
 
@@ -41,17 +42,30 @@ document.addEventListener('DOMContentLoaded', function() {
         img.src = src;
     });
 
-    const roomForm = document.getElementById('directionsForm');
+    const form = document.getElementById('directions-form');
     const outputContainer = document.getElementById('output');
     const errorContainer = document.getElementById('error');
     const errorMessage = document.getElementById('errorMessage');
     
-    // Initialize databases
-    const treeDB = new TreeDataStruct();
-    const campusExplorer = new CampusExplorer(treeDB);
+    // Initialize data structs
+    const tree = new TreeDataStruct();
+    const campusExplorer = new CampusExplorer(tree);
     campusExplorer.populate();
     const graphDB = new GraphDatabase();
-    const roomsHashMap = treeDB.getHashMap();
+    const hashMap = tree.getHashMap();
+
+    const locations = Array.from(hashMap.keys());
+    new LocationSuggest(
+        document.getElementById('source-input'),
+        document.getElementById('source-suggestions'),
+        locations
+    );
+
+    new LocationSuggest(
+        document.getElementById('destination-input'),
+        document.getElementById('destination-suggestions'),
+        locations
+    );
 
     // Navbar navigation
     const navButtons = document.querySelectorAll('.nav-btn');
@@ -88,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create output sections dynamically
     createOutputSections();
     
-    roomForm.addEventListener('submit', async function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         // Hide previous outputs
@@ -98,14 +112,14 @@ document.addEventListener('DOMContentLoaded', function() {
         outputContainer.classList.add('fade-out');
 
         try {     
-            const source = document.getElementById('sourceInput').value;
-            const destination = document.getElementById('destinationInput').value;
+            const source = document.getElementById('source-input').value;
+            const destination = document.getElementById('destination-input').value;
             
-            const [validatedSource, validatedDestination] = ValidateInput.validateInputs(source, destination, roomsHashMap);
+            const [validatedSource, validatedDestination] = ValidateInput.validateInputs(source, destination, hashMap);
             console.log('Step 1 - Validate Inputs:', [validatedSource, validatedDestination]);
 
-            const sourceNode = roomsHashMap.get(validatedSource);
-            const destinationNode = roomsHashMap.get(validatedDestination);
+            const sourceNode = hashMap.get(validatedSource);
+            const destinationNode = hashMap.get(validatedDestination);
             console.log('Step 2 - Find Nodes from HashMap:', sourceNode, destinationNode);
 
             const requiredNodes = FindRequiredNodes.findRequiredNodes(sourceNode, destinationNode);
@@ -154,6 +168,9 @@ document.addEventListener('DOMContentLoaded', function() {
             errorContainer.style.display = 'block';
         }
     });
+
+
+
     
     // Helper function to create output sections
     function createOutputSections() {
