@@ -94,10 +94,10 @@
                         <label for="source-input">From Room/Floor/Building:</label>
                         <input 
                         type="text" 
-                        id="sourceInput" 
+                        id="source-input" 
                         placeholder="Leave empty for main gate"
                         >
-                        <ul id="source-suggestions"></ul>
+                        <div id="source-suggestions" class="suggestions"></div>
                         <small class="hint">Default: main gate</small>
                     </div>
                     
@@ -105,11 +105,11 @@
                         <label for="destination-input">To Room/Floor/Building: <span class="required">*</span></label>
                         <input 
                         type="text" 
-                        id="destinationInput" 
+                        id="destination-input" 
                         placeholder="Enter room number (e.g., 1A37, 2B5, 8A3)"
                         required
                         >
-                        <ul id="destination-suggestions"></ul>
+                        <div id="destination-suggestions" class="suggestions"></div>
                     </div>
                     
                     <button type="submit" id="submitBtn">Get Directions</button>

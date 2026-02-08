@@ -54,18 +54,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const graphDB = new GraphDatabase();
     const hashMap = tree.getHashMap();
 
+    const sourceInput = document.getElementById('source-input');
+    const sourceSuggestions = document.getElementById('source-suggestions');
+    const destinationInput = document.getElementById('destination-input');
+    const destinationSuggestions = document.getElementById('destination-suggestions');
     const locations = Array.from(hashMap.keys());
-    new LocationSuggest(
-        document.getElementById('source-input'),
-        document.getElementById('source-suggestions'),
-        locations
-    );
 
-    new LocationSuggest(
-        document.getElementById('destination-input'),
-        document.getElementById('destination-suggestions'),
-        locations
-    );
+    function initializeSuggestions(inputEl, suggestionsEl, allItems) {
+        if (!inputEl || !suggestionsEl) return;
+        // Only create once
+        if (inputEl.dataset.suggestionsInitialized) return;
+        
+        new LocationSuggest(inputEl, suggestionsEl, allItems);
+        inputEl.dataset.suggestionsInitialized = 'true';
+    }
+
+    sourceInput.addEventListener('focus', () => {
+        initializeSuggestions(sourceInput, sourceSuggestions, locations);
+    });
+
+    destinationInput.addEventListener('focus', () => {
+        initializeSuggestions(destinationInput, destinationSuggestions, locations);
+    });
+
+    
 
     // Navbar navigation
     const navButtons = document.querySelectorAll('.nav-btn');
