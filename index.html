@@ -23,31 +23,12 @@
                     <circle cx="12" cy="12" r="3"></circle>
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                 </svg>
-                <span id="settingsBadge" class="settings-badge">New</span>
             </button>
             </div>
         </header>
 
         <!-- Settings Popup Menu -->
         <div id="settingsMenu" class="settings-menu">
-            <!-- Updates Section (shown only when update available) -->
-            <div id="updateSection" class="settings-item update-section">
-                <div class="update-header">
-                    <strong>New Update Available!</strong>
-                    <span class="update-badge">New</span>
-                </div>
-                <p>Version <span id="menuNewVersion"></span> is ready.</p>
-                <button id="menuReloadBtn">Reload to Update</button>
-            </div>
-
-            <div class="settings-item">
-                <label>Startup Tab</label>
-                <select id="startupTab">
-                    <option value="explorer">Explorer</option>
-                    <option value="room">Directions</option>
-                </select>
-            </div>
-
             <div class="settings-item theme-options">
                 <label>Theme</label>
                 <div class="theme-buttons">
@@ -67,27 +48,27 @@
             <div class="popup-content">
                 <h3>About</h3>
                 <p>This is a directions system made with the intention of providing on-campus guidance for papine campus</p>
-                <p><strong>Version:</strong> <span id="appVersion">Loading...</span></p>
+                <p><strong>Version:</strong> <span id="appVersion"></span></p>
                 <p>Made for UTech students by UTech students</p>
                 <button id="closeAbout">Close</button>
             </div>
         </div>
 
         <nav class="navbar">
-            <button class="nav-btn active" data-view="explorer">Explorer</button>
-            <button class="nav-btn" data-view="rooms">Directions</button>
+            <button class="nav-btn" data-view="explorer">Explorer</button>
+            <button class="nav-btn active" data-view="directions">Directions</button>
         </nav>
         
         <main>
             <!-- Explorer View -->
-            <section id="explorer-view" class="view active">
+            <section id="explorer-view" class="view">
                 <h2>Campus Explorer</h2>
                 <p>Select a building to see its floors and rooms.</p>
                 <div id="buildingList"></div>
             </section>
 
             <!-- Directions View  -->
-            <section id="rooms-view" class="view">
+            <section id="directions-view" class="view active">
                 <h2>Get Directions</h2>
                 <form id="directions-form">
                     <div class="input-group">
@@ -124,26 +105,9 @@
                 <p id="errorMessage"></p>
             </div>
         </main>
-        <footer>
-            <br>
-            <p>Disclaimer: This version (v1) is designed to be demo</p>
-        </footer>
     </div>
 
-    <!-- Toast Notification for New Version -->
-    <div id="updateToast" class="toast-notification">
-        <div class="toast-content">
-            <strong>New Update Available!</strong>
-            <p>Version <span id="newVersionText"></span> is ready.</p>
-            <div class="toast-buttons">
-                <button id="reloadNow">Reload Now</button>
-                <button id="dismissToast">Later</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Import all required modules in correct order -->
-    <script src="js/settings.js"></script>
+    <!-- Import app functionality -->
     <script type="module" src="js/app.js"></script>
 </body>
 </html>

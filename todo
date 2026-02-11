@@ -1,4 +1,5 @@
 Add remaining buildings, floors, and rooms to tree, graph, and pictures
 Fix explorer
-Simplify css file
-Allow for working defaults in settings
+Put version and credits in footer
+PUt light and dark mode button
+Fix nav bar
