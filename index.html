@@ -8,80 +8,74 @@
     <link rel="icon" type="image/x-icon" href="./assets/UTECH_ICON.png">
 </head>
 <body>
-    <div class="container" style="padding-top: 10px;">
-        <header>
-            <div style="display: flex; justify-content: center;">
-                <div>
-                    <img src="./assets/UTECH_HEADING.png" width="41" height="52">
-                    <h1>UTech Directions System</h1>
-                    <p style="color: #666; margin-top: 10px;">Find your way around Papine Campus</p>
+    <header>
+        <div id="header-div">
+            <img src="./assets/UTECH_LOGO.webp" alt="University of Technology, Jamaica Logo" width="395" height="109">
+            <div>
+                <h1>UTech Papine Campus Directions</h1>
+                <p style="color: #666; margin-top: 10px;">Find your way around Papine Campus</p>        
+            </div>
+            <nav class="navbar">
+                <button class="nav-btn" data-view="explorer">Explorer</button>
+                <button class="nav-btn active" data-view="directions">Directions</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Explorer View -->
+        <section id="explorer-view" class="view">
+            <h2>Campus Explorer</h2>
+            <p>Select a building to see its floors and rooms.</p>
+            <div id="buildingList"></div>
+        </section>
+
+        <!-- Directions View  -->
+        <section id="directions-view" class="view active">
+            <h2>Get Directions</h2>
+            <form id="directions-form">
+                <div class="input-group">
+                    <label for="source-input">From Room/Floor/Building:</label>
+                    <input 
+                    type="text" 
+                    id="source-input" 
+                    placeholder="Leave empty for main gate"
+                    >
+                    <div id="source-suggestions" class="suggestions"></div>
+                    <small class="hint">Default: main gate</small>
                 </div>
-            </div>
-        </header>
+                
+                <div class="input-group">
+                    <label for="destination-input">To Room/Floor/Building: <span class="required">*</span></label>
+                    <input 
+                    type="text" 
+                    id="destination-input" 
+                    placeholder="Enter room number (e.g., 1A37, 2B5, 8A3)"
+                    required
+                    >
+                    <div id="destination-suggestions" class="suggestions"></div>
+                </div>
+                
+                <button type="submit" id="submitBtn">Get Directions</button>
+            </form>
+        </section>
 
+        <div id="canvasContainer"></div>
+
+        <div id="output" class="output-container" style="display: none;"></div>
         
-
-        <nav class="navbar">
-            <button class="nav-btn" data-view="explorer">Explorer</button>
-            <button class="nav-btn active" data-view="directions">Directions</button>
-        </nav>
-        
-        <main>
-            <!-- Explorer View -->
-            <section id="explorer-view" class="view">
-                <h2>Campus Explorer</h2>
-                <p>Select a building to see its floors and rooms.</p>
-                <div id="buildingList"></div>
-            </section>
-
-            <!-- Directions View  -->
-            <section id="directions-view" class="view active">
-                <h2>Get Directions</h2>
-                <form id="directions-form">
-                    <div class="input-group">
-                        <label for="source-input">From Room/Floor/Building:</label>
-                        <input 
-                        type="text" 
-                        id="source-input" 
-                        placeholder="Leave empty for main gate"
-                        >
-                        <div id="source-suggestions" class="suggestions"></div>
-                        <small class="hint">Default: main gate</small>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="destination-input">To Room/Floor/Building: <span class="required">*</span></label>
-                        <input 
-                        type="text" 
-                        id="destination-input" 
-                        placeholder="Enter room number (e.g., 1A37, 2B5, 8A3)"
-                        required
-                        >
-                        <div id="destination-suggestions" class="suggestions"></div>
-                    </div>
-                    
-                    <button type="submit" id="submitBtn">Get Directions</button>
-                </form>
-            </section>
-
-            <div id="canvasContainer"></div>
-
-            <div id="output" class="output-container" style="display: none;"></div>
-            
-            <div id="error" class="error-container" style="display: none;">
-                <p id="errorMessage"></p>
-            </div>
-        </main>
-        <footer>
-            <br><br>
-            Credits: JNW <br>
-            About: Made by UTech students for UTech students
-            <br>
-            <span>Version:</span>
-            <span id="version">Loading</span>
-        </footer>
-
-    </div>
+        <div id="error" class="error-container" style="display: none;">
+            <p id="errorMessage"></p>
+        </div>
+    </main>
+    <footer>
+        <br><br>
+        Credits: JNW <br>
+        About: Made by UTech students for UTech students
+        <br>
+        <span>Version:</span>
+        <span id="version">Loading</span>
+    </footer>
 
     <!-- Import app functionality -->
     <script type="module" src="js/app.js"></script>
