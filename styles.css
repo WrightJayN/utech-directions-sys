@@ -10,7 +10,8 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #003366 0%, #ffd900a4 240%);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
     min-height: 100vh;
     padding: 20px;
     font-size: 16px;
@@ -33,12 +34,15 @@ body {
 }
 
 /* ========================================
-   Header
+   Header (https://www.utech.edu.jm/assets/2023/12/UTech-Logo.webp)
    ======================================== */
 
 header {
+    background-color: #80878e43;
+    box-shadow: 0 10px 20px #80878eb9;
     text-align: center;
     margin-bottom: 30px;
+    box-shadow: 4px 4px 9;
 }
 
 header h1 {
@@ -48,7 +52,7 @@ header h1 {
 }
 
 /* ========================================
-   Header Layout & Settings Button
+   Header Layout 
    ======================================== */
 
 header {
@@ -56,235 +60,6 @@ header {
     text-align: center;
     margin-bottom: 30px;
     padding: 10px 0;               /* Optional: some vertical breathing room */
-}
-
-#settingsBtn {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    color: #333;
-}
-
-#settingsBtn:hover {
-    background: rgba(102, 126, 234, 0.1);   /* Light purple tint from your theme */
-    color: #667eea;
-    transform: translateY(-50%) scale(1.1);
-}
-
-#settingsBtn svg {
-    width: 100%;
-    height: 100%;
-}
-
-/* Mobile adjustment */
-@media (max-width: 767px) {
-    #settingsBtn {
-        right: 10px;
-        width: 44px;
-        height: 44px;
-    }
-}
-
-/* ========================================
-   Explorer Card Style
-   ======================================== */
-
-.building-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    margin-top: 20px;
-}
-
-.building-card {
-    background: #ffffff;                    /* Pure white instead of light gray */
-    border-radius: 14px;
-    padding: 18px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* Slightly stronger shadow */
-    border: 1px solid #e0e0e0;               /* Subtle light border for definition */
-    display: flex;
-    flex-direction: column;
-}
-
-.building-card:hover {
-    opacity: 0.95;
-    transform: translateY(-8px);
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.18); /* Bigger shadow on hover */
-    border-color: #667eea;                     /* Optional: accent color on hover */
-}
-
-.building-img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    margin-bottom: 12px;
-}
-
-/* Expanded content: floors */
-.floor-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-    margin-top: 20px;
-    padding: 0 8px;
-}
-
-.building-img,
-.floor-img {
-    object-fit: contain;     /* Keeps crest proportional, no stretching */
-    background: #f8fbff;     /* Light blue background to match UTech colors */
-    padding: 20px;           /* Gives breathing room around the crest */
-}
-
-.floor-card {
-    background: #e8f0ff;
-    border-radius: 10px;
-    padding: 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-}
-
-.floor-card:hover {
-    opacity: 0.85;
-    transform: translateY(-4px);
-}
-
-.floor-img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
-/* Rooms list */
-.room-list {
-    margin-top: 16px;
-    padding: 12px 16px;
-    background: #f0f8ff;
-    border-radius: 8px;
-    text-align: left;
-}
-
-.room-item {
-    font-size: 0.95rem;
-    color: #333;
-    margin: 8px 0;
-    padding: 6px 0;
-    border-bottom: 1px solid #ddd;
-    word-wrap: break-word;
-}
-
-.room-item:last-child {
-    border-bottom: none;
-}
-
-/* ========================================
-   Explorer Animations
-   ======================================== */
-
-/* Initial state for building cards (hidden + slightly lower) */
-.building-card {
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 18px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-    border: 1px solid #e0e0e0;
-    display: flex;
-    flex-direction: column;
-    opacity: 0;                    /* Start hidden */
-    transform: translateY(30px);   /* Start 30px lower */
-}
-
-/* Animate in when .animate-in is added */
-.building-card.animate-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Enhanced hover */
-.building-card:hover {
-    opacity: 0.95;
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
-    border-color: #667eea;
-    z-index: 10;
-}
-
-/* Floor grid slides down smoothly when inserted */
-.floor-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-    margin-top: 20px;
-    padding: 0 8px;
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.5s ease;
-    transform: translateY(-10px);
-}
-
-.floor-grid.expanded {
-    opacity: 1;
-    max-height: 2000px;  /* large enough for any content */
-    transform: translateY(0);
-    margin-bottom: 20px;
-}
-
-/* Floor cards animate in staggered */
-.floor-card {
-    background: #e8f0ff;
-    border-radius: 10px;
-    padding: 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-.floor-card.animate-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Room list slide down */
-.room-list {
-    margin-top: 16px;
-    padding: 12px 16px;
-    background: #f0f8ff;
-    border-radius: 8px;
-    text-align: left;
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.4s ease;
-}
-
-.room-list.expanded {
-    opacity: 1;
-    max-height: 1000px;
 }
 
 /* ========================================
@@ -335,24 +110,18 @@ header {
 #submitBtn {
     width: 100%;
     padding: 14px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: #FFD201;
+    color: #0E004E;
     border: none;
     border-radius: 8px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
     margin-top: 10px;
 }
 
 #submitBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
-}
-
-#submitBtn:active {
-    transform: translateY(0);
+    background: #B0BAFF;
 }
 
 /* ========================================
@@ -557,22 +326,24 @@ canvas {
 
 .nav-btn {
     padding: 12px 24px;
-    background: #f0f0f0;
+    background: #0E004E;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    color: #F0FFFF;
 }
 
 .nav-btn:hover {
-    background: #ddd;
+    background: #B0BAFF;
+    color: #0E004E;
 }
 
 .nav-btn.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: #FFD201;
+    color: #0E004E;
 }
 
 .view {
