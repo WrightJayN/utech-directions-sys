@@ -118,6 +118,79 @@ main span{
 }
 
 /* ========================================
+   Autocomplete Suggestions
+   ======================================== */
+.suggestions{
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 10;
+}
+
+.suggestions li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.suggestions li:hover {
+    background: #f0f0f0;
+}
+
+/* ========================================
+   Navigation Bar & Views
+   ======================================== */
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    padding: 12px 24px;
+    background: #0E004E;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #F0FFFF;
+}
+
+.nav-btn:hover {
+    background: #B0BAFF;
+    color: #0E004E;
+}
+
+.nav-btn.active {
+    background: #FFD201;
+    color: #0E004E;
+}
+
+.view {
+    display: none;
+    animation: fadeIn 0.4s ease-in;
+}
+
+.view.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ========================================
    Output Layout
    ======================================== */
 
@@ -281,79 +354,6 @@ canvas {
 }
 
 /* ========================================
-   Autocomplete Suggestions
-   ======================================== */
-.suggestions{
-    display: none;
-    position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    max-height: 200px;
-    overflow-y: auto;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    z-index: 10;
-}
-
-.suggestions li {
-    padding: 8px 12px;
-    cursor: pointer;
-}
-
-.suggestions li:hover {
-    background: #f0f0f0;
-}
-
-/* ========================================
-   Navigation Bar & Views
-   ======================================== */
-
-.navbar {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
-    flex-wrap: wrap;
-}
-
-.nav-btn {
-    padding: 12px 24px;
-    background: #0E004E;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: #F0FFFF;
-}
-
-.nav-btn:hover {
-    background: #B0BAFF;
-    color: #0E004E;
-}
-
-.nav-btn.active {
-    background: #FFD201;
-    color: #0E004E;
-}
-
-.view {
-    display: none;
-    animation: fadeIn 0.4s ease-in;
-}
-
-.view.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* ========================================
    Mobile Responsive Adjustments
    ======================================== */
 
@@ -415,3 +415,4 @@ canvas {
         font-size: 1.1rem;
     }
 }
+
