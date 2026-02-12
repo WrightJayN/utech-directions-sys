@@ -32,31 +32,19 @@
 
         <!-- Directions View  -->
         <section id="directions-view" class="view active">
-            <h2>Get Directions</h2>
+            <h1>Directions</h1>
             <form id="directions-form">
-                <div class="input-group">
-                    <label for="source-input">From Room/Floor/Building:</label>
-                    <input 
-                    type="text" 
-                    id="source-input" 
-                    placeholder="Leave empty for main gate"
-                    >
-                    <div id="source-suggestions" class="suggestions"></div>
-                    <small class="hint">Default: main gate</small>
-                </div>
+                <label for="source-input">Source Room/Floor/Building: <small>(Leave empty for Main Gate)</small></label>
+                <input type="text" id="source-input" placeholder="e.g., Main Gate (default)" >
+                <div id="source-suggestions" class="suggestions"></div>
                 
-                <div class="input-group">
-                    <label for="destination-input">To Room/Floor/Building: <span class="required">*</span></label>
-                    <input 
-                    type="text" 
-                    id="destination-input" 
-                    placeholder="Enter room number (e.g., 1A37, 2B5, 8A3)"
-                    required
-                    >
-                    <div id="destination-suggestions" class="suggestions"></div>
-                </div>
+                <label for="destination-input">Destination Room/Floor/Building: <span class="required">*</span></label>
+                <input type="text" id="destination-input" placeholder="e.g., 1A37, 2B5, 8A3" required>
+                <div id="destination-suggestions" class="suggestions"></div>
                 
-                <button type="submit" id="submitBtn">Get Directions</button>
+                <div id="submit-div"> 
+                    <button type="submit" id="submitBtn">Get Directions</button>
+                </div>
             </form>
         </section>
 
