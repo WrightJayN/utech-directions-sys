@@ -149,4 +149,15 @@ document.addEventListener('DOMContentLoaded', function() {
             errorContainer.style.display = 'block';
         }
     });
+    
+    fetch('version.txt')
+        .then(response => response.text())
+        .then(text => {
+            document.getElementById('version').innerText = text;
+        })
+        .catch(err => {
+            console.error('Could load versions');
+            document.getElementById('version').innerText = "Couldn't load version.";
+        });
+
 });
