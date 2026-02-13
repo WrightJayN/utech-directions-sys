@@ -416,3 +416,26 @@ canvas {
     }
 }
 
+/* ========================================
+   Footer
+   ======================================== */
+
+footer{
+    background: var(--utech-blue);
+    color: var(--bg-light);
+    text-align: center; 
+    padding: 20px; 
+    margin-top: 60px;
+}
+
+#bible-verse{
+    padding: 20px 0px 0px;
+    font-size: 1.6rem;
+    color: var(--utech-gold);
+    display: flex;
+    justify-content: center;
+}
+
+footer a{
+    color: var(--utech-gold);
+}
