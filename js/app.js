@@ -2,7 +2,6 @@ import { ValidateInput } from './processing/validateInput.js';
 import { FindRequiredNodes } from './processing/findRequiredNode.js';
 import { FindPath } from './processing/FindPath.js';
 import { DisplayTextDirections } from './processing/displayTextDirections.js';
-import { CampusExplorer } from './processing/explorer.js';
 import { LocationSuggest } from './processing/locationSuggest.js';
 import { GetBuildingPicture } from './output/getBuildingPicture.js';
 import { GetFloorPictures } from './output/getfloorPictures.js';
