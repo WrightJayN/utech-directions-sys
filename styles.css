@@ -82,16 +82,16 @@ header p{
 .overlay {
   position: absolute;
   inset: 0 50% 0 0;          
-  background: var(--hero-overlay);     
-  text-align: center;
+  background: var(--hero-overlay);
 }
 
 .text {
   position: absolute;
-  top: 50%;
-  left: 5%;
-  transform: translateY(-50%);
-  z-index: 1;
+  inset: 0 50% 0 0;  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
@@ -159,26 +159,31 @@ main span{
 /* ========================================
    Autocomplete Suggestions
    ======================================== */
+.source-section, .destination-section{
+    position: relative;
+}
+
 .suggestions{
     display: none;
     position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    max-height: 200px;
-    overflow-y: auto;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    z-index: 10;
+    min-width: 160px;
+    width : 100%;
+    box-shadow: 0px 4px 12px 0px var(--drop-shadow);
+    z-index: 1;
 }
 
 .suggestions li {
-    padding: 8px 12px;
+    background-color: var(--utech-blue);
+    color: var(--bg-light);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
     cursor: pointer;
 }
 
 .suggestions li:hover {
-    background: #f0f0f0;
+    background-color: var(--hover-color);
+    color: var(--utech-blue);
 }
 
 /* ========================================
@@ -286,51 +291,13 @@ div#floorPictureSection {
 /* ========================================
    Directions Section
    ======================================== */
-
-.direction-row {
-    display: flex;
-    justify-content: space-evenly;
+#textDirections{
+    background-color: var(--bg-light);
+    padding: 30px;
 }
 
-.direction-step {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 10px 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.direction-step p {
-    margin: 5px 0;
-    color: #555;
-}
-
-.direction-arrow {
-    text-align: center;
-    font-size: 2rem;
-    color: #667eea;
-    margin-top: 16px;
-}
-
-.direction-instructions {
-    background: #e8f4f8;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 15px;
-}
-
-.direction-instructions h4 {
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.direction-instructions ol {
-    margin-left: 20px;
-    color: #555;
-}
-
-.direction-instructions li {
-    margin: 8px 0;
+.direction-instructions ol{
+    padding-left: 18px;
 }
 
 /* ========================================

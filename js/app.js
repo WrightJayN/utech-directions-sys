@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Preload critical assets
     const preloadImages = [
         'assets/UTECH_MAP.webp',
+        'assets/UTECH_ENTRANCE.webp',
         'assets/UTECH_CREST.webp',
         'assets/buildings/FENC.jpg',
         'assets/buildings/SCIT.jpg',
@@ -50,8 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize data structs
     const tree = new TreeDataStruct();
-    const campusExplorer = new CampusExplorer(tree);
-    campusExplorer.populate();
     const graphDB = new GraphDatabase();
     const hashMap = tree.getHashMap();
 

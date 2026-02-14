@@ -22,12 +22,12 @@
     </header>
 
     <section class="hero" >
-        <img src="https://www.utech.edu.jm/assets/2024/07/main-entrance-1024x683.jpg" alt="Papine Campus Entrance" id="hero-img">
+        <img src="./assets/UTECH_ENTRANCE.webp" alt="Papine Campus Entrance" id="hero-img">
         <div class="overlay">
-            <div class="text">
-                <h1>Find your way around</h1>
-                <h1>Papine Campus</h1>
-            </div>
+        </div>
+        <div class="text">
+            <h1>Find your way around</h1>
+            <h1>Papine Campus</h1>
         </div>
     </section>
 
@@ -39,14 +39,18 @@
         <!-- Directions View  -->
         <section id="directions-view" class="view active">
             <h1>Directions</h1>
-            <form id="directions-form">
-                <label for="source-input">Source Room/Floor/Building: <small>(Leave empty for Main Gate)</small></label>
-                <input type="text" id="source-input" placeholder="e.g., Main Gate (default)" >
-                <div id="source-suggestions" class="suggestions"></div>
-                
-                <label for="destination-input">Destination Room/Floor/Building: <span class="required">*</span></label>
-                <input type="text" id="destination-input" placeholder="e.g., 1A37, 2B5, 8A3" required>
-                <div id="destination-suggestions" class="suggestions"></div>
+            <form id="directions-form" autocomplete="off">
+                <div class="source-section">
+                    <label for="source-input">Source Room/Floor/Building: <small>(Leave empty for Main Gate)</small></label>
+                    <input type="text" id="source-input" placeholder="e.g., Main Gate (default)" >
+                    <div id="source-suggestions" class="suggestions"></div>
+                </div>
+
+                <div class="destination-section">
+                    <label for="destination-input">Destination Room/Floor/Building: <span class="required">*</span></label>
+                    <input type="text" id="destination-input" placeholder="e.g., 1A37, 2B5, 8A3" required>
+                    <div id="destination-suggestions" class="suggestions"></div>
+                </div>
                 
                 <div id="submit-div"> 
                     <button type="submit" id="submitBtn">Get Directions</button>

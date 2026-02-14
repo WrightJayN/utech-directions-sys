@@ -2,7 +2,7 @@ class DisplayTextDirections{
     static goingToRoomInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode){
         return `
             <div class="direction-instructions">
-                <h4>Directions:</h4>
+                <h2>Step-by-Step:</h2>
                 <ol>
                     <li>Exit ${sourceBuildingNode.name}</li>
                     <li>Follow the yellow path on the map to ${destinationBuildingNode.name}</li>
@@ -17,7 +17,7 @@ class DisplayTextDirections{
     static goingToFloorInDifferentBuilding(sourceBuildingNode, destinationBuildingNode, destinationFloorNode){
         return `
             <div class="direction-instructions">
-                <h4>Directions:</h4>
+                <h2>Step-by-Step:</h2>
                 <ol>
                     <li>Exit ${sourceBuildingNode.name}</li>
                     <li>Follow the yellow path on the map to ${destinationBuildingNode.name}</li>
@@ -31,7 +31,7 @@ class DisplayTextDirections{
     static goingToBuildingInDifferentBuilding(sourceBuildingNode, destinationBuildingNode){
         return `
             <div class="direction-instructions">
-                <h4>Directions:</h4>
+                <h2>Step-by-Step:</h2>
                 <ol>
                     <li>Exit ${sourceBuildingNode.name}</li>
                     <li>Follow the yellow path on the map to ${destinationBuildingNode.name}</li>
@@ -44,7 +44,7 @@ class DisplayTextDirections{
     static goingToRoomInDifferentFloor(sourceBuildingNode, sourceFloorNode, destinationFloorNode, destinationRoomNode){
         return `
             <div class="direction-instructions">
-                <h4>Directions:</h4>
+                <h2>Step-by-Step:</h2>
                 <ol>
                     <li>You are in ${sourceBuildingNode.name}</li>
                     <li>Navigate from ${sourceFloorNode.name} to ${destinationFloorNode.name}</li>
@@ -57,7 +57,7 @@ class DisplayTextDirections{
     static goingToFloorInDifferentFloor(sourceBuildingNode, sourceFloorNode, destinationFloorNode){
         return `
             <div class="direction-instructions">
-                <h4>Directions:</h4>
+                <h2>Step-by-Step:</h2>
                 <ol>
                     <li>You are in ${sourceBuildingNode.name}</li>
                     <li>Navigate from ${sourceFloorNode.name} to ${destinationFloorNode.name}</li>
@@ -69,7 +69,7 @@ class DisplayTextDirections{
     static goingToRoomInDifferentRoom(sourceFloorNode, sourceRoomNode, destinationRoomNode){
     return `
         <div class="direction-instructions">
-            <h4>Directions:</h4>
+            <h2>Step-by-Step:</h2>
             <ol>
                 <li>You are on ${sourceFloorNode.name}</li>
                 <li>Navigate from ${sourceRoomNode.name} to ${destinationRoomNode.name}</li>
@@ -81,7 +81,7 @@ class DisplayTextDirections{
     static goingToRoomInSameBuilding(sourceBuildingNode, destinationFloorNode, destinationRoomNode){
         return `
             <div class="direction-instructions">
-                <h4>Directions:</h4>
+                <h2>Step-by-Step:</h2>
                 <ol>
                     <li>You are in ${sourceBuildingNode.name}</li>
                     <li>Navigate to ${destinationFloorNode.name}</li>
@@ -94,7 +94,7 @@ class DisplayTextDirections{
     static goingToFloorInSameBuilding(sourceBuildingNode, destinationFloorNode){
         return `
             <div class="direction-instructions">
-                <h4>Directions:</h4>
+                <h2>Step-by-Step:</h2>
                 <ol>
                     <li>You are in ${sourceBuildingNode.name}</li>
                     <li>Navigate to ${destinationFloorNode.name}</li>
@@ -106,7 +106,7 @@ class DisplayTextDirections{
     static goingToRoomInSameFloor(sourceFloorNode, destinationRoomNode){
         return `
             <div class="direction-instructions">
-                <h4>Directions:</h4>
+                <h2>Step-by-Step:</h2>
                 <ol>
                     <li>You are on ${sourceFloorNode.name}</li>
                     <li>Locate ${destinationRoomNode.name}</li>
@@ -120,7 +120,7 @@ class DisplayTextDirections{
             case 1:
                 return `
                     <div class="direction-instructions">
-                        <h4>Directions:</h4>
+                        <h2>Step-by-Step:</h2>
                         <ol>
                             <li>You are already in the right room</li>
                         </ol>
@@ -129,7 +129,7 @@ class DisplayTextDirections{
             case 2:
                 return `
                     <div class="direction-instructions">
-                        <h4>Directions:</h4>
+                        <h2>Step-by-Step:</h2>
                         <ol>
                             <li>You are already on the right floor</li>
                         </ol>
@@ -138,7 +138,7 @@ class DisplayTextDirections{
             case 3:
                 return `    
                     <div class="direction-instructions">
-                        <h4>Directions:</h4>
+                        <h2>Step-by-Step:</h2>
                         <ol>
                             <li>You are already at the right building</li>
                         </ol>
@@ -151,7 +151,7 @@ class DisplayTextDirections{
 
         return `
         <div class="direction-instructions">
-            <h4>Directions:</h4>
+            <h2>Step-by-Step:</h2>
             <ol>
                 <li>You are already at your destination</li>
             </ol>
