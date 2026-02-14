@@ -293,7 +293,7 @@ div#floorPictureSection {
    ======================================== */
 #textDirections{
     background-color: var(--bg-light);
-    padding: 30px;
+    padding: 20px 30px;
 }
 
 .direction-instructions ol{
