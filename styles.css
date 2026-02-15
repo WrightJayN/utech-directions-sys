@@ -58,9 +58,14 @@ header h1 {
     font-size: 2.2rem;
 }
 
-header p{
-    margin: 5px 0 0; 
-    font-size: 1.1rem;
+@media screen and (max-width: 768px) {
+    #header-div{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    #utech-logo{
+        width: 80%;
+    }
 }
 
 /* ========================================
@@ -106,7 +111,8 @@ header p{
    Main
    ======================================== */
 main{
-    max-width: 800px; 
+    max-width: 100vw; 
+
     margin: 40px auto; 
     padding: 0 20px;
 }
@@ -284,6 +290,17 @@ div#floorPictureSection {
     border-radius: 8px;
     margin-top: 10px;
     box-shadow: 0 4px 12px var(--image-shadow);
+}
+
+@media screen and (max-width: 768px) {
+    .output-row{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    div#buildingPictureSection,
+    div#floorPictureSection{
+        width: 100%;
+    }
 }
 
 /* ========================================
