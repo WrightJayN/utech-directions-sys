@@ -1,11 +1,13 @@
 class CreateOutputSections{
     static createOutputSections(outputContainer) {
         outputContainer.innerHTML = `            
+            <!-- Step by Step Directions -->
             <div id="textDirections" class="output-section">
                 <div id="textDirectionsContent"></div>
             </div>
             
-            <div class="output-row">
+            <!-- Building and Floor Pictures -->
+            <div class="output-row output-section">
                 <div id="buildingPictureSection" class="output-section.half">
                     <h3>Destination Building</h3>
                     <div id="buildingPictureContent"></div>
@@ -19,7 +21,7 @@ class CreateOutputSections{
 
             <!-- Map section -->
             <div class="output-section" id="mapSection">
-                <h3>Map with Route</h3>
+                <h2>Route Map</h2>
                 <div class="map-container">
                     <div id="mapContent">
                         <canvas id="mapCanvas"></canvas>

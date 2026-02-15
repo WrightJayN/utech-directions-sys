@@ -17,6 +17,7 @@
     --header-bg: #EEEEF7;
     --bg-gray: #F2F2F2;
     --drop-shadow: #1414144c;
+    --image-shadow: #0000004a;
     --hero-overlay: #14141477;
 }
 
@@ -235,25 +236,33 @@ main span{
 }
 
 /* ========================================
-   Output Layout
+   Output Section 
+   ======================================== */
+.output-section {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 4px 4px 12px var(--drop-shadow);
+    background-color: var(--bg-light);
+}
+
+/* ========================================
+   Text Direction
    ======================================== */
 
-.output-container {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    margin-top: 30px;
+.direction-instructions ol{
+    padding-left: 18px;
 }
 
-.output-container.fade-out {
-    opacity: 0;
-}
-.output-container.show {
-    opacity: 1;
-}
+/* ========================================
+   Building and Floor Picture
+   ======================================== */
 
 .output-row {
+    border-radius: 10px;
     display: flex;
-    gap: 4px;
+    gap: 8px;
 }
 
 .output-section.half {
@@ -264,20 +273,9 @@ main span{
 div#buildingPictureSection,
 div#floorPictureSection {
     width: 50%;
-}
-
-.output-section {
-    margin-bottom: 30px;
-    margin-top: 30px;
-    padding: 0px;
-    background: #f8f9fa;
-    border-radius: 8px;
-}
-
-.output-section h3 {
-    color: #333;
-    font-size: 1.3rem;
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .output-image {
@@ -285,19 +283,7 @@ div#floorPictureSection {
     height: auto;
     border-radius: 8px;
     margin-top: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* ========================================
-   Directions Section
-   ======================================== */
-#textDirections{
-    background-color: var(--bg-light);
-    padding: 20px 30px;
-}
-
-.direction-instructions ol{
-    padding-left: 18px;
+    box-shadow: 0 4px 12px var(--image-shadow);
 }
 
 /* ========================================
@@ -307,11 +293,11 @@ div#floorPictureSection {
 #mapSection {
     position: relative;
     overflow: hidden;
-    margin-bottom: 20px;
 }
 
 #mapContent {
     width: 100%;
+    margin-top: 10px;
 }
 
 /* ========================================
@@ -322,24 +308,8 @@ canvas {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    background: white;
-}
-
-/* ========================================
-   Canvas Transition
-   ======================================== */
-.canvasContainer {
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.canvasContainer.fade-out {
-    opacity: 0;
-}
-
-.canvasContainer.show{
-    opacity: 1;
+    box-shadow: 0 4px 12px var(--image-shadow);
+    background-color: var(--bg-light);
 }
    
 /* ========================================

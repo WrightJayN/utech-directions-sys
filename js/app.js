@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
         img.src = src;
     });
 
+    let isLastDestBuilding = false;
+
     const form = document.getElementById('directions-form');
     const outputContainer = document.getElementById('output');
     const errorContainer = document.getElementById('error');
@@ -60,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const destinationInput = document.getElementById('destination-input');
     const destinationSuggestions = document.getElementById('destination-suggestions');
     const locations = Array.from(hashMap.keys());
+
 
     function initializeSuggestions(inputEl, suggestionsEl, allItems) {
         if (!inputEl || !suggestionsEl) return;
@@ -84,11 +87,15 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        // clear output section here
+        if(isLastDestBuilding){
+            document.getElementById('floorPictureSection').style.display = 'block'; //Hide floor output when destination input is a building
+            document.getElementById('buildingPictureSection').style.width = "50%" // create some form of reset
+            isLastDestBuilding = false;
+        }
+
         // Hide previous outputs
         errorContainer.style.display = 'none';
-
-        // Add fade-out for old content
-        outputContainer.classList.add('fade-out');
 
         try {     
             const source = document.getElementById('source-input').value;
@@ -119,6 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Step 5: Floor picture:', floorPicture);
             }else {
                 document.getElementById('floorPictureSection').style.display = 'none'; //Hide floor output when destination input is a building
+                document.getElementById('buildingPictureSection').style.width = "100%" 
+                isLastDestBuilding = true;
             }
             
             const sourceBuildingNodeFromGraph = graphDB.graph.get(sourceBuildingNode.name);
@@ -137,9 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 DisplayTextDirections.displayTextDirections(sourceBuildingNode, sourceFloorNode, sourceRoomNode, destinationBuildingNode, destinationFloorNode, destinationRoomNode);
             }            
             outputContainer.style.display = 'block';           // Make it visible
-            outputContainer.classList.remove('fade-out');     // In case it was fading out
-            outputContainer.classList.add('show');            // Triggers smooth fade-in
-                
+
         } catch (error) {
             // Display error
             console.error('Error:', error);
@@ -148,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Displays current version in footer
     fetch('version.txt')
         .then(response => response.text())
         .then(text => {
