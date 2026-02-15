@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let isLastDestBuilding = false;
     let isLastDestError = false;
+    let currentView = 'directions';
 
     const form = document.getElementById('directions-form');
     const outputContainer = document.getElementById('output');
@@ -53,6 +54,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorMessage = document.getElementById('errorMessage');
     const floorPictureSection = document.getElementById('floorPictureSection');
     const buildingPictureSection = document.getElementById('buildingPictureSection');
+    const discoveryBtn = document.getElementById('discovery');
+    const directionsBtn = document.getElementById('directions');
+    const discoveryView = document.getElementById('discovery-view');
+    const directionsView = document.getElementById('directions-view');
+
     
     // Initialize data structs
     const tree = new TreeDataStruct();
@@ -65,6 +71,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const destinationInput = document.getElementById('destination-input');
     const destinationSuggestions = document.getElementById('destination-suggestions');
     const locations = Array.from(hashMap.keys());
+
+    discoveryBtn.addEventListener('click', async function (e) {
+        e.preventDefault();
+        if(currentView == 'directions'){
+            // activate discovery button
+            discoveryBtn.classList.add('active');
+            directionsBtn.classList.remove('active');
+
+            discoveryView.classList.add('active');
+            directionsView.classList.remove('active');
+            
+            currentView = 'discovery';
+        }
+    })
+    
+    directionsBtn.addEventListener('click', async function (e){
+        e.preventDefault();
+        if(currentView == 'discovery'){
+            // activate directions button
+            directionsBtn.classList.add('active');
+            discoveryBtn.classList.remove('active');
+            
+            directionsView.classList.add('active');
+            discoveryView.classList.remove('active');
+            
+            currentView = 'directions';
+        }
+    })
 
 
     function initializeSuggestions(inputEl, suggestionsEl, allItems) {
@@ -87,6 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create output sections dynamically
     CreateOutputSections.createOutputSections(outputContainer);
     
+    //Directions functionality
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         

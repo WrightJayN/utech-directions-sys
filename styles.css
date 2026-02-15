@@ -116,20 +116,23 @@ main{
     padding: 0 20px;
 }
 
+
+main h1{
+    text-align: center; 
+    margin-bottom: 25px;
+}
+    
+/* ========================================
+    Directions
+    ======================================== */
 #directions-view{
     background: var(--bg-light); 
     border-radius: 12px; 
     padding: 30px; 
     box-shadow: 4px 4px 12px var(--drop-shadow)
 }
-
-main h1{
-    text-align: center; 
-    margin-bottom: 25px;
-}
-
 #source-input, #destination-input{
-    width: 100%; 
+        width: 100%; 
     padding: 12px; 
     margin: 8px 0 20px; 
     border: 1px solid var(--utech-blue); 
