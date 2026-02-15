@@ -45,11 +45,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     let isLastDestBuilding = false;
+    let isLastDestError = false;
 
     const form = document.getElementById('directions-form');
     const outputContainer = document.getElementById('output');
     const errorContainer = document.getElementById('error');
     const errorMessage = document.getElementById('errorMessage');
+    const floorPictureSection = document.getElementById('floorPictureSection');
+    const buildingPictureSection = document.getElementById('buildingPictureSection');
     
     // Initialize data structs
     const tree = new TreeDataStruct();
@@ -87,15 +90,16 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        // clear output section here
         if(isLastDestBuilding){
-            document.getElementById('floorPictureSection').style.display = 'block'; //Hide floor output when destination input is a building
-            document.getElementById('buildingPictureSection').style.width = "50%" // create some form of reset
+            floorPictureSection.style.display = 'block'; // Reveal floor picture if it was hidden
+            buildingPictureSection.style.width = "50%"; // Let building picture make space for floor picture
             isLastDestBuilding = false;
         }
 
-        // Hide previous outputs
-        errorContainer.style.display = 'none';
+        if(isLastDestError){
+            errorContainer.style.display = 'none';  // Hide error if it was revealed
+            isLastDestError = false;
+        }
 
         try {     
             const source = document.getElementById('source-input').value;
@@ -125,8 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }            
                 console.log('Step 5: Floor picture:', floorPicture);
             }else {
-                document.getElementById('floorPictureSection').style.display = 'none'; //Hide floor output when destination input is a building
-                document.getElementById('buildingPictureSection').style.width = "100%" 
+                floorPictureSection.style.display = 'none'; //Hide floor picture if destination input is a building
+                buildingPictureSection.style.width = "100%"; // Let building picture fill the remaining width
                 isLastDestBuilding = true;
             }
             
@@ -151,7 +155,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Display error
             console.error('Error:', error);
             errorMessage.textContent = error.message;
-            errorContainer.style.display = 'block';
+            errorContainer.style.display = 'block'; // show error section if error occured
+            outputContainer.style.display = 'none'; // hide output section
+            isLastDestError = true;
         }
     });
     
