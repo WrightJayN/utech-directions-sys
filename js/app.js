@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'assets/UTECH_MAP.webp',
         'assets/UTECH_ENTRANCE.webp',
         'assets/UTECH_CREST.webp',
+        'assets/UTECH_ICON.webp',
         'assets/buildings/FENC.webp',
         'assets/buildings/SCIT.webp',
         'assets/buildings/SOBA.webp',
