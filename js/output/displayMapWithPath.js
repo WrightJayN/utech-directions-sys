@@ -5,7 +5,7 @@ class DisplayMapWithPath{
         const canvas = document.getElementById('mapCanvas');
         
         // Load map image first
-        await DrawPath.loadMapImage('assets/utech_map.webp', canvas);
+        await DrawPath.loadMapImage('./assets/UTECH_MAP.webp', canvas);
 
         // Create complete map with path
         DrawPath.createMapWithPath(
